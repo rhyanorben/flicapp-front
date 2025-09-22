@@ -17,7 +17,7 @@ export default function Header() {
             className="rounded"
             priority
           />
-          <span className="text-lg font-semibold">FlicApp</span>
+          <a href="/" className="text-lg font-semibold">FlicApp</a>
         </div>
 
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">

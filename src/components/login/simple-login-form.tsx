@@ -3,14 +3,13 @@ import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function LoginForm({
+export function SimpleLoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -19,9 +18,6 @@ export function LoginForm({
       <Card>
         <CardHeader>
           <CardTitle>Faça login na sua conta</CardTitle>
-          <CardDescription>
-            Digite seu e-mail abaixo para acessar sua conta
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <form>

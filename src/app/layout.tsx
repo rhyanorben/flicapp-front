@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import Header from "@/components/landing/header";
+import Footer from "@/components/landing/footer";
 
 export const metadata: Metadata = {
   title: "FlicApp",
@@ -26,7 +28,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          {children}
+            <Header/>
+            {children}
+            <Footer/>
         </ThemeProvider>
       </body>
     </html>
