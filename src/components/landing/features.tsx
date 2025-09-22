@@ -24,7 +24,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="como-funciona" className="bg-background py-16 sm:py-20">
+    <section id="como-funciona" className="bg-background py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-2xl font-semibold sm:text-3xl">Por que escolher a FlicApp?</h2>

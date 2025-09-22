@@ -6,7 +6,7 @@ import { LoginForm } from "../login/login-form"
 export default function Hero() {
   return (
     <section className="relative bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="max-w-3xl">
             <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
