@@ -1,4 +1,4 @@
-import { SimpleLoginForm } from "@/components/login/simple-login-form"
+import { LoginForm } from "@/components/login/login-form";
 
 export default function LoginPage() {
   return (
@@ -6,7 +6,7 @@ export default function LoginPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <SimpleLoginForm />
+            <LoginForm />
           </div>
         </div>
       </div>

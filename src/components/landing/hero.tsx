@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { SimpleLoginForm } from "@/components/login/simple-login-form"
+import { LoginForm } from "../login/login-form"
 
 export default function Hero() {
   return (
@@ -19,7 +19,7 @@ export default function Hero() {
           
           <div className="flex items-center justify-center">
             <div className="w-full max-w-md">
-              <SimpleLoginForm />
+              <LoginForm />
             </div>
           </div>
         </div>
