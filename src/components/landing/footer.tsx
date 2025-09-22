@@ -1,10 +1,14 @@
 import React from "react"
+import { ToggleTheme } from "../ui/toggle-theme"
 
 export default function Footer() {
   return (
     <footer className="border-t bg-background" id="contato">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+          <div>
+            <ToggleTheme/>
+          </div>
           <div className="text-sm text-muted-foreground">
             © 2025 FlicAPP - Todos os direitos reservados.
           </div>
