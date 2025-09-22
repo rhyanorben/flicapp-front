@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Link from "next/link"
 
 export function SimpleLoginForm({
   className,
@@ -34,12 +35,12 @@ export function SimpleLoginForm({
               <div className="grid gap-3">
                 <div className="flex items-center">
                   <Label htmlFor="password">Senha</Label>
-                  <a
+                  <Link
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Esqueceu sua senha?
-                  </a>
+                  </Link>
                 </div>
                 <Input id="password" type="password" required />
               </div>
@@ -51,9 +52,9 @@ export function SimpleLoginForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Não possui uma conta?{" "}
-              <a href="#" className="underline underline-offset-4">
+              <Link href="#" className="underline underline-offset-4">
                 Registre-se
-              </a>
+              </Link>
             </div>
           </form>
         </CardContent>
