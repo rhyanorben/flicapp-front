@@ -1,22 +1,25 @@
-import { RegisterForm } from "@/components/login/register-form";
-import Image from "next/image";
+import Link from "next/link";
+import { RegisterForm } from "./_components/register-form";
 
 export default function RegisterPage() {
   return (
-    <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-xs">
-            <RegisterForm />
-          </div>
+    <div className="flex min-h-screen flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold">Cadastro</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Crie sua conta para começar</p>
         </div>
-      </div>
-      <div className="bg-muted relative hidden lg:block">
-        <Image
-          src="/placeholder.svg"
-          alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
+
+        <RegisterForm />
+
+        <div className="text-center text-sm">
+          <p>
+            Já tem uma conta?{" "}
+            <Link href="/login" className="font-medium text-primary hover:underline">
+              Faça login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )

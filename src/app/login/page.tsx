@@ -1,22 +1,26 @@
-import { LoginForm } from "@/components/login/login-form";
+import { LoginForm } from "@/app/login/_components/login-form";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <div className="grid min-h-svh lg:grid-cols-2">
-      <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-xs">
-            <LoginForm />
-          </div>
+    <div className="flex min-h-screen flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold">Login</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Entre com suas credenciais para acessar sua conta</p>
         </div>
-      </div>
-      <div className="bg-muted relative hidden lg:block">
-        <Image
-          src="/placeholder.svg"
-          alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
+
+        <LoginForm />
+
+        <div className="text-center text-sm">
+          <p>
+            Não tem uma conta?{" "}
+            <Link href="/register" className="font-medium text-primary hover:underline">
+              Cadastre-se
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )
