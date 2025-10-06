@@ -10,6 +10,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { authClient } from "@/lib/auth-client"
 
 
 const loginSchema = z.object({
@@ -33,7 +34,22 @@ export function LoginForm() {
   })
 
   async function onSubmit(formData: LoginFormValues) {
-
+    const { data, error } = await authClient.signIn.email({
+      email: formData.email,
+      password: formData.password,
+    }, {
+      onRequest: (context) => {
+        setIsLoading(true);
+      },
+      onSuccess: (context) => {
+        router.replace("/dashboard");
+        setIsLoading(false);
+      },
+      onError: (context) => {
+        alert(context?.error?.message || "Erro ao logar");
+        setIsLoading(false);
+      },
+    })
   }
 
   return (

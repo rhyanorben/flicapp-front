@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { authClient } from "@/lib/auth-client";
 
 const registerSchema = z
   .object({
@@ -41,6 +42,24 @@ export function RegisterForm() {
   })
 
   async function onSubmit(formData: SignupFormValues) {
+
+    const { data, error } = await authClient.signUp.email({
+      email: formData.email,
+      password: formData.password,
+      name: formData.name
+    }, {
+      onRequest: (context) => {
+        setIsLoading(true);
+      },
+      onSuccess: (context) => {
+        router.replace("/dashboard")
+        setIsLoading(false);
+      },
+      onError: (context) => {
+        alert(context?.error?.message || "Erro ao cadastrar");
+        setIsLoading(false);
+      },
+    })
 
   }
 
