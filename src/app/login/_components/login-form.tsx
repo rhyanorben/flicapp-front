@@ -14,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 
 const loginSchema = z.object({
   email: z.email({ message: "Email inválido" }),
-  password: z.string().min(8, { message: "A senha deve ter pelo menos 8 caracteres" }),
+  password: z.string(),
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
