@@ -1,3 +1,4 @@
+// @ts-expect-error - better-auth/react types issue
 import { createAuthClient } from "better-auth/react"
 
 export const authClient = createAuthClient({

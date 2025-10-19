@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { USER_ROLES, UserRole } from "@/types/user";
 
 export const RoleBasedDashboard = () => {
-  const { roleDisplayName, isLoading } = useUserRole();
-  const [currentRole, setCurrentRole] = useState<UserRole>(USER_ROLES.CLIENTE);
+  const { roleDisplayName, isLoading, userRole, session } = useUserRole();
+  const [demoRole, setDemoRole] = useState<UserRole>(USER_ROLES.CLIENTE);
+  
+  const currentRole = session?.user ? userRole : demoRole;
 
   if (isLoading) {
     return (
@@ -24,37 +26,47 @@ export const RoleBasedDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Seletor de Role para Demonstração */}
+      {/* Informações da Role */}
       <Card>
         <CardHeader>
-          <CardTitle>Demonstração das Roles</CardTitle>
+          <CardTitle>
+            {session?.user ? "Role do Usuário Logado" : "Demonstração das Roles"}
+          </CardTitle>
           <CardDescription>
-            Selecione uma role para ver o conteúdo específico do dashboard
+            {session?.user 
+              ? "Role atual baseada no usuário logado" 
+              : "Selecione uma role para ver o conteúdo específico do dashboard"
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2 flex-wrap">
-            <Button
-              variant={currentRole === USER_ROLES.ADMINISTRADOR ? "default" : "outline"}
-              onClick={() => setCurrentRole(USER_ROLES.ADMINISTRADOR)}
-            >
-              Administrador
-            </Button>
-            <Button
-              variant={currentRole === USER_ROLES.PRESTADOR ? "default" : "outline"}
-              onClick={() => setCurrentRole(USER_ROLES.PRESTADOR)}
-            >
-              Prestador
-            </Button>
-            <Button
-              variant={currentRole === USER_ROLES.CLIENTE ? "default" : "outline"}
-              onClick={() => setCurrentRole(USER_ROLES.CLIENTE)}
-            >
-              Cliente
-            </Button>
-          </div>
-          <div className="mt-4 text-sm text-muted-foreground">
+          {!session?.user && (
+            <div className="flex gap-2 flex-wrap mb-4">
+              <Button
+                variant={demoRole === USER_ROLES.ADMINISTRADOR ? "default" : "outline"}
+                onClick={() => setDemoRole(USER_ROLES.ADMINISTRADOR)}
+              >
+                Administrador
+              </Button>
+              <Button
+                variant={demoRole === USER_ROLES.PRESTADOR ? "default" : "outline"}
+                onClick={() => setDemoRole(USER_ROLES.PRESTADOR)}
+              >
+                Prestador
+              </Button>
+              <Button
+                variant={demoRole === USER_ROLES.CLIENTE ? "default" : "outline"}
+                onClick={() => setDemoRole(USER_ROLES.CLIENTE)}
+              >
+                Cliente
+              </Button>
+            </div>
+          )}
+          <div className="text-sm text-muted-foreground">
             Role atual: <span className="font-semibold">{roleDisplayName}</span>
+            {session?.user && (
+              <span className="ml-2 text-green-600">(Dados reais da sessão)</span>
+            )}
           </div>
         </CardContent>
       </Card>

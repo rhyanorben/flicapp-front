@@ -34,18 +34,18 @@ export function LoginForm() {
   })
 
   async function onSubmit(formData: LoginFormValues) {
-    const { data, error } = await authClient.signIn.email({
+    await authClient.signIn.email({
       email: formData.email,
       password: formData.password,
     }, {
-      onRequest: (context) => {
+      onRequest: () => {
         setIsLoading(true);
       },
-      onSuccess: (context) => {
+      onSuccess: () => {
         router.replace("/dashboard");
         setIsLoading(false);
       },
-      onError: (context) => {
+      onError: (context: { error?: { message?: string } }) => {
         alert(context?.error?.message || "Erro ao logar");
         setIsLoading(false);
       },

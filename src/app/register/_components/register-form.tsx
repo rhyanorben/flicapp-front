@@ -42,25 +42,23 @@ export function RegisterForm() {
   })
 
   async function onSubmit(formData: SignupFormValues) {
-
-    const { data, error } = await authClient.signUp.email({
+    await authClient.signUp.email({
       email: formData.email,
       password: formData.password,
       name: formData.name
     }, {
-      onRequest: (context) => {
+      onRequest: () => {
         setIsLoading(true);
       },
-      onSuccess: (context) => {
-        router.replace("/dashboard")
+      onSuccess: () => {
+        router.replace("/dashboard");
         setIsLoading(false);
       },
-      onError: (context) => {
+      onError: (context: { error?: { message?: string } }) => {
         alert(context?.error?.message || "Erro ao cadastrar");
         setIsLoading(false);
       },
     })
-
   }
 
 
