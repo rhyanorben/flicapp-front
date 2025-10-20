@@ -126,7 +126,21 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
-  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserRoleAssignmentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roleId: 'roleId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -189,6 +203,8 @@ exports.UserRole = exports.$Enums.UserRole = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Role: 'Role',
+  UserRoleAssignment: 'UserRoleAssignment',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification'

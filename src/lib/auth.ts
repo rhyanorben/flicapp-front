@@ -19,12 +19,15 @@ export const auth = betterAuth({
             try {
                 const userId = session?.user?.id;
                 if (!userId) return session;
-                const user = await prisma.user.findUnique({
-                    where: { id: userId },
-                    select: { role: true },
+                
+                const userRoles = await prisma.userRoleAssignment.findMany({
+                    where: { userId },
+                    include: { role: true },
                 });
-                if (user?.role && session?.user) {
-                    (session.user as { role?: string }).role = String(user.role);
+                
+                if (userRoles.length > 0 && session?.user) {
+                    const primaryRole = userRoles[0].role.name;
+                    (session.user as { role?: string }).role = String(primaryRole);
                 }
             } catch (_) {
             }

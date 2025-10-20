@@ -7,10 +7,18 @@ import { Button } from "@/components/ui/button";
 import { USER_ROLES, UserRole } from "@/types/user";
 
 export const RoleBasedDashboard = () => {
-  const { roleDisplayName, isLoading, userRole, session } = useUserRole();
+  const { 
+    roleDisplayName, 
+    rolesDisplayNames, 
+    isLoading, 
+    userRole, 
+    userRoles,
+    session 
+  } = useUserRole();
   const [demoRole, setDemoRole] = useState<UserRole>(USER_ROLES.CLIENTE);
   
   const currentRole = session?.user ? userRole : demoRole;
+  const currentRoles = session?.user ? userRoles : [demoRole];
 
   if (isLoading) {
     return (
@@ -20,9 +28,9 @@ export const RoleBasedDashboard = () => {
     );
   }
 
-  const isAdmin = currentRole === USER_ROLES.ADMINISTRADOR;
-  const isProvider = currentRole === USER_ROLES.PRESTADOR;
-  const isClient = currentRole === USER_ROLES.CLIENTE;
+  const isAdmin = currentRoles.includes(USER_ROLES.ADMINISTRADOR);
+  const isProvider = currentRoles.includes(USER_ROLES.PRESTADOR);
+  const isClient = currentRoles.includes(USER_ROLES.CLIENTE);
 
   return (
     <div className="space-y-6">
@@ -63,9 +71,25 @@ export const RoleBasedDashboard = () => {
             </div>
           )}
           <div className="text-sm text-muted-foreground">
-            Role atual: <span className="font-semibold">{roleDisplayName}</span>
-            {session?.user && (
-              <span className="ml-2 text-green-600">(Dados reais da sessão)</span>
+            {session?.user ? (
+              <div>
+                <div>Roles do usuário:</div>
+                <div className="flex gap-2 flex-wrap mt-1">
+                  {rolesDisplayNames.map((roleName, index) => (
+                    <span 
+                      key={index}
+                      className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-xs font-semibold"
+                    >
+                      {roleName}
+                    </span>
+                  ))}
+                </div>
+                <span className="text-green-600 text-xs mt-1 block">(Dados reais da sessão)</span>
+              </div>
+            ) : (
+              <div>
+                Role atual: <span className="font-semibold">{roleDisplayName}</span>
+              </div>
             )}
           </div>
         </CardContent>
@@ -167,11 +191,13 @@ export const RoleBasedDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-2 text-sm">
-            <p><strong>Banco de dados:</strong> Campo `role` adicionado ao modelo User com enum UserRole</p>
+            <p><strong>Banco de dados:</strong> Relacionamento many-to-many entre User e Role</p>
+            <p><strong>Tabelas:</strong> User, Role, UserRoleAssignment</p>
             <p><strong>Valores possíveis:</strong> ADMINISTRADOR, PRESTADOR, CLIENTE</p>
-            <p><strong>Padrão:</strong> CLIENTE (para novos usuários)</p>
+            <p><strong>Flexibilidade:</strong> Usuários podem ter múltiplas roles simultaneamente</p>
             <p><strong>Migração:</strong> Aplicada automaticamente via Prisma</p>
             <p><strong>Tipos:</strong> TypeScript com helpers para verificação de roles</p>
+            <p><strong>API:</strong> Endpoints para gerenciar roles de usuários</p>
           </div>
         </CardContent>
       </Card>
