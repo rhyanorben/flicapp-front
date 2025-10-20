@@ -19,7 +19,10 @@ export const RoleBasedDashboard = () => {
   
   const currentRole = session?.user ? userRole : demoRole;
   const currentRoles = session?.user ? userRoles : [demoRole];
-
+  
+  console.log('session', session);
+  console.log('currentRoles', currentRoles);
+  
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">

@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "public"."UserRole" AS ENUM ('ADMINISTRADOR', 'PRESTADOR', 'CLIENTE');
+
 -- CreateTable
 CREATE TABLE "public"."user" (
     "id" TEXT NOT NULL,
@@ -9,6 +12,27 @@ CREATE TABLE "public"."user" (
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."role" (
+    "id" TEXT NOT NULL,
+    "name" "public"."UserRole" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "role_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."user_role_assignment" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "roleId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "user_role_assignment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -60,7 +84,19 @@ CREATE TABLE "public"."verification" (
 CREATE UNIQUE INDEX "user_email_key" ON "public"."user"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "role_name_key" ON "public"."role"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_role_assignment_userId_roleId_key" ON "public"."user_role_assignment"("userId", "roleId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "session_token_key" ON "public"."session"("token");
+
+-- AddForeignKey
+ALTER TABLE "public"."user_role_assignment" ADD CONSTRAINT "user_role_assignment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."user_role_assignment" ADD CONSTRAINT "user_role_assignment_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "public"."role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
