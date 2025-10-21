@@ -117,19 +117,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           items: [
             {
               title: "Solicitar Serviço",
-              url: "#",
+              url: "/solicitar-servico",
             },
             {
               title: "Meus Pedidos",
-              url: "#",
+              url: "/meus-pedidos",
             },
             {
               title: "Histórico",
-              url: "#",
+              url: "/historico",
             },
             {
               title: "Favoritos",
-              url: "#",
+              url: "/favoritos",
             },
           ],
         }
