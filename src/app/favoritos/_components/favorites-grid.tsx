@@ -17,6 +17,13 @@ import {
   Eye,
   MessageSquare
 } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface FavoriteProvider {
   id: string
@@ -157,28 +164,30 @@ export function FavoritesGrid() {
               />
             </div>
             <div className="flex gap-2">
-              <select
-                value={serviceFilter}
-                onChange={(e) => setServiceFilter(e.target.value)}
-                className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-              >
-                <option value="todos">Todos os tipos</option>
-                <option value="Limpeza">Limpeza</option>
-                <option value="Manutenção">Manutenção</option>
-                <option value="Instalação">Instalação</option>
-                <option value="Consultoria">Consultoria</option>
-                <option value="Reparo">Reparo</option>
-              </select>
-              <select
-                value={ratingFilter}
-                onChange={(e) => setRatingFilter(e.target.value)}
-                className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-              >
-                <option value="todos">Todas as avaliações</option>
-                <option value="4+">4+ estrelas</option>
-                <option value="4.5+">4.5+ estrelas</option>
-                <option value="5">5 estrelas</option>
-              </select>
+              <Select value={serviceFilter} onValueChange={setServiceFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Todos os tipos" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todos os tipos</SelectItem>
+                  <SelectItem value="Limpeza">Limpeza</SelectItem>
+                  <SelectItem value="Manutenção">Manutenção</SelectItem>
+                  <SelectItem value="Instalação">Instalação</SelectItem>
+                  <SelectItem value="Consultoria">Consultoria</SelectItem>
+                  <SelectItem value="Reparo">Reparo</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={ratingFilter} onValueChange={setRatingFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Todas as avaliações" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todas as avaliações</SelectItem>
+                  <SelectItem value="4+">4+ estrelas</SelectItem>
+                  <SelectItem value="4.5+">4.5+ estrelas</SelectItem>
+                  <SelectItem value="5">5 estrelas</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </CardHeader>

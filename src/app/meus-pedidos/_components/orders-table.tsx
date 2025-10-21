@@ -20,6 +20,14 @@ import {
   Calendar,
   User
 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface Order {
   id: string
@@ -74,17 +82,17 @@ export function OrdersTable() {
 
   const getStatusBadge = (status: Order['status']) => {
     const statusConfig = {
-      aguardando: { label: "Aguardando", color: "bg-yellow-100 text-yellow-800" },
-      "em-andamento": { label: "Em Andamento", color: "bg-orange-100 text-orange-800" },
-      concluido: { label: "Concluído", color: "bg-green-100 text-green-800" },
-      cancelado: { label: "Cancelado", color: "bg-red-100 text-red-800" }
+      aguardando: { label: "Aguardando", variant: "secondary" as const },
+      "em-andamento": { label: "Em Andamento", variant: "outline" as const },
+      concluido: { label: "Concluído", variant: "default" as const },
+      cancelado: { label: "Cancelado", variant: "destructive" as const }
     }
     
     const config = statusConfig[status]
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.color}`}>
+      <Badge variant={config.variant}>
         {config.label}
-      </span>
+      </Badge>
     )
   }
 
@@ -131,17 +139,18 @@ export function OrdersTable() {
             />
           </div>
           <div className="flex gap-2">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-            >
-              <option value="todos">Todos os status</option>
-              <option value="aguardando">Aguardando</option>
-              <option value="em-andamento">Em Andamento</option>
-              <option value="concluido">Concluído</option>
-              <option value="cancelado">Cancelado</option>
-            </select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Todos os status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos os status</SelectItem>
+                <SelectItem value="aguardando">Aguardando</SelectItem>
+                <SelectItem value="em-andamento">Em Andamento</SelectItem>
+                <SelectItem value="concluido">Concluído</SelectItem>
+                <SelectItem value="cancelado">Cancelado</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </CardHeader>

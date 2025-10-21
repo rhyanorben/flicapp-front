@@ -20,6 +20,14 @@ import {
   User,
   Calendar
 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface HistoryOrder {
   id: string
@@ -91,15 +99,15 @@ export function HistoryTable() {
 
   const getStatusBadge = (status: HistoryOrder['status']) => {
     const statusConfig = {
-      concluido: { label: "Concluído", color: "bg-green-100 text-green-800" },
-      cancelado: { label: "Cancelado", color: "bg-red-100 text-red-800" }
+      concluido: { label: "Concluído", variant: "default" as const },
+      cancelado: { label: "Cancelado", variant: "destructive" as const }
     }
     
     const config = statusConfig[status]
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.color}`}>
+      <Badge variant={config.variant}>
         {config.label}
-      </span>
+      </Badge>
     )
   }
 
@@ -159,26 +167,28 @@ export function HistoryTable() {
             />
           </div>
           <div className="flex gap-2">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-            >
-              <option value="todos">Todos os status</option>
-              <option value="concluido">Concluído</option>
-              <option value="cancelado">Cancelado</option>
-            </select>
-            <select
-              value={periodFilter}
-              onChange={(e) => setPeriodFilter(e.target.value)}
-              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-            >
-              <option value="todos">Todos os períodos</option>
-              <option value="7dias">Últimos 7 dias</option>
-              <option value="30dias">Últimos 30 dias</option>
-              <option value="90dias">Últimos 90 dias</option>
-              <option value="mais90dias">Mais de 90 dias</option>
-            </select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Todos os status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos os status</SelectItem>
+                <SelectItem value="concluido">Concluído</SelectItem>
+                <SelectItem value="cancelado">Cancelado</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={periodFilter} onValueChange={setPeriodFilter}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Todos os períodos" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos os períodos</SelectItem>
+                <SelectItem value="7dias">Últimos 7 dias</SelectItem>
+                <SelectItem value="30dias">Últimos 30 dias</SelectItem>
+                <SelectItem value="90dias">Últimos 90 dias</SelectItem>
+                <SelectItem value="mais90dias">Mais de 90 dias</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </CardHeader>

@@ -85,23 +85,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           items: [
             {
               title: "Meus Serviços",
-              url: "#",
+              url: "/meus-servicos",
             },
             {
               title: "Solicitações",
-              url: "#",
+              url: "/solicitacoes",
             },
             {
               title: "Agenda",
-              url: "#",
+              url: "/agenda",
             },
             {
               title: "Relatórios",
-              url: "#",
+              url: "/relatorios",
             },
             {
               title: "Avaliações",
-              url: "#",
+              url: "/avaliacoes",
             },
           ],
         }
