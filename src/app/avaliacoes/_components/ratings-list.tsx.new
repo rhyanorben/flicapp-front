@@ -166,7 +166,7 @@ export function RatingsList() {
             <select
               value={ratingFilter}
               onChange={(e) => setRatingFilter(e.target.value)}
-              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+              className="w-[180px] px-3 py-2 border border-input bg-background rounded-md text-sm"
             >
               <option value="todos">Todas as notas</option>
               <option value="5">5 estrelas</option>
@@ -178,7 +178,7 @@ export function RatingsList() {
             <select
               value={periodFilter}
               onChange={(e) => setPeriodFilter(e.target.value)}
-              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+              className="w-[180px] px-3 py-2 border border-input bg-background rounded-md text-sm"
             >
               <option value="todos">Todos os períodos</option>
               <option value="7dias">Últimos 7 dias</option>
