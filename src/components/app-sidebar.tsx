@@ -12,6 +12,7 @@ import {
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import { useUserRole } from "@/hooks/use-user-role"
+import { ToggleTheme } from "@/components/ui/toggle-theme"
 import {
   Sidebar,
   SidebarContent,
@@ -42,28 +43,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
     ];
 
-    if (isAdmin) {
+    if (isClient) {
       baseItems.push(
         {
-          title: "Administração",
+          title: "Cliente",
           url: "#",
-          icon: Shield,
+          icon: Users,
           items: [
             {
-              title: "Gerenciar Usuários",
-              url: "#",
+              title: "Solicitar Serviço",
+              url: "/solicitar-servico",
             },
             {
-              title: "Configurações do Sistema",
-              url: "#",
+              title: "Meus Pedidos",
+              url: "/meus-pedidos",
             },
             {
-              title: "Relatórios Completos",
-              url: "#",
+              title: "Histórico",
+              url: "/historico",
             },
             {
-              title: "Moderação",
-              url: "#",
+              title: "Favoritos",
+              url: "/favoritos",
             },
           ],
         }
@@ -102,28 +103,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       );
     }
 
-    if (isClient) {
+    if (isAdmin) {
       baseItems.push(
         {
-          title: "Cliente",
+          title: "Administração",
           url: "#",
-          icon: Users,
+          icon: Shield,
           items: [
             {
-              title: "Solicitar Serviço",
-              url: "/solicitar-servico",
+              title: "Gerenciar Usuários",
+              url: "#",
             },
             {
-              title: "Meus Pedidos",
-              url: "/meus-pedidos",
+              title: "Configurações do Sistema",
+              url: "#",
             },
             {
-              title: "Histórico",
-              url: "/historico",
+              title: "Relatórios Completos",
+              url: "#",
             },
             {
-              title: "Favoritos",
-              url: "/favoritos",
+              title: "Moderação",
+              url: "#",
             },
           ],
         }
@@ -139,6 +140,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <div className="flex items-center justify-between px-2 py-2">
+          <span className="text-lg font-semibold">FlicApp</span>
+          <ToggleTheme />
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
