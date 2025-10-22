@@ -142,8 +142,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <div className="flex items-center justify-between px-2 py-2">
-          <span className="text-lg font-semibold">FlicApp</span>
-          <ToggleTheme />
+          <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">FlicApp</span>
+          <div className="group-data-[collapsible=icon]:hidden">
+            <ToggleTheme />
+          </div>
         </div>
       </SidebarHeader>
       <SidebarContent>
