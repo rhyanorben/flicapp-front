@@ -2,11 +2,8 @@
 
 import {
   BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
 } from "lucide-react"
 
 import {
@@ -98,14 +95,6 @@ export function NavUser({
               <DropdownMenuItem>
                 <BadgeCheck />
                 Conta
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Pagamentos
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notificações
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

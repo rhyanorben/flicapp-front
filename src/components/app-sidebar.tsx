@@ -3,21 +3,16 @@
 import * as React from "react"
 import {
   PieChart,
-  Settings2,
   Users,
   Shield,
   UserCheck,
-  Calendar,
-  BarChart3,
-  FileText,
-  MessageSquare,
   LucideIcon,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { useUserRole } from "@/hooks/use-user-role"
+import { ToggleTheme } from "@/components/ui/toggle-theme"
 import {
   Sidebar,
   SidebarContent,
@@ -48,28 +43,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
     ];
 
-    if (isAdmin) {
+    if (isClient) {
       baseItems.push(
         {
-          title: "Administração",
+          title: "Cliente",
           url: "#",
-          icon: Shield,
+          icon: Users,
           items: [
             {
-              title: "Gerenciar Usuários",
-              url: "#",
+              title: "Solicitar Serviço",
+              url: "/solicitar-servico",
             },
             {
-              title: "Configurações do Sistema",
-              url: "#",
+              title: "Meus Pedidos",
+              url: "/meus-pedidos",
             },
             {
-              title: "Relatórios Completos",
-              url: "#",
+              title: "Histórico",
+              url: "/historico",
             },
             {
-              title: "Moderação",
-              url: "#",
+              title: "Favoritos",
+              url: "/favoritos",
             },
           ],
         }
@@ -108,100 +103,51 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       );
     }
 
-    if (isClient) {
+    if (isAdmin) {
       baseItems.push(
         {
-          title: "Cliente",
+          title: "Administração",
           url: "#",
-          icon: Users,
+          icon: Shield,
           items: [
             {
-              title: "Solicitar Serviço",
-              url: "/solicitar-servico",
+              title: "Gerenciar Usuários",
+              url: "#",
             },
             {
-              title: "Meus Pedidos",
-              url: "/meus-pedidos",
+              title: "Configurações do Sistema",
+              url: "#",
             },
             {
-              title: "Histórico",
-              url: "/historico",
+              title: "Relatórios Completos",
+              url: "#",
             },
             {
-              title: "Favoritos",
-              url: "/favoritos",
+              title: "Moderação",
+              url: "#",
             },
           ],
         }
       );
     }
 
-    baseItems.push(
-      {
-        title: "Comunicação",
-        url: "#",
-        icon: MessageSquare,
-        items: [
-          {
-            title: "Chat",
-            url: "#",
-          },
-          {
-            title: "Notificações",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Configurações",
-        url: "#",
-        icon: Settings2,
-        items: [
-          {
-            title: "Perfil",
-            url: "#",
-          },
-          {
-            title: "Preferências",
-            url: "#",
-          },
-          {
-            title: "Segurança",
-            url: "#",
-          },
-        ],
-      }
-    );
-
     return baseItems;
   };
 
   const data = {
     navMain: getNavMain(),
-    projects: [
-      {
-        name: "Atendimentos Recentes",
-        url: "#",
-        icon: Calendar,
-      },
-      {
-        name: "Estatísticas",
-        url: "#",
-        icon: BarChart3,
-      },
-      {
-        name: "Documentos",
-        url: "#",
-        icon: FileText,
-      },
-    ],
   }
 
   return (
     <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <div className="flex items-center justify-between px-2 py-2">
+          <span className="text-lg font-semibold">FlicApp</span>
+          <ToggleTheme />
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
