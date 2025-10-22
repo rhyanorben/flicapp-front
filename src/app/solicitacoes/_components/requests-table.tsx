@@ -24,13 +24,7 @@ import {
   MapPin
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { } from "@/components/ui/select"
 
 interface Request {
   id: string
@@ -204,18 +198,17 @@ export function RequestsTable() {
             />
           </div>
           <div className="flex gap-2">
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Todos os status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos os status</SelectItem>
-                <SelectItem value="pendente">Pendente</SelectItem>
-                <SelectItem value="aceita">Aceita</SelectItem>
-                <SelectItem value="recusada">Recusada</SelectItem>
-                <SelectItem value="expirada">Expirada</SelectItem>
-              </SelectContent>
-            </Select>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-[180px] px-3 py-2 border border-input bg-background rounded-md text-sm"
+            >
+              <option value="todos">Todos os status</option>
+              <option value="pendente">Pendente</option>
+              <option value="aceita">Aceita</option>
+              <option value="recusada">Recusada</option>
+              <option value="expirada">Expirada</option>
+            </select>
           </div>
         </div>
       </CardHeader>
@@ -238,29 +231,39 @@ export function RequestsTable() {
             </TableHeader>
             <TableBody>
               {filteredRequests.map((request) => (
-                <TableRow key={request.id} className={request.status === 'pendente' ? 'bg-orange-50' : ''}>
+                <TableRow key={request.id}>
                   <TableCell className="font-medium">{request.id}</TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-gray-400" />
-                    {request.cliente}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4 text-gray-400" />
+                      {request.cliente}
+                    </div>
                   </TableCell>
                   <TableCell>{request.tipoServico}</TableCell>
                   <TableCell className="max-w-xs truncate">{request.descricao}</TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-gray-400" />
-                    {new Date(request.dataSolicitacao).toLocaleDateString('pt-BR')}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-gray-400" />
+                      {new Date(request.dataSolicitacao).toLocaleDateString('pt-BR')}
+                    </div>
                   </TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-gray-400" />
-                    {new Date(request.dataPreferencial).toLocaleDateString('pt-BR')}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-gray-400" />
+                      {new Date(request.dataPreferencial).toLocaleDateString('pt-BR')}
+                    </div>
                   </TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-gray-400" />
-                    {request.localizacao}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-gray-400" />
+                      {request.localizacao}
+                    </div>
                   </TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-gray-400" />
-                    {formatCurrency(request.valor)}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-gray-400" />
+                      {formatCurrency(request.valor)}
+                    </div>
                   </TableCell>
                   <TableCell>{getStatusBadge(request.status)}</TableCell>
                   <TableCell className="text-right">
