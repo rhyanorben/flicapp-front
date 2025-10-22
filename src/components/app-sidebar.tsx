@@ -3,19 +3,13 @@
 import * as React from "react"
 import {
   PieChart,
-  Settings2,
   Users,
   Shield,
   UserCheck,
-  Calendar,
-  BarChart3,
-  FileText,
-  MessageSquare,
   LucideIcon,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { useUserRole } from "@/hooks/use-user-role"
 import {
@@ -136,72 +130,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       );
     }
 
-    baseItems.push(
-      {
-        title: "Comunicação",
-        url: "#",
-        icon: MessageSquare,
-        items: [
-          {
-            title: "Chat",
-            url: "#",
-          },
-          {
-            title: "Notificações",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Configurações",
-        url: "#",
-        icon: Settings2,
-        items: [
-          {
-            title: "Perfil",
-            url: "#",
-          },
-          {
-            title: "Preferências",
-            url: "#",
-          },
-          {
-            title: "Segurança",
-            url: "#",
-          },
-        ],
-      }
-    );
-
     return baseItems;
   };
 
   const data = {
     navMain: getNavMain(),
-    projects: [
-      {
-        name: "Atendimentos Recentes",
-        url: "#",
-        icon: Calendar,
-      },
-      {
-        name: "Estatísticas",
-        url: "#",
-        icon: BarChart3,
-      },
-      {
-        name: "Documentos",
-        url: "#",
-        icon: FileText,
-      },
-    ],
   }
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
