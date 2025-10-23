@@ -1,12 +1,13 @@
 import { AppSidebar } from "@/components/app-sidebar"
+import { SidebarProviderWrapper } from "@/components/sidebar-provider-wrapper"
 import { CalendarView } from "./_components/calendar-view"
 import { AppointmentsList } from "./_components/appointments-list"
 import DashboardHeader from "@/components/dashboard-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarInset } from "@/components/ui/sidebar"
 
 export default function AgendaPage() {
   return (
-    <SidebarProvider>
+    <SidebarProviderWrapper>
       <AppSidebar />
       <SidebarInset>
         <DashboardHeader title="Agenda" page="Agenda" />
@@ -23,6 +24,6 @@ export default function AgendaPage() {
           </div>
         </div>
       </SidebarInset>
-    </SidebarProvider>
+    </SidebarProviderWrapper>
   )
 }

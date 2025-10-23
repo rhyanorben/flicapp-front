@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { RolesProvider } from "@/contexts/roles-context";
 
 export const metadata: Metadata = {
   title: "FlicApp",
@@ -20,13 +21,15 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <RolesProvider>
             {children}
+          </RolesProvider>
         </ThemeProvider>
       </body>
     </html>

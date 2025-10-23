@@ -1,13 +1,14 @@
 import { AppSidebar } from "@/components/app-sidebar"
+import { SidebarProviderWrapper } from "@/components/sidebar-provider-wrapper"
 import { RatingsOverview } from "./_components/ratings-overview"
 import { RatingsChart } from "./_components/ratings-chart"
 import { RatingsList } from "./_components/ratings-list"
 import DashboardHeader from "@/components/dashboard-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarInset } from "@/components/ui/sidebar"
 
 export default function AvaliacoesPage() {
   return (
-    <SidebarProvider>
+    <SidebarProviderWrapper>
       <AppSidebar />
       <SidebarInset>
         <DashboardHeader title="Avaliações" page="Avaliações" />
@@ -29,6 +30,6 @@ export default function AvaliacoesPage() {
           </div>
         </div>
       </SidebarInset>
-    </SidebarProvider>
+    </SidebarProviderWrapper>
   )
 }
