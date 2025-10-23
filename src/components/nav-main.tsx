@@ -1,6 +1,7 @@
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
+import { useState, useEffect } from "react"
 
 import {
   Collapsible,
@@ -15,7 +16,10 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
+
+const SIDEBAR_STATE_KEY = "flicapp_sidebar_state";
 
 export function NavMain({
   items,
@@ -31,6 +35,52 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const { isMobile, setOpenMobile, setOpen } = useSidebar();
+  
+  const [openItems, setOpenItems] = useState<Record<string, boolean>>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem(SIDEBAR_STATE_KEY);
+        if (stored) {
+          return JSON.parse(stored);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar estado do sidebar:", error);
+      }
+    }
+    return items.reduce((acc, item) => {
+      if (item.items && item.items.length > 0) {
+        acc[item.title] = item.isActive || false;
+      }
+      return acc;
+    }, {} as Record<string, boolean>);
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(SIDEBAR_STATE_KEY, JSON.stringify(openItems));
+      } catch (error) {
+        console.error("Erro ao salvar estado do sidebar:", error);
+      }
+    }
+  }, [openItems]);
+
+  const handleOpenChange = (title: string, isOpen: boolean) => {
+    setOpenItems(prev => ({
+      ...prev,
+      [title]: isOpen,
+    }));
+  };
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    } else {
+      setOpen(false);
+    }
+  };
+
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -39,7 +89,7 @@ export function NavMain({
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton tooltip={item.title} asChild>
-                  <a href={item.url}>
+                  <a href={item.url} onClick={handleLinkClick}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                   </a>
@@ -52,7 +102,8 @@ export function NavMain({
             <Collapsible
               key={item.title}
               asChild
-              defaultOpen={item.isActive}
+              open={openItems[item.title] ?? item.isActive ?? false}
+              onOpenChange={(isOpen) => handleOpenChange(item.title, isOpen)}
               className="group/collapsible"
             >
               <SidebarMenuItem>
@@ -68,7 +119,7 @@ export function NavMain({
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton asChild>
-                          <a href={subItem.url}>
+                          <a href={subItem.url} onClick={handleLinkClick}>
                             <span>{subItem.title}</span>
                           </a>
                         </SidebarMenuSubButton>

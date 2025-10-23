@@ -1,12 +1,13 @@
 import { AppSidebar } from "@/components/app-sidebar"
+import { SidebarProviderWrapper } from "@/components/sidebar-provider-wrapper"
 import { RequestsOverviewCards } from "./_components/requests-overview-cards"
 import { RequestsTable } from "./_components/requests-table"
 import DashboardHeader from "@/components/dashboard-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarInset } from "@/components/ui/sidebar"
 
 export default function SolicitacoesPage() {
   return (
-    <SidebarProvider>
+    <SidebarProviderWrapper>
       <AppSidebar />
       <SidebarInset>
         <DashboardHeader title="Solicitações" page="Solicitações" />
@@ -23,6 +24,6 @@ export default function SolicitacoesPage() {
           </div>
         </div>
       </SidebarInset>
-    </SidebarProvider>
+    </SidebarProviderWrapper>
   )
 }

@@ -1,13 +1,14 @@
 import { AppSidebar } from "@/components/app-sidebar"
+import { SidebarProviderWrapper } from "@/components/sidebar-provider-wrapper"
 import { FinancialStats } from "./_components/financial-stats"
 import { PerformanceStats } from "./_components/performance-stats"
 import { ReportsCharts } from "./_components/reports-charts"
 import DashboardHeader from "@/components/dashboard-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarInset } from "@/components/ui/sidebar"
 
 export default function RelatoriosPage() {
   return (
-    <SidebarProvider>
+    <SidebarProviderWrapper>
       <AppSidebar />
       <SidebarInset>
         <DashboardHeader title="Relatórios" page="Relatórios" />
@@ -25,6 +26,6 @@ export default function RelatoriosPage() {
           </div>
         </div>
       </SidebarInset>
-    </SidebarProvider>
+    </SidebarProviderWrapper>
   )
 }
