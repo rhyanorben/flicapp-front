@@ -1,25 +1,19 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import {
-  PieChart,
-  Users,
-  Shield,
-  UserCheck,
-  LucideIcon,
-} from "lucide-react"
+import * as React from "react";
+import { PieChart, Users, Shield, UserCheck, LucideIcon } from "lucide-react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
-import { useUserRole } from "@/hooks/use-user-role"
-import { ToggleTheme } from "@/components/ui/toggle-theme"
+import { NavMain } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
+import { useUserRole } from "@/hooks/use-user-role";
+import { ToggleTheme } from "@/components/ui/toggle-theme";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { userRoles, isAdmin, isProvider, isClient } = useUserRole();
@@ -70,70 +64,64 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         });
       }
 
-      baseItems.push(
-        {
-          title: "Cliente",
-          url: "#",
-          icon: Users,
-          items: clientItems,
-        }
-      );
+      baseItems.push({
+        title: "Cliente",
+        url: "#",
+        icon: Users,
+        items: clientItems,
+      });
     }
 
     if (isProvider) {
-      baseItems.push(
-        {
-          title: "Prestador",
-          url: "#",
-          icon: UserCheck,
-          items: [
-            {
-              title: "Meus Serviços",
-              url: "/meus-servicos",
-            },
-            {
-              title: "Solicitações",
-              url: "/solicitacoes",
-            },
-            {
-              title: "Agenda",
-              url: "/agenda",
-            },
-            {
-              title: "Relatórios",
-              url: "/relatorios",
-            },
-            {
-              title: "Avaliações",
-              url: "/avaliacoes",
-            },
-          ],
-        }
-      );
+      baseItems.push({
+        title: "Prestador",
+        url: "#",
+        icon: UserCheck,
+        items: [
+          {
+            title: "Meus Serviços",
+            url: "/meus-servicos",
+          },
+          {
+            title: "Solicitações",
+            url: "/solicitacoes",
+          },
+          {
+            title: "Agenda",
+            url: "/agenda",
+          },
+          {
+            title: "Relatórios",
+            url: "/relatorios",
+          },
+          {
+            title: "Avaliações",
+            url: "/avaliacoes",
+          },
+        ],
+      });
     }
 
     if (isAdmin) {
-      baseItems.push(
-        {
-          title: "Administração",
-          url: "#",
-          icon: Shield,
-          items: [
-            {
-              title: "Solicitações de Prestador",
-              url: "/admin/solicitacoes-prestador",
-            },
-            {
-              title: "Gerenciar Usuários",
-              url: "/admin/gerenciar-usuarios",
-            },
-            {
-              title: "Relatórios Completos",
-              url: "/admin/relatorios-completos",
-            },
-          ],
-        }
-      );
+      baseItems.push({
+        title: "Administração",
+        url: "#",
+        icon: Shield,
+        items: [
+          {
+            title: "Solicitações de Prestador",
+            url: "/admin/solicitacoes-prestador",
+          },
+          {
+            title: "Gerenciar Usuários",
+            url: "/admin/gerenciar-usuarios",
+          },
+          {
+            title: "Relatórios Completos",
+            url: "/admin/relatorios-completos",
+          },
+        ],
+      });
     }
 
     return baseItems;
@@ -141,13 +129,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const data = {
     navMain: getNavMain(),
-  }
+  };
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <div className="flex items-center justify-between px-2 py-2">
-          <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">FlicApp</span>
+          <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">
+            FlicApp
+          </span>
           <div className="group-data-[collapsible=icon]:hidden">
             <ToggleTheme />
           </div>
@@ -161,5 +151,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

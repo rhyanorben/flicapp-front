@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { RegisterForm } from "@/app/(auth)/register/_components/register-form"
-import React from "react"
+import { RegisterForm } from "@/app/(auth)/register/_components/register-form";
+import React from "react";
 
 export default function Hero() {
   return (
@@ -13,10 +13,11 @@ export default function Hero() {
               Resolva seus problemas do dia a dia com um clique.
             </h1>
             <p className="mt-6 text-lg text-muted-foreground">
-              Conectamos você aos melhores prestadores de serviço da sua região de forma rápida, segura e com a ajuda de Inteligência Artificial.
+              Conectamos você aos melhores prestadores de serviço da sua região
+              de forma rápida, segura e com a ajuda de Inteligência Artificial.
             </p>
           </div>
-          
+
           <div className="flex items-center justify-center">
             <div className="w-full max-w-md">
               <RegisterForm />
@@ -25,7 +26,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
-

@@ -11,6 +11,7 @@ import { ReactNode } from "react";
 export function SidebarProviderWrapper({ children }: { children: ReactNode }) {
   const defaultOpen = getSidebarStateFromCookie();
 
-  return <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>;
+  return (
+    <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>
+  );
 }
-

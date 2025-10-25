@@ -15,10 +15,7 @@ export async function GET(
     });
 
     if (!session) {
-      return NextResponse.json(
-        { error: "Não autenticado" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
     const userId = session.user.id;
@@ -27,10 +24,7 @@ export async function GET(
     const isAdmin = userRoles.includes("ADMINISTRADOR");
 
     if (!isAdmin) {
-      return NextResponse.json(
-        { error: "Acesso negado" },
-        { status: 403 }
-      );
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
     const providerRequest = await prisma.providerRequest.findUnique({
@@ -83,10 +77,7 @@ export async function PATCH(
     });
 
     if (!session) {
-      return NextResponse.json(
-        { error: "Não autenticado" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
     const userId = session.user.id;
@@ -95,20 +86,14 @@ export async function PATCH(
     const isAdmin = userRoles.includes("ADMINISTRADOR");
 
     if (!isAdmin) {
-      return NextResponse.json(
-        { error: "Acesso negado" },
-        { status: 403 }
-      );
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
     const body = await request.json();
     const { action } = body;
 
     if (!action || (action !== "approve" && action !== "reject")) {
-      return NextResponse.json(
-        { error: "Ação inválida" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Ação inválida" }, { status: 400 });
     }
 
     const providerRequest = await prisma.providerRequest.findUnique({
@@ -168,9 +153,10 @@ export async function PATCH(
     }
 
     return NextResponse.json({
-      message: action === "approve" 
-        ? "Solicitação aprovada com sucesso" 
-        : "Solicitação rejeitada",
+      message:
+        action === "approve"
+          ? "Solicitação aprovada com sucesso"
+          : "Solicitação rejeitada",
       request: updatedRequest,
     });
   } catch (error) {
@@ -181,4 +167,3 @@ export async function PATCH(
     );
   }
 }
-

@@ -1,49 +1,42 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table"
-import { 
-  Eye, 
-  Star, 
-  Search, 
-  History,
-  User,
-  Calendar
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Eye, Star, Search, History, User, Calendar } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 interface HistoryOrder {
-  id: string
-  tipoServico: string
-  descricao: string
-  status: 'concluido' | 'cancelado'
-  data: string
-  prestador: string
-  avaliacao?: number
-  dataFinalizacao: string
+  id: string;
+  tipoServico: string;
+  descricao: string;
+  status: "concluido" | "cancelado";
+  data: string;
+  prestador: string;
+  avaliacao?: number;
+  dataFinalizacao: string;
 }
 
 export function HistoryTable() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("todos")
-  const [periodFilter, setPeriodFilter] = useState("todos")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("todos");
+  const [periodFilter, setPeriodFilter] = useState("todos");
 
   // Dados mockados - em produção viria da API
   const historyOrders: HistoryOrder[] = [
@@ -55,7 +48,7 @@ export function HistoryTable() {
       data: "2024-01-15",
       prestador: "João Silva",
       avaliacao: 5,
-      dataFinalizacao: "2024-01-16"
+      dataFinalizacao: "2024-01-16",
     },
     {
       id: "PED-002",
@@ -65,7 +58,7 @@ export function HistoryTable() {
       data: "2024-01-10",
       prestador: "Maria Santos",
       avaliacao: 4,
-      dataFinalizacao: "2024-01-12"
+      dataFinalizacao: "2024-01-12",
     },
     {
       id: "PED-003",
@@ -74,7 +67,7 @@ export function HistoryTable() {
       status: "concluido",
       data: "2024-01-05",
       prestador: "Pedro Costa",
-      dataFinalizacao: "2024-01-07"
+      dataFinalizacao: "2024-01-07",
     },
     {
       id: "PED-004",
@@ -83,7 +76,7 @@ export function HistoryTable() {
       status: "cancelado",
       data: "2024-01-02",
       prestador: "Ana Oliveira",
-      dataFinalizacao: "2024-01-03"
+      dataFinalizacao: "2024-01-03",
     },
     {
       id: "PED-005",
@@ -93,61 +86,60 @@ export function HistoryTable() {
       data: "2023-12-28",
       prestador: "Carlos Mendes",
       avaliacao: 3,
-      dataFinalizacao: "2023-12-30"
-    }
-  ]
+      dataFinalizacao: "2023-12-30",
+    },
+  ];
 
-  const getStatusBadge = (status: HistoryOrder['status']) => {
+  const getStatusBadge = (status: HistoryOrder["status"]) => {
     const statusConfig = {
       concluido: { label: "Concluído", variant: "default" as const },
-      cancelado: { label: "Cancelado", variant: "destructive" as const }
-    }
-    
-    const config = statusConfig[status]
-    return (
-      <Badge variant={config.variant}>
-        {config.label}
-      </Badge>
-    )
-  }
+      cancelado: { label: "Cancelado", variant: "destructive" as const },
+    };
+
+    const config = statusConfig[status];
+    return <Badge variant={config.variant}>{config.label}</Badge>;
+  };
 
   const getPeriodFilter = (date: string) => {
-    const orderDate = new Date(date)
-    const now = new Date()
-    const diffTime = Math.abs(now.getTime() - orderDate.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
-    if (diffDays <= 7) return "7dias"
-    if (diffDays <= 30) return "30dias"
-    if (diffDays <= 90) return "90dias"
-    return "mais90dias"
-  }
+    const orderDate = new Date(date);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - orderDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const filteredOrders = historyOrders.filter(order => {
-    const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.prestador.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === "todos" || order.status === statusFilter
-    const matchesPeriod = periodFilter === "todos" || getPeriodFilter(order.data) === periodFilter
-    
-    return matchesSearch && matchesStatus && matchesPeriod
-  })
+    if (diffDays <= 7) return "7dias";
+    if (diffDays <= 30) return "30dias";
+    if (diffDays <= 90) return "90dias";
+    return "mais90dias";
+  };
+
+  const filteredOrders = historyOrders.filter((order) => {
+    const matchesSearch =
+      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.prestador.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "todos" || order.status === statusFilter;
+    const matchesPeriod =
+      periodFilter === "todos" || getPeriodFilter(order.data) === periodFilter;
+
+    return matchesSearch && matchesStatus && matchesPeriod;
+  });
 
   const handleViewDetails = (orderId: string) => {
-    console.log("Ver detalhes do pedido:", orderId)
+    console.log("Ver detalhes do pedido:", orderId);
     // Implementar modal ou navegação para detalhes
-  }
+  };
 
   const handleRateOrder = (orderId: string) => {
-    console.log("Avaliar pedido:", orderId)
+    console.log("Avaliar pedido:", orderId);
     // Implementar modal de avaliação
-  }
+  };
 
   const handleViewRating = (orderId: string) => {
-    console.log("Ver avaliação do pedido:", orderId)
+    console.log("Ver avaliação do pedido:", orderId);
     // Implementar modal para visualizar avaliação
-  }
+  };
 
   return (
     <Card>
@@ -213,15 +205,19 @@ export function HistoryTable() {
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.id}</TableCell>
                   <TableCell>{order.tipoServico}</TableCell>
-                  <TableCell className="max-w-xs truncate">{order.descricao}</TableCell>
+                  <TableCell className="max-w-xs truncate">
+                    {order.descricao}
+                  </TableCell>
                   <TableCell>{getStatusBadge(order.status)}</TableCell>
                   <TableCell className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-gray-400" />
-                    {new Date(order.data).toLocaleDateString('pt-BR')}
+                    {new Date(order.data).toLocaleDateString("pt-BR")}
                   </TableCell>
                   <TableCell className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-gray-400" />
-                    {new Date(order.dataFinalizacao).toLocaleDateString('pt-BR')}
+                    {new Date(order.dataFinalizacao).toLocaleDateString(
+                      "pt-BR"
+                    )}
                   </TableCell>
                   <TableCell className="flex items-center gap-2">
                     <User className="h-4 w-4 text-gray-400" />
@@ -246,8 +242,8 @@ export function HistoryTable() {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      
-                      {order.status === 'concluido' && !order.avaliacao && (
+
+                      {order.status === "concluido" && !order.avaliacao && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -257,8 +253,8 @@ export function HistoryTable() {
                           <Star className="h-4 w-4" />
                         </Button>
                       )}
-                      
-                      {order.status === 'concluido' && order.avaliacao && (
+
+                      {order.status === "concluido" && order.avaliacao && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -275,7 +271,7 @@ export function HistoryTable() {
             </TableBody>
           </Table>
         </div>
-        
+
         {filteredOrders.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
             Nenhum pedido encontrado no histórico com os filtros aplicados.
@@ -283,5 +279,5 @@ export function HistoryTable() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

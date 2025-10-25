@@ -12,7 +12,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, XCircle, Loader2, User, Phone, MapPin, FileText, Briefcase, Link2 } from "lucide-react";
+import {
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  User,
+  Phone,
+  MapPin,
+  FileText,
+  Briefcase,
+  Link2,
+} from "lucide-react";
 
 interface User {
   id: string;
@@ -84,11 +94,32 @@ export function RequestDetailsDialog({
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "PENDING":
-        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">Pendente</Badge>;
+        return (
+          <Badge
+            variant="outline"
+            className="bg-yellow-100 text-yellow-800 border-yellow-300"
+          >
+            Pendente
+          </Badge>
+        );
       case "APPROVED":
-        return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">Aprovada</Badge>;
+        return (
+          <Badge
+            variant="outline"
+            className="bg-green-100 text-green-800 border-green-300"
+          >
+            Aprovada
+          </Badge>
+        );
       case "REJECTED":
-        return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-300">Rejeitada</Badge>;
+        return (
+          <Badge
+            variant="outline"
+            className="bg-red-100 text-red-800 border-red-300"
+          >
+            Rejeitada
+          </Badge>
+        );
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -190,20 +221,21 @@ export function RequestDetailsDialog({
                   Links de Portfólio
                 </h3>
                 <div className="text-sm whitespace-pre-wrap bg-muted p-3 rounded-md">
-                  {request.portfolioLinks.split("\n").map((link, index) => (
-                    link.trim() && (
-                      <div key={index}>
-                        <a
-                          href={link.trim()}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline break-all"
-                        >
-                          {link.trim()}
-                        </a>
-                      </div>
-                    )
-                  ))}
+                  {request.portfolioLinks.split("\n").map(
+                    (link, index) =>
+                      link.trim() && (
+                        <div key={index}>
+                          <a
+                            href={link.trim()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline break-all"
+                          >
+                            {link.trim()}
+                          </a>
+                        </div>
+                      )
+                  )}
                 </div>
               </div>
             </>
@@ -226,7 +258,9 @@ export function RequestDetailsDialog({
             {request.reviewedByUser && (
               <div className="col-span-2">
                 <span>Revisado por:</span>
-                <p>{request.reviewedByUser.name} ({request.reviewedByUser.email})</p>
+                <p>
+                  {request.reviewedByUser.name} ({request.reviewedByUser.email})
+                </p>
               </div>
             )}
           </div>
@@ -275,4 +309,3 @@ export function RequestDetailsDialog({
     </Dialog>
   );
 }
-

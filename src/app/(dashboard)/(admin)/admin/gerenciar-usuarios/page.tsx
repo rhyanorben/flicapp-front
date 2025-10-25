@@ -2,12 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { UsersFilters } from "./_components/users-filters";
 import { UsersTable } from "./_components/users-table";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProviderWrapper } from "@/components/sidebar-provider-wrapper";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,10 +21,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { UserRole } from "@/app/generated/prisma";
 
 interface User {
@@ -64,7 +65,9 @@ export default function GerenciarUsuariosPage() {
     if (filter === "ALL") {
       setFilteredUsers(allUsers);
     } else {
-      setFilteredUsers(allUsers.filter((user) => user.roles.includes(filter as UserRole)));
+      setFilteredUsers(
+        allUsers.filter((user) => user.roles.includes(filter as UserRole))
+      );
     }
   };
 
@@ -95,60 +98,49 @@ export default function GerenciarUsuariosPage() {
   }
 
   return (
-    <SidebarProviderWrapper>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/dashboard">
-                    FlicApp
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">
-                    Administração
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Gerenciar Usuários</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl">Gerenciar Usuários</CardTitle>
-              <CardDescription>
-                Visualize e gerencie os usuários do sistema e suas roles
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <UsersFilters
-                currentFilter={currentFilter}
-                onFilterChange={handleFilterChange}
-                counts={getCounts()}
-              />
-              <UsersTable
-                users={filteredUsers}
-                onUserUpdate={handleUserUpdate}
-              />
-            </CardContent>
-          </Card>
+    <>
+      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <div className="flex items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-4"
+          />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/dashboard">FlicApp</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/dashboard">Administração</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Gerenciar Usuários</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
-      </SidebarInset>
-    </SidebarProviderWrapper>
+      </header>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Gerenciar Usuários</CardTitle>
+            <CardDescription>
+              Visualize e gerencie os usuários do sistema e suas roles
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <UsersFilters
+              currentFilter={currentFilter}
+              onFilterChange={handleFilterChange}
+              counts={getCounts()}
+            />
+            <UsersTable users={filteredUsers} onUserUpdate={handleUserUpdate} />
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }
-

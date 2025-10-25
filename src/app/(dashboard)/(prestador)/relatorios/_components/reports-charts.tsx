@@ -1,17 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Calendar,
-  DollarSign
-} from "lucide-react"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { BarChart3, TrendingUp, Calendar, DollarSign } from "lucide-react";
 
 export function ReportsCharts() {
-  const [activeChart, setActiveChart] = useState("ganhos")
+  const [activeChart, setActiveChart] = useState("ganhos");
 
   // Dados mockados para os gráficos
   const ganhosData = [
@@ -20,8 +15,8 @@ export function ReportsCharts() {
     { mes: "Mar", valor: 2200 },
     { mes: "Abr", valor: 2800 },
     { mes: "Mai", valor: 2600 },
-    { mes: "Jun", valor: 2840 }
-  ]
+    { mes: "Jun", valor: 2840 },
+  ];
 
   const servicosData = [
     { mes: "Jan", quantidade: 12 },
@@ -29,26 +24,26 @@ export function ReportsCharts() {
     { mes: "Mar", quantidade: 13 },
     { mes: "Abr", quantidade: 18 },
     { mes: "Mai", quantidade: 16 },
-    { mes: "Jun", quantidade: 18 }
-  ]
+    { mes: "Jun", quantidade: 18 },
+  ];
 
   const tiposServicoData = [
     { tipo: "Limpeza", quantidade: 45, porcentagem: 35 },
     { tipo: "Manutenção", quantidade: 32, porcentagem: 25 },
     { tipo: "Instalação", quantidade: 28, porcentagem: 22 },
     { tipo: "Consultoria", quantidade: 15, porcentagem: 12 },
-    { tipo: "Reparo", quantidade: 8, porcentagem: 6 }
-  ]
+    { tipo: "Reparo", quantidade: 8, porcentagem: 6 },
+  ];
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value)
-  }
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
 
-  const maxGanhos = Math.max(...ganhosData.map(d => d.valor))
-  const maxServicos = Math.max(...servicosData.map(d => d.quantidade))
+  const maxGanhos = Math.max(...ganhosData.map((d) => d.valor));
+  const maxServicos = Math.max(...servicosData.map((d) => d.quantidade));
 
   return (
     <div className="space-y-4">
@@ -100,11 +95,11 @@ export function ReportsCharts() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <div 
+                        <div
                           className="bg-blue-500 h-6 rounded"
-                          style={{ 
+                          style={{
                             width: `${(item.valor / maxGanhos) * 100}%`,
-                            minWidth: "20px"
+                            minWidth: "20px",
                           }}
                         ></div>
                         <span className="text-sm font-medium">
@@ -136,11 +131,11 @@ export function ReportsCharts() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <div 
+                        <div
                           className="bg-green-500 h-6 rounded"
-                          style={{ 
+                          style={{
                             width: `${(item.quantidade / maxServicos) * 100}%`,
-                            minWidth: "20px"
+                            minWidth: "20px",
                           }}
                         ></div>
                         <span className="text-sm font-medium">
@@ -172,11 +167,11 @@ export function ReportsCharts() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <div 
+                        <div
                           className="bg-purple-500 h-6 rounded"
-                          style={{ 
+                          style={{
                             width: `${item.porcentagem}%`,
-                            minWidth: "20px"
+                            minWidth: "20px",
                           }}
                         ></div>
                         <span className="text-sm font-medium">
@@ -235,11 +230,14 @@ export function ReportsCharts() {
               <span className="font-medium">R$ 960,00</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-blue-600 h-2 rounded-full" style={{ width: "68%" }}></div>
+              <div
+                className="bg-blue-600 h-2 rounded-full"
+                style={{ width: "68%" }}
+              ></div>
             </div>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }

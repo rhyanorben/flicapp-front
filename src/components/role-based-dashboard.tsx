@@ -2,25 +2,31 @@
 
 import { useState } from "react";
 import { useUserRole } from "@/hooks/use-user-role";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { USER_ROLES, UserRole } from "@/types/user";
 import { Shield, UserCheck, Users, Settings, BarChart3 } from "lucide-react";
 
 export const RoleBasedDashboard = () => {
-  const { 
-    rolesDisplayNames, 
-    isLoading, 
+  const {
+    rolesDisplayNames,
+    isLoading,
     userRoles,
     session,
     isAdmin,
     isProvider,
-    isClient
+    isClient,
   } = useUserRole();
   const [demoRole, setDemoRole] = useState<UserRole>(USER_ROLES.CLIENTE);
-  
+
   const currentRoles = session?.user ? userRoles : [demoRole];
-  
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -29,9 +35,15 @@ export const RoleBasedDashboard = () => {
     );
   }
 
-  const currentIsAdmin = session?.user ? isAdmin : demoRole === USER_ROLES.ADMINISTRADOR;
-  const currentIsProvider = session?.user ? isProvider : demoRole === USER_ROLES.PRESTADOR;
-  const currentIsClient = session?.user ? isClient : demoRole === USER_ROLES.CLIENTE;
+  const currentIsAdmin = session?.user
+    ? isAdmin
+    : demoRole === USER_ROLES.ADMINISTRADOR;
+  const currentIsProvider = session?.user
+    ? isProvider
+    : demoRole === USER_ROLES.PRESTADOR;
+  const currentIsClient = session?.user
+    ? isClient
+    : demoRole === USER_ROLES.CLIENTE;
 
   return (
     <div className="space-y-6">
@@ -46,7 +58,9 @@ export const RoleBasedDashboard = () => {
         {!session?.user && (
           <div className="flex gap-2">
             <Button
-              variant={demoRole === USER_ROLES.ADMINISTRADOR ? "default" : "outline"}
+              variant={
+                demoRole === USER_ROLES.ADMINISTRADOR ? "default" : "outline"
+              }
               onClick={() => setDemoRole(USER_ROLES.ADMINISTRADOR)}
               size="sm"
             >
@@ -54,7 +68,9 @@ export const RoleBasedDashboard = () => {
               Administrador
             </Button>
             <Button
-              variant={demoRole === USER_ROLES.PRESTADOR ? "default" : "outline"}
+              variant={
+                demoRole === USER_ROLES.PRESTADOR ? "default" : "outline"
+              }
               onClick={() => setDemoRole(USER_ROLES.PRESTADOR)}
               size="sm"
             >
@@ -88,7 +104,7 @@ export const RoleBasedDashboard = () => {
           <CardContent>
             <div className="flex gap-2 flex-wrap">
               {rolesDisplayNames.map((roleName, index) => (
-                <span 
+                <span
                   key={index}
                   className="px-3 py-1 bg-primary/10 text-primary rounded-md text-sm font-medium"
                 >
@@ -178,9 +194,7 @@ export const RoleBasedDashboard = () => {
               <Users className="w-5 h-5" />
               Painel do Cliente
             </CardTitle>
-            <CardDescription>
-              Funcionalidades para clientes
-            </CardDescription>
+            <CardDescription>Funcionalidades para clientes</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

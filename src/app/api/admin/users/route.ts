@@ -12,10 +12,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!session) {
-      return NextResponse.json(
-        { error: "Não autenticado" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
     const userId = session.user.id;
@@ -25,7 +22,10 @@ export async function GET(request: NextRequest) {
 
     if (!isAdmin) {
       return NextResponse.json(
-        { error: "Acesso negado. Apenas administradores podem visualizar usuários." },
+        {
+          error:
+            "Acesso negado. Apenas administradores podem visualizar usuários.",
+        },
         { status: 403 }
       );
     }
@@ -70,4 +70,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-

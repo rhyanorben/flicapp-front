@@ -48,9 +48,7 @@ export function UserDetailsDialog({
 
   const handleRoleToggle = (role: UserRole) => {
     setSelectedRoles((prev) =>
-      prev.includes(role)
-        ? prev.filter((r) => r !== role)
-        : [...prev, role]
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
     );
   };
 
@@ -59,7 +57,9 @@ export function UserDetailsDialog({
 
     try {
       const rolesToAdd = selectedRoles.filter((r) => !user.roles.includes(r));
-      const rolesToRemove = user.roles.filter((r) => !selectedRoles.includes(r));
+      const rolesToRemove = user.roles.filter(
+        (r) => !selectedRoles.includes(r)
+      );
 
       for (const role of rolesToAdd) {
         const response = await fetch(`/api/user/${user.id}/roles/manage`, {
@@ -212,4 +212,3 @@ export function UserDetailsDialog({
     </Dialog>
   );
 }
-

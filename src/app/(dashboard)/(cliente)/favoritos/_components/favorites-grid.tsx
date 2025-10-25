@@ -1,47 +1,46 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { 
-  Heart, 
-  Star, 
-  Search, 
-  User,
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Heart,
+  Star,
+  Search,
   Phone,
   Mail,
   MapPin,
   Briefcase,
   Eye,
-  MessageSquare
-} from "lucide-react"
+  MessageSquare,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 interface FavoriteProvider {
-  id: string
-  nome: string
-  foto?: string
-  tipoServico: string
-  avaliacaoMedia: number
-  numServicos: number
-  telefone: string
-  email: string
-  localizacao: string
-  especialidades: string[]
+  id: string;
+  nome: string;
+  foto?: string;
+  tipoServico: string;
+  avaliacaoMedia: number;
+  numServicos: number;
+  telefone: string;
+  email: string;
+  localizacao: string;
+  especialidades: string[];
 }
 
 export function FavoritesGrid() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [serviceFilter, setServiceFilter] = useState("todos")
-  const [ratingFilter, setRatingFilter] = useState("todos")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [serviceFilter, setServiceFilter] = useState("todos");
+  const [ratingFilter, setRatingFilter] = useState("todos");
 
   // Dados mockados - em produção viria da API
   const favoriteProviders: FavoriteProvider[] = [
@@ -55,7 +54,7 @@ export function FavoritesGrid() {
       telefone: "(11) 99999-1111",
       email: "joao@email.com",
       localizacao: "São Paulo, SP",
-      especialidades: ["Limpeza Residencial", "Limpeza Comercial", "Pós-Obra"]
+      especialidades: ["Limpeza Residencial", "Limpeza Comercial", "Pós-Obra"],
     },
     {
       id: "PROV-002",
@@ -67,7 +66,7 @@ export function FavoritesGrid() {
       telefone: "(11) 99999-2222",
       email: "maria@email.com",
       localizacao: "São Paulo, SP",
-      especialidades: ["Ar Condicionado", "Eletrodomésticos", "Hidráulica"]
+      especialidades: ["Ar Condicionado", "Eletrodomésticos", "Hidráulica"],
     },
     {
       id: "PROV-003",
@@ -79,7 +78,7 @@ export function FavoritesGrid() {
       telefone: "(11) 99999-3333",
       email: "pedro@email.com",
       localizacao: "São Paulo, SP",
-      especialidades: ["Ventiladores", "Lâmpadas", "Tomadas"]
+      especialidades: ["Ventiladores", "Lâmpadas", "Tomadas"],
     },
     {
       id: "PROV-004",
@@ -91,7 +90,7 @@ export function FavoritesGrid() {
       telefone: "(11) 99999-4444",
       email: "ana@email.com",
       localizacao: "São Paulo, SP",
-      especialidades: ["Organização", "Decoração", "Feng Shui"]
+      especialidades: ["Organização", "Decoração", "Feng Shui"],
     },
     {
       id: "PROV-005",
@@ -103,47 +102,56 @@ export function FavoritesGrid() {
       telefone: "(11) 99999-5555",
       email: "carlos@email.com",
       localizacao: "São Paulo, SP",
-      especialidades: ["Eletrônicos", "Computadores", "Smartphones"]
-    }
-  ]
+      especialidades: ["Eletrônicos", "Computadores", "Smartphones"],
+    },
+  ];
 
-  const filteredProviders = favoriteProviders.filter(provider => {
-    const matchesSearch = provider.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         provider.tipoServico.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         provider.especialidades.some(esp => esp.toLowerCase().includes(searchTerm.toLowerCase()))
-    
-    const matchesService = serviceFilter === "todos" || provider.tipoServico === serviceFilter
-    const matchesRating = ratingFilter === "todos" || 
-                         (ratingFilter === "4+" && provider.avaliacaoMedia >= 4) ||
-                         (ratingFilter === "4.5+" && provider.avaliacaoMedia >= 4.5) ||
-                         (ratingFilter === "5" && provider.avaliacaoMedia === 5)
-    
-    return matchesSearch && matchesService && matchesRating
-  })
+  const filteredProviders = favoriteProviders.filter((provider) => {
+    const matchesSearch =
+      provider.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      provider.tipoServico.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      provider.especialidades.some((esp) =>
+        esp.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    const matchesService =
+      serviceFilter === "todos" || provider.tipoServico === serviceFilter;
+    const matchesRating =
+      ratingFilter === "todos" ||
+      (ratingFilter === "4+" && provider.avaliacaoMedia >= 4) ||
+      (ratingFilter === "4.5+" && provider.avaliacaoMedia >= 4.5) ||
+      (ratingFilter === "5" && provider.avaliacaoMedia === 5);
+
+    return matchesSearch && matchesService && matchesRating;
+  });
 
   const handleRemoveFavorite = (providerId: string) => {
-    console.log("Remover dos favoritos:", providerId)
+    console.log("Remover dos favoritos:", providerId);
     // Implementar lógica de remoção
-  }
+  };
 
   const handleViewProfile = (providerId: string) => {
-    console.log("Ver perfil do prestador:", providerId)
+    console.log("Ver perfil do prestador:", providerId);
     // Implementar navegação para perfil
-  }
+  };
 
   const handleRequestService = (providerId: string) => {
-    console.log("Solicitar serviço para:", providerId)
+    console.log("Solicitar serviço para:", providerId);
     // Implementar navegação para solicitação de serviço
-  }
+  };
 
-  const handleContact = (providerId: string, type: 'phone' | 'email') => {
-    console.log(`Contatar prestador ${providerId} via ${type}`)
+  const handleContact = (providerId: string, type: "phone" | "email") => {
+    console.log(`Contatar prestador ${providerId} via ${type}`);
     // Implementar lógica de contato
-  }
+  };
 
   const getInitials = (nome: string) => {
-    return nome.split(' ').map(n => n[0]).join('').toUpperCase()
-  }
+    return nome
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
 
   return (
     <div className="space-y-6">
@@ -201,11 +209,15 @@ export function FavoritesGrid() {
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12">
                     <AvatarImage src={provider.foto} alt={provider.nome} />
-                    <AvatarFallback>{getInitials(provider.nome)}</AvatarFallback>
+                    <AvatarFallback>
+                      {getInitials(provider.nome)}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <CardTitle className="text-lg">{provider.nome}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{provider.tipoServico}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {provider.tipoServico}
+                    </p>
                   </div>
                 </div>
                 <Button
@@ -218,7 +230,7 @@ export function FavoritesGrid() {
                 </Button>
               </div>
             </CardHeader>
-            
+
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -244,7 +256,7 @@ export function FavoritesGrid() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleContact(provider.id, 'phone')}
+                  onClick={() => handleContact(provider.id, "phone")}
                   className="flex-1"
                 >
                   <Phone className="h-4 w-4 mr-1" />
@@ -253,7 +265,7 @@ export function FavoritesGrid() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleContact(provider.id, 'email')}
+                  onClick={() => handleContact(provider.id, "email")}
                   className="flex-1"
                 >
                   <Mail className="h-4 w-4 mr-1" />
@@ -293,18 +305,26 @@ export function FavoritesGrid() {
               Nenhum favorito encontrado
             </h3>
             <p className="text-gray-500 mb-4">
-              {searchTerm || serviceFilter !== "todos" || ratingFilter !== "todos"
+              {searchTerm ||
+              serviceFilter !== "todos" ||
+              ratingFilter !== "todos"
                 ? "Tente ajustar os filtros de busca."
                 : "Você ainda não tem prestadores favoritos. Adicione alguns para vê-los aqui."}
             </p>
-            {!searchTerm && serviceFilter === "todos" && ratingFilter === "todos" && (
-              <Button onClick={() => console.log("Navegar para busca de prestadores")}>
-                Buscar Prestadores
-              </Button>
-            )}
+            {!searchTerm &&
+              serviceFilter === "todos" &&
+              ratingFilter === "todos" && (
+                <Button
+                  onClick={() =>
+                    console.log("Navegar para busca de prestadores")
+                  }
+                >
+                  Buscar Prestadores
+                </Button>
+              )}
           </CardContent>
         </Card>
       )}
     </div>
-  )
+  );
 }

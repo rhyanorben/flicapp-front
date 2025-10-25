@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
-import { useState, useEffect } from "react"
+import { ChevronRight, type LucideIcon } from "lucide-react";
+import { useState, useEffect } from "react";
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarMenu,
@@ -17,7 +17,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 const SIDEBAR_STATE_KEY = "flicapp_sidebar_state";
 
@@ -25,18 +25,18 @@ export function NavMain({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+      title: string;
+      url: string;
+    }[];
+  }[];
 }) {
   const { isMobile, setOpenMobile, setOpen } = useSidebar();
-  
+
   const [openItems, setOpenItems] = useState<Record<string, boolean>>(() => {
     if (typeof window !== "undefined") {
       try {
@@ -67,7 +67,7 @@ export function NavMain({
   }, [openItems]);
 
   const handleOpenChange = (title: string, isOpen: boolean) => {
-    setOpenItems(prev => ({
+    setOpenItems((prev) => ({
       ...prev,
       [title]: isOpen,
     }));
@@ -95,7 +95,7 @@ export function NavMain({
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            )
+            );
           }
 
           return (
@@ -129,9 +129,9 @@ export function NavMain({
                 </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>
-          )
+          );
         })}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

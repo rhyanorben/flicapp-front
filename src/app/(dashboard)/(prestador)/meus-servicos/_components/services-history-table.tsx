@@ -1,43 +1,43 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table"
-import { 
-  Eye, 
-  Star, 
-  Search, 
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Eye,
+  Star,
+  Search,
   Briefcase,
   User,
   Calendar,
-  DollarSign
-} from "lucide-react"
+  DollarSign,
+} from "lucide-react";
 
 interface ServiceHistory {
-  id: string
-  cliente: string
-  tipoServico: string
-  descricao: string
-  dataRealizacao: string
-  valor: number
-  status: 'concluido' | 'cancelado'
-  avaliacao?: number
-  comentario?: string
+  id: string;
+  cliente: string;
+  tipoServico: string;
+  descricao: string;
+  dataRealizacao: string;
+  valor: number;
+  status: "concluido" | "cancelado";
+  avaliacao?: number;
+  comentario?: string;
 }
 
 export function ServicesHistoryTable() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("todos")
-  const [periodFilter, setPeriodFilter] = useState("todos")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("todos");
+  const [periodFilter, setPeriodFilter] = useState("todos");
 
   // Dados mockados - em produção viria da API
   const servicesHistory: ServiceHistory[] = [
@@ -47,10 +47,10 @@ export function ServicesHistoryTable() {
       tipoServico: "Limpeza",
       descricao: "Limpeza residencial completa",
       dataRealizacao: "2024-01-15",
-      valor: 150.00,
+      valor: 150.0,
       status: "concluido",
       avaliacao: 5,
-      comentario: "Excelente trabalho, muito pontual e organizado!"
+      comentario: "Excelente trabalho, muito pontual e organizado!",
     },
     {
       id: "SERV-002",
@@ -58,10 +58,10 @@ export function ServicesHistoryTable() {
       tipoServico: "Manutenção",
       descricao: "Reparo no ar condicionado",
       dataRealizacao: "2024-01-14",
-      valor: 200.00,
+      valor: 200.0,
       status: "concluido",
       avaliacao: 4,
-      comentario: "Resolveu o problema rapidamente."
+      comentario: "Resolveu o problema rapidamente.",
     },
     {
       id: "SERV-003",
@@ -69,10 +69,10 @@ export function ServicesHistoryTable() {
       tipoServico: "Instalação",
       descricao: "Instalação de ventilador",
       dataRealizacao: "2024-01-12",
-      valor: 120.00,
+      valor: 120.0,
       status: "concluido",
       avaliacao: 5,
-      comentario: "Instalação perfeita, muito profissional!"
+      comentario: "Instalação perfeita, muito profissional!",
     },
     {
       id: "SERV-004",
@@ -80,10 +80,10 @@ export function ServicesHistoryTable() {
       tipoServico: "Consultoria",
       descricao: "Consultoria em organização",
       dataRealizacao: "2024-01-10",
-      valor: 80.00,
+      valor: 80.0,
       status: "concluido",
       avaliacao: 4,
-      comentario: "Ótimas dicas para organização."
+      comentario: "Ótimas dicas para organização.",
     },
     {
       id: "SERV-005",
@@ -91,10 +91,10 @@ export function ServicesHistoryTable() {
       tipoServico: "Reparo",
       descricao: "Reparo de eletrodoméstico",
       dataRealizacao: "2024-01-08",
-      valor: 90.00,
+      valor: 90.0,
       status: "concluido",
       avaliacao: 3,
-      comentario: "Serviço realizado conforme esperado."
+      comentario: "Serviço realizado conforme esperado.",
     },
     {
       id: "SERV-006",
@@ -102,65 +102,71 @@ export function ServicesHistoryTable() {
       tipoServico: "Limpeza",
       descricao: "Limpeza pós-obra",
       dataRealizacao: "2024-01-05",
-      valor: 300.00,
-      status: "cancelado"
-    }
-  ]
+      valor: 300.0,
+      status: "cancelado",
+    },
+  ];
 
-  const getStatusBadge = (status: ServiceHistory['status']) => {
+  const getStatusBadge = (status: ServiceHistory["status"]) => {
     const statusConfig = {
       concluido: { label: "Concluído", color: "bg-green-100 text-green-800" },
-      cancelado: { label: "Cancelado", color: "bg-red-100 text-red-800" }
-    }
-    
-    const config = statusConfig[status]
+      cancelado: { label: "Cancelado", color: "bg-red-100 text-red-800" },
+    };
+
+    const config = statusConfig[status];
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.color}`}>
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${config.color}`}
+      >
         {config.label}
       </span>
-    )
-  }
+    );
+  };
 
   const getPeriodFilter = (date: string) => {
-    const serviceDate = new Date(date)
-    const now = new Date()
-    const diffTime = Math.abs(now.getTime() - serviceDate.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
-    if (diffDays <= 7) return "7dias"
-    if (diffDays <= 30) return "30dias"
-    if (diffDays <= 90) return "90dias"
-    return "mais90dias"
-  }
+    const serviceDate = new Date(date);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - serviceDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const filteredServices = servicesHistory.filter(service => {
-    const matchesSearch = service.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         service.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         service.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         service.tipoServico.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === "todos" || service.status === statusFilter
-    const matchesPeriod = periodFilter === "todos" || getPeriodFilter(service.dataRealizacao) === periodFilter
-    
-    return matchesSearch && matchesStatus && matchesPeriod
-  })
+    if (diffDays <= 7) return "7dias";
+    if (diffDays <= 30) return "30dias";
+    if (diffDays <= 90) return "90dias";
+    return "mais90dias";
+  };
+
+  const filteredServices = servicesHistory.filter((service) => {
+    const matchesSearch =
+      service.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      service.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      service.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      service.tipoServico.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "todos" || service.status === statusFilter;
+    const matchesPeriod =
+      periodFilter === "todos" ||
+      getPeriodFilter(service.dataRealizacao) === periodFilter;
+
+    return matchesSearch && matchesStatus && matchesPeriod;
+  });
 
   const handleViewDetails = (serviceId: string) => {
-    console.log("Ver detalhes do serviço:", serviceId)
+    console.log("Ver detalhes do serviço:", serviceId);
     // Implementar modal ou navegação para detalhes
-  }
+  };
 
   const handleViewRating = (serviceId: string) => {
-    console.log("Ver avaliação do serviço:", serviceId)
+    console.log("Ver avaliação do serviço:", serviceId);
     // Implementar modal para visualizar avaliação
-  }
+  };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value)
-  }
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
 
   return (
     <Card>
@@ -228,10 +234,14 @@ export function ServicesHistoryTable() {
                     {service.cliente}
                   </TableCell>
                   <TableCell>{service.tipoServico}</TableCell>
-                  <TableCell className="max-w-xs truncate">{service.descricao}</TableCell>
+                  <TableCell className="max-w-xs truncate">
+                    {service.descricao}
+                  </TableCell>
                   <TableCell className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-gray-400" />
-                    {new Date(service.dataRealizacao).toLocaleDateString('pt-BR')}
+                    {new Date(service.dataRealizacao).toLocaleDateString(
+                      "pt-BR"
+                    )}
                   </TableCell>
                   <TableCell className="flex items-center gap-2">
                     <DollarSign className="h-4 w-4 text-gray-400" />
@@ -257,8 +267,8 @@ export function ServicesHistoryTable() {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      
-                      {service.status === 'concluido' && service.avaliacao && (
+
+                      {service.status === "concluido" && service.avaliacao && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -275,7 +285,7 @@ export function ServicesHistoryTable() {
             </TableBody>
           </Table>
         </div>
-        
+
         {filteredServices.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
             Nenhum serviço encontrado no histórico com os filtros aplicados.
@@ -283,5 +293,5 @@ export function ServicesHistoryTable() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

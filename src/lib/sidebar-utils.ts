@@ -26,4 +26,3 @@ export function getSidebarStateFromCookie(): boolean {
   // Se não houver cookie, retorna true (aberto por padrão)
   return true;
 }
-

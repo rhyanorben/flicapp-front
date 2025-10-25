@@ -1,75 +1,78 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { 
-  DollarSign, 
-  TrendingUp, 
-  TrendingDown,
-  Calendar,
-  Target
-} from "lucide-react"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { DollarSign, TrendingUp, TrendingDown, Target } from "lucide-react";
 
 export function FinancialStats() {
-  const [period, setPeriod] = useState("mes")
+  const [period, setPeriod] = useState("mes");
 
   // Dados mockados - em produção viria da API
   const financialData = {
     mes: {
-      totalGanhos: 2840.00,
-      ganhosAnterior: 2650.00,
+      totalGanhos: 2840.0,
+      ganhosAnterior: 2650.0,
       servicosRealizados: 18,
       servicosAnterior: 15,
       ticketMedio: 157.78,
-      ticketAnterior: 176.67
+      ticketAnterior: 176.67,
     },
     trimestre: {
-      totalGanhos: 8520.00,
-      ganhosAnterior: 7950.00,
+      totalGanhos: 8520.0,
+      ganhosAnterior: 7950.0,
       servicosRealizados: 54,
       servicosAnterior: 48,
       ticketMedio: 157.78,
-      ticketAnterior: 165.63
+      ticketAnterior: 165.63,
     },
     ano: {
-      totalGanhos: 34160.00,
-      ganhosAnterior: 31800.00,
+      totalGanhos: 34160.0,
+      ganhosAnterior: 31800.0,
       servicosRealizados: 216,
       servicosAnterior: 192,
       ticketMedio: 158.15,
-      ticketAnterior: 165.63
-    }
-  }
+      ticketAnterior: 165.63,
+    },
+  };
 
-  const currentData = financialData[period as keyof typeof financialData]
+  const currentData = financialData[period as keyof typeof financialData];
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value)
-  }
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
 
   const getPercentageChange = (current: number, previous: number) => {
-    return ((current - previous) / previous) * 100
-  }
+    return ((current - previous) / previous) * 100;
+  };
 
   const getChangeColor = (change: number) => {
-    return change >= 0 ? "text-green-600" : "text-red-600"
-  }
+    return change >= 0 ? "text-green-600" : "text-red-600";
+  };
 
   const getChangeIcon = (change: number) => {
-    return change >= 0 ? TrendingUp : TrendingDown
-  }
+    return change >= 0 ? TrendingUp : TrendingDown;
+  };
 
-  const totalGanhosChange = getPercentageChange(currentData.totalGanhos, currentData.ganhosAnterior)
-  const servicosChange = getPercentageChange(currentData.servicosRealizados, currentData.servicosAnterior)
-  const ticketChange = getPercentageChange(currentData.ticketMedio, currentData.ticketAnterior)
+  const totalGanhosChange = getPercentageChange(
+    currentData.totalGanhos,
+    currentData.ganhosAnterior
+  );
+  const servicosChange = getPercentageChange(
+    currentData.servicosRealizados,
+    currentData.servicosAnterior
+  );
+  const ticketChange = getPercentageChange(
+    currentData.ticketMedio,
+    currentData.ticketAnterior
+  );
 
-  const TotalGanhosIcon = getChangeIcon(totalGanhosChange)
-  const ServicosIcon = getChangeIcon(servicosChange)
-  const TicketIcon = getChangeIcon(ticketChange)
+  const TotalGanhosIcon = getChangeIcon(totalGanhosChange);
+  const ServicosIcon = getChangeIcon(servicosChange);
+  const TicketIcon = getChangeIcon(ticketChange);
 
   return (
     <div className="space-y-4">
@@ -113,13 +116,13 @@ export function FinancialStats() {
               {formatCurrency(currentData.totalGanhos)}
             </div>
             <div className="flex items-center gap-1 text-xs">
-              <TotalGanhosIcon className={`h-3 w-3 ${getChangeColor(totalGanhosChange)}`} />
+              <TotalGanhosIcon
+                className={`h-3 w-3 ${getChangeColor(totalGanhosChange)}`}
+              />
               <span className={getChangeColor(totalGanhosChange)}>
                 {Math.abs(totalGanhosChange).toFixed(1)}%
               </span>
-              <span className="text-green-700">
-                vs período anterior
-              </span>
+              <span className="text-green-700">vs período anterior</span>
             </div>
           </CardContent>
         </Card>
@@ -136,13 +139,13 @@ export function FinancialStats() {
               {currentData.servicosRealizados}
             </div>
             <div className="flex items-center gap-1 text-xs">
-              <ServicosIcon className={`h-3 w-3 ${getChangeColor(servicosChange)}`} />
+              <ServicosIcon
+                className={`h-3 w-3 ${getChangeColor(servicosChange)}`}
+              />
               <span className={getChangeColor(servicosChange)}>
                 {Math.abs(servicosChange).toFixed(1)}%
               </span>
-              <span className="text-blue-700">
-                vs período anterior
-              </span>
+              <span className="text-blue-700">vs período anterior</span>
             </div>
           </CardContent>
         </Card>
@@ -159,17 +162,17 @@ export function FinancialStats() {
               {formatCurrency(currentData.ticketMedio)}
             </div>
             <div className="flex items-center gap-1 text-xs">
-              <TicketIcon className={`h-3 w-3 ${getChangeColor(ticketChange)}`} />
+              <TicketIcon
+                className={`h-3 w-3 ${getChangeColor(ticketChange)}`}
+              />
               <span className={getChangeColor(ticketChange)}>
                 {Math.abs(ticketChange).toFixed(1)}%
               </span>
-              <span className="text-purple-700">
-                vs período anterior
-              </span>
+              <span className="text-purple-700">vs período anterior</span>
             </div>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }

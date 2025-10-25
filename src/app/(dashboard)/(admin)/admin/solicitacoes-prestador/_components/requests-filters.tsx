@@ -14,7 +14,11 @@ interface RequestsFiltersProps {
   };
 }
 
-export function RequestsFilters({ currentFilter, onFilterChange, counts }: RequestsFiltersProps) {
+export function RequestsFilters({
+  currentFilter,
+  onFilterChange,
+  counts,
+}: RequestsFiltersProps) {
   const filters = [
     { value: "ALL", label: "Todas", count: counts.all },
     { value: "PENDING", label: "Pendentes", count: counts.pending },
@@ -32,7 +36,7 @@ export function RequestsFilters({ currentFilter, onFilterChange, counts }: Reque
           className="gap-2"
         >
           {filter.label}
-          <Badge 
+          <Badge
             variant={currentFilter === filter.value ? "secondary" : "outline"}
             className="ml-1"
           >
@@ -43,4 +47,3 @@ export function RequestsFilters({ currentFilter, onFilterChange, counts }: Reque
     </div>
   );
 }
-

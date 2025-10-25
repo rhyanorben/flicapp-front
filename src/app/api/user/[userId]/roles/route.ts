@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { userId } = await params;
-    
+
     if (!userId) {
       return NextResponse.json(
         { error: "User ID é obrigatório" },
@@ -16,7 +16,7 @@ export async function GET(
     }
 
     const roles = await getUserRoles(userId);
-    
+
     return NextResponse.json(roles);
   } catch (error) {
     console.error("Erro ao buscar roles do usuário:", error);

@@ -1,13 +1,7 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { 
-  Star, 
-  Users, 
-  TrendingUp, 
-  Award,
-  MessageSquare
-} from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Star, Users, TrendingUp, Award, MessageSquare } from "lucide-react";
 
 export function RatingsOverview() {
   // Dados mockados - em produção viria da API
@@ -19,38 +13,36 @@ export function RatingsOverview() {
       4: 28,
       3: 7,
       2: 2,
-      1: 0
+      1: 0,
     },
     comentarios: 67,
-    avaliacoesRecentes: 12
-  }
+    avaliacoesRecentes: 12,
+  };
 
   const getStarDisplay = (rating: number) => {
-    const stars = []
-    const fullStars = Math.floor(rating)
-    const hasHalfStar = rating % 1 !== 0
-    
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
     for (let i = 0; i < fullStars; i++) {
       stars.push(
         <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-      )
+      );
     }
-    
+
     if (hasHalfStar) {
       stars.push(
         <Star key="half" className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-      )
+      );
     }
-    
-    const emptyStars = 5 - Math.ceil(rating)
+
+    const emptyStars = 5 - Math.ceil(rating);
     for (let i = 0; i < emptyStars; i++) {
-      stars.push(
-        <Star key={`empty-${i}`} className="h-5 w-5 text-gray-300" />
-      )
+      stars.push(<Star key={`empty-${i}`} className="h-5 w-5 text-gray-300" />);
     }
-    
-    return stars
-  }
+
+    return stars;
+  };
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -104,7 +96,10 @@ export function RatingsOverview() {
             {ratingsData.comentarios}
           </div>
           <p className="text-xs text-green-700">
-            {Math.round((ratingsData.comentarios / ratingsData.totalAvaliacoes) * 100)}% com comentários
+            {Math.round(
+              (ratingsData.comentarios / ratingsData.totalAvaliacoes) * 100
+            )}
+            % com comentários
           </p>
         </CardContent>
       </Card>
@@ -118,13 +113,16 @@ export function RatingsOverview() {
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold text-purple-900">
-            {Math.round(((ratingsData.distribuicao[5] + ratingsData.distribuicao[4]) / ratingsData.totalAvaliacoes) * 100)}%
+            {Math.round(
+              ((ratingsData.distribuicao[5] + ratingsData.distribuicao[4]) /
+                ratingsData.totalAvaliacoes) *
+                100
+            )}
+            %
           </div>
-          <p className="text-xs text-purple-700">
-            Avaliações 4+ estrelas
-          </p>
+          <p className="text-xs text-purple-700">Avaliações 4+ estrelas</p>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

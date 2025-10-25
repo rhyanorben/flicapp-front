@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Clock,
+  CheckCircle,
+  XCircle,
   AlertTriangle,
-  TrendingUp
-} from "lucide-react"
+  TrendingUp,
+} from "lucide-react";
 
 export function RequestsOverviewCards() {
   // Dados mockados - em produção viria da API
@@ -16,15 +16,15 @@ export function RequestsOverviewCards() {
     aceitas: 24,
     recusadas: 3,
     expiradas: 1,
-    totalGanhos: 2840.00
-  }
+    totalGanhos: 2840.0,
+  };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value)
-  }
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
@@ -36,10 +36,10 @@ export function RequestsOverviewCards() {
           <Clock className="h-4 w-4 text-orange-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-orange-900">{stats.pendentes}</div>
-          <p className="text-xs text-orange-700">
-            Aguardando sua resposta
-          </p>
+          <div className="text-2xl font-bold text-orange-900">
+            {stats.pendentes}
+          </div>
+          <p className="text-xs text-orange-700">Aguardando sua resposta</p>
         </CardContent>
       </Card>
 
@@ -51,10 +51,10 @@ export function RequestsOverviewCards() {
           <CheckCircle className="h-4 w-4 text-green-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-green-900">{stats.aceitas}</div>
-          <p className="text-xs text-green-700">
-            Serviços aceitos
-          </p>
+          <div className="text-2xl font-bold text-green-900">
+            {stats.aceitas}
+          </div>
+          <p className="text-xs text-green-700">Serviços aceitos</p>
         </CardContent>
       </Card>
 
@@ -66,10 +66,10 @@ export function RequestsOverviewCards() {
           <XCircle className="h-4 w-4 text-red-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-red-900">{stats.recusadas}</div>
-          <p className="text-xs text-red-700">
-            Solicitações recusadas
-          </p>
+          <div className="text-2xl font-bold text-red-900">
+            {stats.recusadas}
+          </div>
+          <p className="text-xs text-red-700">Solicitações recusadas</p>
         </CardContent>
       </Card>
 
@@ -81,10 +81,10 @@ export function RequestsOverviewCards() {
           <AlertTriangle className="h-4 w-4 text-yellow-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-yellow-900">{stats.expiradas}</div>
-          <p className="text-xs text-yellow-700">
-            Prazo esgotado
-          </p>
+          <div className="text-2xl font-bold text-yellow-900">
+            {stats.expiradas}
+          </div>
+          <p className="text-xs text-yellow-700">Prazo esgotado</p>
         </CardContent>
       </Card>
 
@@ -99,11 +99,9 @@ export function RequestsOverviewCards() {
           <div className="text-2xl font-bold text-blue-900">
             {formatCurrency(stats.totalGanhos)}
           </div>
-          <p className="text-xs text-blue-700">
-            Valor total das pendentes
-          </p>
+          <p className="text-xs text-blue-700">Valor total das pendentes</p>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

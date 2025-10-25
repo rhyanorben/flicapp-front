@@ -1,6 +1,12 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -32,24 +38,36 @@ interface RequestsSummaryProps {
   };
 }
 
-export function RequestsSummary({ requests, requestsByMonth }: RequestsSummaryProps) {
+export function RequestsSummary({
+  requests,
+  requestsByMonth,
+}: RequestsSummaryProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "PENDING":
         return (
-          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
+          <Badge
+            variant="outline"
+            className="bg-yellow-100 text-yellow-800 border-yellow-300"
+          >
             Pendente
           </Badge>
         );
       case "APPROVED":
         return (
-          <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
+          <Badge
+            variant="outline"
+            className="bg-green-100 text-green-800 border-green-300"
+          >
             Aprovada
           </Badge>
         );
       case "REJECTED":
         return (
-          <Badge variant="outline" className="bg-red-100 text-red-800 border-red-300">
+          <Badge
+            variant="outline"
+            className="bg-red-100 text-red-800 border-red-300"
+          >
             Rejeitada
           </Badge>
         );
@@ -94,7 +112,9 @@ export function RequestsSummary({ requests, requestsByMonth }: RequestsSummaryPr
                       </TableCell>
                       <TableCell>{getStatusBadge(request.status)}</TableCell>
                       <TableCell>
-                        {new Date(request.createdAt).toLocaleDateString("pt-BR")}
+                        {new Date(request.createdAt).toLocaleDateString(
+                          "pt-BR"
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -124,7 +144,8 @@ export function RequestsSummary({ requests, requestsByMonth }: RequestsSummaryPr
                   <div className="flex items-center justify-between text-sm">
                     <span className="font-medium">{month}</span>
                     <span className="text-muted-foreground">
-                      {values[index]} {values[index] === 1 ? "solicitação" : "solicitações"}
+                      {values[index]}{" "}
+                      {values[index] === 1 ? "solicitação" : "solicitações"}
                     </span>
                   </div>
                   <div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -144,4 +165,3 @@ export function RequestsSummary({ requests, requestsByMonth }: RequestsSummaryPr
     </div>
   );
 }
-

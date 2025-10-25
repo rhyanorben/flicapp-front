@@ -28,9 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <RolesProvider>
-            {children}
-          </RolesProvider>
+          <RolesProvider>{children}</RolesProvider>
           <Toaster />
         </ThemeProvider>
       </body>

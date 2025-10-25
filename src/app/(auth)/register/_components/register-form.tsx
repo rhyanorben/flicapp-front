@@ -1,35 +1,50 @@
 "use client";
 
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { useRouter } from "next/navigation"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
 const registerSchema = z
   .object({
-    name: z.string().min(5, { message: "O nome deve ter pelo menos 5 caracteres" }),
+    name: z
+      .string()
+      .min(5, { message: "O nome deve ter pelo menos 5 caracteres" }),
     email: z.email({ message: "Email inválido" }),
-    password: z.string().min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
-    confirmPassword: z.string().min(6, { message: "A confirmação de senha deve ter pelo menos 6 caracteres" }),
+    password: z
+      .string()
+      .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
+    confirmPassword: z
+      .string()
+      .min(6, {
+        message: "A confirmação de senha deve ter pelo menos 6 caracteres",
+      }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não coincidem",
     path: ["confirmPassword"],
-  })
+  });
 
-type SignupFormValues = z.infer<typeof registerSchema>
+type SignupFormValues = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(registerSchema),
@@ -39,11 +54,11 @@ export function RegisterForm() {
       password: "",
       confirmPassword: "",
     },
-  })
+  });
 
   async function onSubmit(formData: SignupFormValues) {
     setIsLoading(true);
-    
+
     try {
       const registerResponse = await fetch("/api/register", {
         method: "POST",
@@ -63,26 +78,29 @@ export function RegisterForm() {
         throw new Error(registerData.error || "Erro ao cadastrar");
       }
 
-      await authClient.signIn.email({
-        email: formData.email,
-        password: formData.password,
-      }, {
-        onSuccess: () => {
-          router.replace("/dashboard");
+      await authClient.signIn.email(
+        {
+          email: formData.email,
+          password: formData.password,
         },
-        onError: (context: { error?: { message?: string } }) => {
-          alert("Cadastrado com sucesso, mas houve erro no login. Por favor, faça login manualmente.");
-          router.replace("/login");
-        },
-      });
-
+        {
+          onSuccess: () => {
+            router.replace("/dashboard");
+          },
+          onError: (context: { error?: { message?: string } }) => {
+            alert(
+              "Cadastrado com sucesso, mas houve erro no login. Por favor, faça login manualmente."
+            );
+            router.replace("/login");
+          },
+        }
+      );
     } catch (error: any) {
       alert(error?.message || "Erro ao cadastrar");
     } finally {
       setIsLoading(false);
     }
   }
-
 
   return (
     <Form {...form}>
@@ -94,7 +112,11 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Nome</FormLabel>
               <FormControl>
-                <Input placeholder="Seu nome completo" {...field} disabled={isLoading} />
+                <Input
+                  placeholder="Seu nome completo"
+                  {...field}
+                  disabled={isLoading}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -108,7 +130,12 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="seu@email.com" type="email" {...field} disabled={isLoading} />
+                <Input
+                  placeholder="seu@email.com"
+                  type="email"
+                  {...field}
+                  disabled={isLoading}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -142,7 +169,9 @@ export function RegisterForm() {
                     ) : (
                       <Eye className="h-4 w-4 text-muted-foreground" />
                     )}
-                    <span className="sr-only">{showPassword ? "Esconder senha" : "Mostrar senha"}</span>
+                    <span className="sr-only">
+                      {showPassword ? "Esconder senha" : "Mostrar senha"}
+                    </span>
                   </Button>
                 </div>
               </FormControl>
@@ -178,7 +207,9 @@ export function RegisterForm() {
                     ) : (
                       <Eye className="h-4 w-4 text-muted-foreground" />
                     )}
-                    <span className="sr-only">{showConfirmPassword ? "Esconder senha" : "Mostrar senha"}</span>
+                    <span className="sr-only">
+                      {showConfirmPassword ? "Esconder senha" : "Mostrar senha"}
+                    </span>
                   </Button>
                 </div>
               </FormControl>
@@ -203,7 +234,9 @@ export function RegisterForm() {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Ou continue com</span>
+            <span className="bg-background px-2 text-muted-foreground">
+              Ou continue com
+            </span>
           </div>
         </div>
 
@@ -211,13 +244,20 @@ export function RegisterForm() {
           type="button"
           variant="secondary"
           className="w-full bg-white text-[#3c4043] border border-gray-300 hover:bg-gray-100 hover:text-[#3c4043]"
-          onClick={async () => { }}
+          onClick={async () => {}}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M224,128a96,96,0,1,1-21.95-61.09,8,8,0,1,1-12.33,10.18A80,80,0,1,0,207.6,136H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128Z"></path></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            fill="#000000"
+            viewBox="0 0 256 256"
+          >
+            <path d="M224,128a96,96,0,1,1-21.95-61.09,8,8,0,1,1-12.33,10.18A80,80,0,1,0,207.6,136H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128Z"></path>
+          </svg>
           Entrar com Google
         </Button>
-
       </form>
     </Form>
-  )
+  );
 }

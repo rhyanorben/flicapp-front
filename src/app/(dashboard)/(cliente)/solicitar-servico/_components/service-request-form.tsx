@@ -1,24 +1,29 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { Calendar, Clock, MapPin, User, Phone, Mail, MessageSquare } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { MapPin, User, MessageSquare } from "lucide-react";
 
 interface ServiceRequestData {
-  serviceType: string
-  description: string
-  location: string
-  preferredDate: string
-  preferredTime: string
-  urgency: string
-  contactName: string
-  contactPhone: string
-  contactEmail: string
-  additionalNotes: string
+  serviceType: string;
+  description: string;
+  location: string;
+  preferredDate: string;
+  preferredTime: string;
+  urgency: string;
+  contactName: string;
+  contactPhone: string;
+  contactEmail: string;
+  additionalNotes: string;
 }
 
 export function ServiceRequestForm() {
@@ -33,28 +38,31 @@ export function ServiceRequestForm() {
     contactPhone: "",
     contactEmail: "",
     additionalNotes: "",
-  })
+  });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = (field: keyof ServiceRequestData, value: string) => {
-    setFormData(prev => ({
+  const handleInputChange = (
+    field: keyof ServiceRequestData,
+    value: string
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
-    }))
-  }
+      [field]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
+    e.preventDefault();
+    setIsSubmitting(true);
+
     try {
       // Aqui você implementaria a lógica para enviar os dados
-      console.log("Dados do serviço:", formData)
-      
+      console.log("Dados do serviço:", formData);
+
       // Simular envio
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // Resetar formulário após sucesso
       setFormData({
         serviceType: "",
@@ -67,16 +75,16 @@ export function ServiceRequestForm() {
         contactPhone: "",
         contactEmail: "",
         additionalNotes: "",
-      })
-      
-      alert("Solicitação enviada com sucesso!")
+      });
+
+      alert("Solicitação enviada com sucesso!");
     } catch (error) {
-      console.error("Erro ao enviar solicitação:", error)
-      alert("Erro ao enviar solicitação. Tente novamente.")
+      console.error("Erro ao enviar solicitação:", error);
+      alert("Erro ao enviar solicitação. Tente novamente.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="grid gap-6">
@@ -97,7 +105,9 @@ export function ServiceRequestForm() {
               <select
                 id="serviceType"
                 value={formData.serviceType}
-                onChange={(e) => handleInputChange("serviceType", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("serviceType", e.target.value)
+                }
                 className="w-full p-2 border border-input bg-background rounded-md"
                 required
               >
@@ -110,7 +120,7 @@ export function ServiceRequestForm() {
                 <option value="outro">Outro</option>
               </select>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="urgency">Urgência *</Label>
               <select
@@ -172,17 +182,21 @@ export function ServiceRequestForm() {
                 id="preferredDate"
                 type="date"
                 value={formData.preferredDate}
-                onChange={(e) => handleInputChange("preferredDate", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("preferredDate", e.target.value)
+                }
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="preferredTime">Horário Preferencial</Label>
               <Input
                 id="preferredTime"
                 type="time"
                 value={formData.preferredTime}
-                onChange={(e) => handleInputChange("preferredTime", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("preferredTime", e.target.value)
+                }
               />
             </div>
           </div>
@@ -207,19 +221,23 @@ export function ServiceRequestForm() {
                 id="contactName"
                 type="text"
                 value={formData.contactName}
-                onChange={(e) => handleInputChange("contactName", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("contactName", e.target.value)
+                }
                 placeholder="Seu nome completo"
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="contactPhone">Telefone *</Label>
               <Input
                 id="contactPhone"
                 type="tel"
                 value={formData.contactPhone}
-                onChange={(e) => handleInputChange("contactPhone", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("contactPhone", e.target.value)
+                }
                 placeholder="(11) 99999-9999"
                 required
               />
@@ -232,7 +250,9 @@ export function ServiceRequestForm() {
               id="contactEmail"
               type="email"
               value={formData.contactEmail}
-              onChange={(e) => handleInputChange("contactEmail", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("contactEmail", e.target.value)
+              }
               placeholder="seu@email.com"
             />
           </div>
@@ -242,7 +262,9 @@ export function ServiceRequestForm() {
             <textarea
               id="additionalNotes"
               value={formData.additionalNotes}
-              onChange={(e) => handleInputChange("additionalNotes", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("additionalNotes", e.target.value)
+              }
               placeholder="Alguma informação adicional que considere importante..."
               className="w-full p-2 border border-input bg-background rounded-md min-h-[80px] resize-none"
             />
@@ -254,13 +276,20 @@ export function ServiceRequestForm() {
         <Button variant="outline" type="button">
           Cancelar
         </Button>
-        <Button 
-          onClick={handleSubmit} 
-          disabled={isSubmitting || !formData.serviceType || !formData.description || !formData.location || !formData.contactName || !formData.contactPhone}
+        <Button
+          onClick={handleSubmit}
+          disabled={
+            isSubmitting ||
+            !formData.serviceType ||
+            !formData.description ||
+            !formData.location ||
+            !formData.contactName ||
+            !formData.contactPhone
+          }
         >
           {isSubmitting ? "Enviando..." : "Solicitar Serviço"}
         </Button>
       </div>
     </div>
-  )
+  );
 }

@@ -1,18 +1,17 @@
-"use client"
+"use client";
 
-import React from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ToggleTheme } from "../ui/toggle-theme"
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ToggleTheme } from "../ui/toggle-theme";
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-
         <div>
-          <ToggleTheme/>
+          <ToggleTheme />
         </div>
 
         <div className="flex items-center gap-2">
@@ -24,7 +23,9 @@ export default function Header() {
             className="rounded"
             priority
           />
-          <Link href="/" className="text-lg font-semibold">FlicApp</Link>
+          <Link href="/" className="text-lg font-semibold">
+            FlicApp
+          </Link>
         </div>
 
         <div className="flex items-center gap-3">
@@ -37,7 +38,5 @@ export default function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }
-
-

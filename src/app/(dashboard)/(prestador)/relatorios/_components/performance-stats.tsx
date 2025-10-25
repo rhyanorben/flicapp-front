@@ -1,14 +1,7 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { 
-  Star, 
-  Clock, 
-  CheckCircle, 
-  Users,
-  Award,
-  Zap
-} from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Star, Clock, CheckCircle, Users, Award, Zap } from "lucide-react";
 
 export function PerformanceStats() {
   // Dados mockados - em produção viria da API
@@ -18,8 +11,8 @@ export function PerformanceStats() {
     taxaConclusao: 94.2,
     tempoMedioResposta: 2.5,
     clientesRecorrentes: 23,
-    servicosCancelados: 3
-  }
+    servicosCancelados: 3,
+  };
 
   return (
     <div className="space-y-4">
@@ -39,9 +32,7 @@ export function PerformanceStats() {
             </div>
             <div className="flex items-center gap-1 text-xs text-yellow-700">
               <Star className="h-3 w-3 fill-current" />
-              <span>
-                {performanceData.totalAvaliacoes} avaliações
-              </span>
+              <span>{performanceData.totalAvaliacoes} avaliações</span>
             </div>
           </CardContent>
         </Card>
@@ -74,9 +65,7 @@ export function PerformanceStats() {
             <div className="text-2xl font-bold text-blue-900">
               {performanceData.tempoMedioResposta}h
             </div>
-            <p className="text-xs text-blue-700">
-              Para responder solicitações
-            </p>
+            <p className="text-xs text-blue-700">Para responder solicitações</p>
           </CardContent>
         </Card>
 
@@ -105,12 +94,8 @@ export function PerformanceStats() {
             <Zap className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-900">
-              92%
-            </div>
-            <p className="text-xs text-orange-700">
-              Serviços no prazo
-            </p>
+            <div className="text-2xl font-bold text-orange-900">92%</div>
+            <p className="text-xs text-orange-700">Serviços no prazo</p>
           </CardContent>
         </Card>
 
@@ -125,12 +110,10 @@ export function PerformanceStats() {
             <div className="text-2xl font-bold text-red-900">
               {performanceData.servicosCancelados}
             </div>
-            <p className="text-xs text-red-700">
-              Serviços cancelados este mês
-            </p>
+            <p className="text-xs text-red-700">Serviços cancelados este mês</p>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }

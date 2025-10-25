@@ -43,18 +43,43 @@ interface RequestsTableProps {
   onRequestUpdate: () => void;
 }
 
-export function RequestsTable({ requests, onRequestUpdate }: RequestsTableProps) {
-  const [selectedRequest, setSelectedRequest] = useState<ProviderRequest | null>(null);
+export function RequestsTable({
+  requests,
+  onRequestUpdate,
+}: RequestsTableProps) {
+  const [selectedRequest, setSelectedRequest] =
+    useState<ProviderRequest | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "PENDING":
-        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">Pendente</Badge>;
+        return (
+          <Badge
+            variant="outline"
+            className="bg-yellow-100 text-yellow-800 border-yellow-300"
+          >
+            Pendente
+          </Badge>
+        );
       case "APPROVED":
-        return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">Aprovada</Badge>;
+        return (
+          <Badge
+            variant="outline"
+            className="bg-green-100 text-green-800 border-green-300"
+          >
+            Aprovada
+          </Badge>
+        );
       case "REJECTED":
-        return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-300">Rejeitada</Badge>;
+        return (
+          <Badge
+            variant="outline"
+            className="bg-red-100 text-red-800 border-red-300"
+          >
+            Rejeitada
+          </Badge>
+        );
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -95,7 +120,9 @@ export function RequestsTable({ requests, onRequestUpdate }: RequestsTableProps)
           <TableBody>
             {requests.map((request) => (
               <TableRow key={request.id}>
-                <TableCell className="font-medium">{request.user.name}</TableCell>
+                <TableCell className="font-medium">
+                  {request.user.name}
+                </TableCell>
                 <TableCell>{request.user.email}</TableCell>
                 <TableCell>{getStatusBadge(request.status)}</TableCell>
                 <TableCell>
@@ -133,4 +160,3 @@ export function RequestsTable({ requests, onRequestUpdate }: RequestsTableProps)
     </>
   );
 }
-

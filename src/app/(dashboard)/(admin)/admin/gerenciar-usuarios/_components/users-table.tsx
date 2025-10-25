@@ -35,7 +35,7 @@ export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
 
   const getRoleBadges = (roles: UserRole[]) => {
     return roles.map((role) => {
-      let variant: "default" | "secondary" | "outline" = "outline";
+      const variant: "default" | "secondary" | "outline" = "outline";
       let className = "";
 
       switch (role) {
@@ -131,4 +131,3 @@ export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
     </>
   );
 }
-

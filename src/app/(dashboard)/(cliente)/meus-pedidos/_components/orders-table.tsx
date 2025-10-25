@@ -1,47 +1,40 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table"
-import { 
-  Eye, 
-  X, 
-  Star, 
-  Search, 
-  Calendar,
-  User
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Eye, X, Star, Search, Calendar, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 interface Order {
-  id: string
-  tipoServico: string
-  descricao: string
-  status: 'aguardando' | 'em-andamento' | 'concluido' | 'cancelado'
-  data: string
-  prestador: string
-  avaliacao?: number
+  id: string;
+  tipoServico: string;
+  descricao: string;
+  status: "aguardando" | "em-andamento" | "concluido" | "cancelado";
+  data: string;
+  prestador: string;
+  avaliacao?: number;
 }
 
 export function OrdersTable() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("todos")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("todos");
 
   // Dados mockados - em produção viria da API
   const orders: Order[] = [
@@ -51,7 +44,7 @@ export function OrdersTable() {
       descricao: "Limpeza residencial completa",
       status: "aguardando",
       data: "2024-01-15",
-      prestador: "João Silva"
+      prestador: "João Silva",
     },
     {
       id: "PED-002",
@@ -59,7 +52,7 @@ export function OrdersTable() {
       descricao: "Reparo no ar condicionado",
       status: "em-andamento",
       data: "2024-01-14",
-      prestador: "Maria Santos"
+      prestador: "Maria Santos",
     },
     {
       id: "PED-003",
@@ -68,7 +61,7 @@ export function OrdersTable() {
       status: "concluido",
       data: "2024-01-10",
       prestador: "Pedro Costa",
-      avaliacao: 5
+      avaliacao: 5,
     },
     {
       id: "PED-004",
@@ -76,50 +69,48 @@ export function OrdersTable() {
       descricao: "Consultoria em organização",
       status: "cancelado",
       data: "2024-01-08",
-      prestador: "Ana Oliveira"
-    }
-  ]
+      prestador: "Ana Oliveira",
+    },
+  ];
 
-  const getStatusBadge = (status: Order['status']) => {
+  const getStatusBadge = (status: Order["status"]) => {
     const statusConfig = {
       aguardando: { label: "Aguardando", variant: "secondary" as const },
       "em-andamento": { label: "Em Andamento", variant: "outline" as const },
       concluido: { label: "Concluído", variant: "default" as const },
-      cancelado: { label: "Cancelado", variant: "destructive" as const }
-    }
-    
-    const config = statusConfig[status]
-    return (
-      <Badge variant={config.variant}>
-        {config.label}
-      </Badge>
-    )
-  }
+      cancelado: { label: "Cancelado", variant: "destructive" as const },
+    };
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.prestador.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === "todos" || order.status === statusFilter
-    
-    return matchesSearch && matchesStatus
-  })
+    const config = statusConfig[status];
+    return <Badge variant={config.variant}>{config.label}</Badge>;
+  };
+
+  const filteredOrders = orders.filter((order) => {
+    const matchesSearch =
+      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.prestador.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "todos" || order.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
 
   const handleViewDetails = (orderId: string) => {
-    console.log("Ver detalhes do pedido:", orderId)
+    console.log("Ver detalhes do pedido:", orderId);
     // Implementar modal ou navegação para detalhes
-  }
+  };
 
   const handleCancelOrder = (orderId: string) => {
-    console.log("Cancelar pedido:", orderId)
+    console.log("Cancelar pedido:", orderId);
     // Implementar lógica de cancelamento
-  }
+  };
 
   const handleRateOrder = (orderId: string) => {
-    console.log("Avaliar pedido:", orderId)
+    console.log("Avaliar pedido:", orderId);
     // Implementar modal de avaliação
-  }
+  };
 
   return (
     <Card>
@@ -174,9 +165,13 @@ export function OrdersTable() {
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.id}</TableCell>
                   <TableCell>{order.tipoServico}</TableCell>
-                  <TableCell className="max-w-xs truncate">{order.descricao}</TableCell>
+                  <TableCell className="max-w-xs truncate">
+                    {order.descricao}
+                  </TableCell>
                   <TableCell>{getStatusBadge(order.status)}</TableCell>
-                  <TableCell>{new Date(order.data).toLocaleDateString('pt-BR')}</TableCell>
+                  <TableCell>
+                    {new Date(order.data).toLocaleDateString("pt-BR")}
+                  </TableCell>
                   <TableCell className="flex items-center gap-2">
                     <User className="h-4 w-4 text-gray-400" />
                     {order.prestador}
@@ -200,8 +195,8 @@ export function OrdersTable() {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      
-                      {order.status === 'aguardando' && (
+
+                      {order.status === "aguardando" && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -211,8 +206,8 @@ export function OrdersTable() {
                           <X className="h-4 w-4" />
                         </Button>
                       )}
-                      
-                      {order.status === 'concluido' && !order.avaliacao && (
+
+                      {order.status === "concluido" && !order.avaliacao && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -229,7 +224,7 @@ export function OrdersTable() {
             </TableBody>
           </Table>
         </div>
-        
+
         {filteredOrders.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
             Nenhum pedido encontrado com os filtros aplicados.
@@ -237,5 +232,5 @@ export function OrdersTable() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

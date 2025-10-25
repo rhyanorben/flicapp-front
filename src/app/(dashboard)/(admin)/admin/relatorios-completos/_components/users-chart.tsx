@@ -1,6 +1,12 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface UsersChartProps {
   data: {
@@ -33,7 +39,8 @@ export function UsersChart({ data }: UsersChartProps) {
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-medium">{month}</span>
                   <span className="text-muted-foreground">
-                    {values[index]} {values[index] === 1 ? "usuário" : "usuários"}
+                    {values[index]}{" "}
+                    {values[index] === 1 ? "usuário" : "usuários"}
                   </span>
                 </div>
                 <div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -52,4 +59,3 @@ export function UsersChart({ data }: UsersChartProps) {
     </Card>
   );
 }
-

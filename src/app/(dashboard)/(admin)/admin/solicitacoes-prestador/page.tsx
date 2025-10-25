@@ -2,13 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useUserRole } from "@/hooks/use-user-role";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { RequestsFilters } from "./_components/requests-filters";
 import { RequestsTable } from "./_components/requests-table";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProviderWrapper } from "@/components/sidebar-provider-wrapper";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,10 +21,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 interface User {
   id: string;
@@ -49,7 +49,9 @@ interface ProviderRequest {
 
 export default function SolicitacoesPrestadorPage() {
   const [requests, setRequests] = useState<ProviderRequest[]>([]);
-  const [filteredRequests, setFilteredRequests] = useState<ProviderRequest[]>([]);
+  const [filteredRequests, setFilteredRequests] = useState<ProviderRequest[]>(
+    []
+  );
   const [currentFilter, setCurrentFilter] = useState("ALL");
   const [isFetchingRequests, setIsFetchingRequests] = useState(true);
   const router = useRouter();
@@ -110,60 +112,55 @@ export default function SolicitacoesPrestadorPage() {
   }
 
   return (
-    <SidebarProviderWrapper>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/dashboard">
-                    FlicApp
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">
-                    Administração
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Solicitações de Prestador</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl">Solicitações de Prestador</CardTitle>
-              <CardDescription>
-                Gerencie as solicitações de usuários que desejam se tornar prestadores de serviços
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <RequestsFilters
-                currentFilter={currentFilter}
-                onFilterChange={handleFilterChange}
-                counts={getCounts()}
-              />
-              <RequestsTable
-                requests={filteredRequests}
-                onRequestUpdate={handleRequestUpdate}
-              />
-            </CardContent>
-          </Card>
+    <>
+      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <div className="flex items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-4"
+          />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/dashboard">FlicApp</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/dashboard">Administração</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Solicitações de Prestador</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
-      </SidebarInset>
-    </SidebarProviderWrapper>
+      </header>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">
+              Solicitações de Prestador
+            </CardTitle>
+            <CardDescription>
+              Gerencie as solicitações de usuários que desejam se tornar
+              prestadores de serviços
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <RequestsFilters
+              currentFilter={currentFilter}
+              onFilterChange={handleFilterChange}
+              counts={getCounts()}
+            />
+            <RequestsTable
+              requests={filteredRequests}
+              onRequestUpdate={handleRequestUpdate}
+            />
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }
-

@@ -1,53 +1,53 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table"
-import { 
-  Eye, 
-  Check, 
-  X, 
-  Search, 
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Eye,
+  Check,
+  X,
+  Search,
   Calendar,
   User,
   Clock,
   MapPin,
-  MessageSquare
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+  MessageSquare,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 interface Appointment {
-  id: string
-  cliente: string
-  tipoServico: string
-  descricao: string
-  data: string
-  horario: string
-  localizacao: string
-  status: 'agendado' | 'confirmado' | 'concluido' | 'cancelado'
-  observacoes?: string
+  id: string;
+  cliente: string;
+  tipoServico: string;
+  descricao: string;
+  data: string;
+  horario: string;
+  localizacao: string;
+  status: "agendado" | "confirmado" | "concluido" | "cancelado";
+  observacoes?: string;
 }
 
 export function AppointmentsList() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("todos")
-  const [dateFilter, setDateFilter] = useState("todos")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("todos");
+  const [dateFilter, setDateFilter] = useState("todos");
 
   // Dados mockados - em produção viria da API
   const appointments: Appointment[] = [
@@ -60,7 +60,7 @@ export function AppointmentsList() {
       horario: "09:00",
       localizacao: "São Paulo, SP",
       status: "confirmado",
-      observacoes: "Apartamento térreo, portão azul"
+      observacoes: "Apartamento térreo, portão azul",
     },
     {
       id: "APT-002",
@@ -71,7 +71,7 @@ export function AppointmentsList() {
       horario: "14:00",
       localizacao: "São Paulo, SP",
       status: "agendado",
-      observacoes: "AC não está gelando"
+      observacoes: "AC não está gelando",
     },
     {
       id: "APT-003",
@@ -82,7 +82,7 @@ export function AppointmentsList() {
       horario: "10:30",
       localizacao: "São Paulo, SP",
       status: "concluido",
-      observacoes: "Ventilador de teto"
+      observacoes: "Ventilador de teto",
     },
     {
       id: "APT-004",
@@ -93,7 +93,7 @@ export function AppointmentsList() {
       horario: "16:00",
       localizacao: "São Paulo, SP",
       status: "cancelado",
-      observacoes: "Cliente cancelou por motivos pessoais"
+      observacoes: "Cliente cancelou por motivos pessoais",
     },
     {
       id: "APT-005",
@@ -104,7 +104,7 @@ export function AppointmentsList() {
       horario: "08:00",
       localizacao: "São Paulo, SP",
       status: "agendado",
-      observacoes: "Micro-ondas não está funcionando"
+      observacoes: "Micro-ondas não está funcionando",
     },
     {
       id: "APT-006",
@@ -115,80 +115,83 @@ export function AppointmentsList() {
       horario: "13:30",
       localizacao: "São Paulo, SP",
       status: "agendado",
-      observacoes: "Casa em reforma, muito pó"
-    }
-  ]
+      observacoes: "Casa em reforma, muito pó",
+    },
+  ];
 
-  const getStatusBadge = (status: Appointment['status']) => {
+  const getStatusBadge = (status: Appointment["status"]) => {
     const statusConfig = {
       agendado: { label: "Agendado", variant: "secondary" as const },
       confirmado: { label: "Confirmado", variant: "default" as const },
       concluido: { label: "Concluído", variant: "default" as const },
-      cancelado: { label: "Cancelado", variant: "destructive" as const }
-    }
-    
-    const config = statusConfig[status]
-    return (
-      <Badge variant={config.variant}>
-        {config.label}
-      </Badge>
-    )
-  }
+      cancelado: { label: "Cancelado", variant: "destructive" as const },
+    };
+
+    const config = statusConfig[status];
+    return <Badge variant={config.variant}>{config.label}</Badge>;
+  };
 
   const getDateFilter = (date: string) => {
-    const appointmentDate = new Date(date)
-    const now = new Date()
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    const appointmentDateOnly = new Date(appointmentDate.getFullYear(), appointmentDate.getMonth(), appointmentDate.getDate())
-    
-    const diffTime = appointmentDateOnly.getTime() - today.getTime()
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
-    if (diffDays === 0) return "hoje"
-    if (diffDays === 1) return "amanha"
-    if (diffDays > 1 && diffDays <= 7) return "proxima_semana"
-    if (diffDays < 0) return "passado"
-    return "futuro"
-  }
+    const appointmentDate = new Date(date);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const appointmentDateOnly = new Date(
+      appointmentDate.getFullYear(),
+      appointmentDate.getMonth(),
+      appointmentDate.getDate()
+    );
+
+    const diffTime = appointmentDateOnly.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return "hoje";
+    if (diffDays === 1) return "amanha";
+    if (diffDays > 1 && diffDays <= 7) return "proxima_semana";
+    if (diffDays < 0) return "passado";
+    return "futuro";
+  };
 
   // Ordenar por data e horário
   const sortedAppointments = appointments.sort((a, b) => {
-    const dateA = new Date(`${a.data}T${a.horario}`)
-    const dateB = new Date(`${b.data}T${b.horario}`)
-    return dateA.getTime() - dateB.getTime()
-  })
+    const dateA = new Date(`${a.data}T${a.horario}`);
+    const dateB = new Date(`${b.data}T${b.horario}`);
+    return dateA.getTime() - dateB.getTime();
+  });
 
-  const filteredAppointments = sortedAppointments.filter(appointment => {
-    const matchesSearch = appointment.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         appointment.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         appointment.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         appointment.tipoServico.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === "todos" || appointment.status === statusFilter
-    const matchesDate = dateFilter === "todos" || getDateFilter(appointment.data) === dateFilter
-    
-    return matchesSearch && matchesStatus && matchesDate
-  })
+  const filteredAppointments = sortedAppointments.filter((appointment) => {
+    const matchesSearch =
+      appointment.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      appointment.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      appointment.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      appointment.tipoServico.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "todos" || appointment.status === statusFilter;
+    const matchesDate =
+      dateFilter === "todos" || getDateFilter(appointment.data) === dateFilter;
+
+    return matchesSearch && matchesStatus && matchesDate;
+  });
 
   const handleViewDetails = (appointmentId: string) => {
-    console.log("Ver detalhes do agendamento:", appointmentId)
+    console.log("Ver detalhes do agendamento:", appointmentId);
     // Implementar modal ou navegação para detalhes
-  }
+  };
 
   const handleConfirmAppointment = (appointmentId: string) => {
-    console.log("Confirmar agendamento:", appointmentId)
+    console.log("Confirmar agendamento:", appointmentId);
     // Implementar lógica de confirmação
-  }
+  };
 
   const handleCancelAppointment = (appointmentId: string) => {
-    console.log("Cancelar agendamento:", appointmentId)
+    console.log("Cancelar agendamento:", appointmentId);
     // Implementar lógica de cancelamento
-  }
+  };
 
   const handleContactClient = (appointmentId: string) => {
-    console.log("Contatar cliente:", appointmentId)
+    console.log("Contatar cliente:", appointmentId);
     // Implementar modal de contato
-  }
+  };
 
   return (
     <Card>
@@ -255,16 +258,20 @@ export function AppointmentsList() {
             <TableBody>
               {filteredAppointments.map((appointment) => (
                 <TableRow key={appointment.id}>
-                  <TableCell className="font-medium">{appointment.id}</TableCell>
+                  <TableCell className="font-medium">
+                    {appointment.id}
+                  </TableCell>
                   <TableCell className="flex items-center gap-2">
                     <User className="h-4 w-4 text-muted-foreground" />
                     {appointment.cliente}
                   </TableCell>
                   <TableCell>{appointment.tipoServico}</TableCell>
-                  <TableCell className="max-w-xs truncate">{appointment.descricao}</TableCell>
+                  <TableCell className="max-w-xs truncate">
+                    {appointment.descricao}
+                  </TableCell>
                   <TableCell className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    {new Date(appointment.data).toLocaleDateString('pt-BR')}
+                    {new Date(appointment.data).toLocaleDateString("pt-BR")}
                   </TableCell>
                   <TableCell className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-muted-foreground" />
@@ -284,13 +291,15 @@ export function AppointmentsList() {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      
-                      {appointment.status === 'agendado' && (
+
+                      {appointment.status === "agendado" && (
                         <>
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleConfirmAppointment(appointment.id)}
+                            onClick={() =>
+                              handleConfirmAppointment(appointment.id)
+                            }
                             className="text-accent hover:text-accent/80"
                           >
                             <Check className="h-4 w-4" />
@@ -298,15 +307,18 @@ export function AppointmentsList() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleCancelAppointment(appointment.id)}
+                            onClick={() =>
+                              handleCancelAppointment(appointment.id)
+                            }
                             className="text-destructive hover:text-destructive/80"
                           >
                             <X className="h-4 w-4" />
                           </Button>
                         </>
                       )}
-                      
-                      {(appointment.status === 'confirmado' || appointment.status === 'agendado') && (
+
+                      {(appointment.status === "confirmado" ||
+                        appointment.status === "agendado") && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -323,7 +335,7 @@ export function AppointmentsList() {
             </TableBody>
           </Table>
         </div>
-        
+
         {filteredAppointments.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
             Nenhum agendamento encontrado com os filtros aplicados.
@@ -331,5 +343,5 @@ export function AppointmentsList() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

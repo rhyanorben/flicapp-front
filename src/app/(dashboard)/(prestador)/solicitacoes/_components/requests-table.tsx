@@ -1,47 +1,47 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table"
-import { 
-  Eye, 
-  Check, 
-  X, 
-  Search, 
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Eye,
+  Check,
+  X,
+  Search,
   MessageSquare,
   User,
   Calendar,
   DollarSign,
-  MapPin
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { } from "@/components/ui/select"
+  MapPin,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {} from "@/components/ui/select";
 
 interface Request {
-  id: string
-  cliente: string
-  tipoServico: string
-  descricao: string
-  dataSolicitacao: string
-  dataPreferencial: string
-  localizacao: string
-  valor: number
-  status: 'pendente' | 'aceita' | 'recusada' | 'expirada'
-  prazoResposta: string
+  id: string;
+  cliente: string;
+  tipoServico: string;
+  descricao: string;
+  dataSolicitacao: string;
+  dataPreferencial: string;
+  localizacao: string;
+  valor: number;
+  status: "pendente" | "aceita" | "recusada" | "expirada";
+  prazoResposta: string;
 }
 
 export function RequestsTable() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("todos")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("todos");
 
   // Dados mockados - em produção viria da API
   const requests: Request[] = [
@@ -53,9 +53,9 @@ export function RequestsTable() {
       dataSolicitacao: "2024-01-15",
       dataPreferencial: "2024-01-20",
       localizacao: "São Paulo, SP",
-      valor: 150.00,
+      valor: 150.0,
       status: "pendente",
-      prazoResposta: "2024-01-16"
+      prazoResposta: "2024-01-16",
     },
     {
       id: "REQ-002",
@@ -65,9 +65,9 @@ export function RequestsTable() {
       dataSolicitacao: "2024-01-14",
       dataPreferencial: "2024-01-18",
       localizacao: "São Paulo, SP",
-      valor: 200.00,
+      valor: 200.0,
       status: "pendente",
-      prazoResposta: "2024-01-15"
+      prazoResposta: "2024-01-15",
     },
     {
       id: "REQ-003",
@@ -77,9 +77,9 @@ export function RequestsTable() {
       dataSolicitacao: "2024-01-13",
       dataPreferencial: "2024-01-17",
       localizacao: "São Paulo, SP",
-      valor: 120.00,
+      valor: 120.0,
       status: "aceita",
-      prazoResposta: "2024-01-14"
+      prazoResposta: "2024-01-14",
     },
     {
       id: "REQ-004",
@@ -89,9 +89,9 @@ export function RequestsTable() {
       dataSolicitacao: "2024-01-12",
       dataPreferencial: "2024-01-16",
       localizacao: "São Paulo, SP",
-      valor: 80.00,
+      valor: 80.0,
       status: "aceita",
-      prazoResposta: "2024-01-13"
+      prazoResposta: "2024-01-13",
     },
     {
       id: "REQ-005",
@@ -101,9 +101,9 @@ export function RequestsTable() {
       dataSolicitacao: "2024-01-11",
       dataPreferencial: "2024-01-15",
       localizacao: "São Paulo, SP",
-      valor: 90.00,
+      valor: 90.0,
       status: "recusada",
-      prazoResposta: "2024-01-12"
+      prazoResposta: "2024-01-12",
     },
     {
       id: "REQ-006",
@@ -113,72 +113,73 @@ export function RequestsTable() {
       dataSolicitacao: "2024-01-10",
       dataPreferencial: "2024-01-14",
       localizacao: "São Paulo, SP",
-      valor: 300.00,
+      valor: 300.0,
       status: "expirada",
-      prazoResposta: "2024-01-11"
-    }
-  ]
+      prazoResposta: "2024-01-11",
+    },
+  ];
 
-  const getStatusBadge = (status: Request['status']) => {
+  const getStatusBadge = (status: Request["status"]) => {
     const statusConfig = {
       pendente: { label: "Pendente", variant: "secondary" as const },
       aceita: { label: "Aceita", variant: "default" as const },
       recusada: { label: "Recusada", variant: "destructive" as const },
-      expirada: { label: "Expirada", variant: "outline" as const }
-    }
-    
-    const config = statusConfig[status]
-    return (
-      <Badge variant={config.variant}>
-        {config.label}
-      </Badge>
-    )
-  }
+      expirada: { label: "Expirada", variant: "outline" as const },
+    };
+
+    const config = statusConfig[status];
+    return <Badge variant={config.variant}>{config.label}</Badge>;
+  };
 
   // Ordenar para mostrar pendentes primeiro
   const sortedRequests = requests.sort((a, b) => {
-    if (a.status === 'pendente' && b.status !== 'pendente') return -1
-    if (a.status !== 'pendente' && b.status === 'pendente') return 1
-    return new Date(b.dataSolicitacao).getTime() - new Date(a.dataSolicitacao).getTime()
-  })
+    if (a.status === "pendente" && b.status !== "pendente") return -1;
+    if (a.status !== "pendente" && b.status === "pendente") return 1;
+    return (
+      new Date(b.dataSolicitacao).getTime() -
+      new Date(a.dataSolicitacao).getTime()
+    );
+  });
 
-  const filteredRequests = sortedRequests.filter(request => {
-    const matchesSearch = request.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.tipoServico.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === "todos" || request.status === statusFilter
-    
-    return matchesSearch && matchesStatus
-  })
+  const filteredRequests = sortedRequests.filter((request) => {
+    const matchesSearch =
+      request.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.tipoServico.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "todos" || request.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
 
   const handleViewDetails = (requestId: string) => {
-    console.log("Ver detalhes da solicitação:", requestId)
+    console.log("Ver detalhes da solicitação:", requestId);
     // Implementar modal ou navegação para detalhes
-  }
+  };
 
   const handleAcceptRequest = (requestId: string) => {
-    console.log("Aceitar solicitação:", requestId)
+    console.log("Aceitar solicitação:", requestId);
     // Implementar lógica de aceitação
-  }
+  };
 
   const handleRejectRequest = (requestId: string) => {
-    console.log("Recusar solicitação:", requestId)
+    console.log("Recusar solicitação:", requestId);
     // Implementar lógica de recusa
-  }
+  };
 
   const handleContactClient = (requestId: string) => {
-    console.log("Contatar cliente:", requestId)
+    console.log("Contatar cliente:", requestId);
     // Implementar modal de contato
-  }
+  };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value)
-  }
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
 
   return (
     <Card>
@@ -240,17 +241,23 @@ export function RequestsTable() {
                     </div>
                   </TableCell>
                   <TableCell>{request.tipoServico}</TableCell>
-                  <TableCell className="max-w-xs truncate">{request.descricao}</TableCell>
+                  <TableCell className="max-w-xs truncate">
+                    {request.descricao}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-gray-400" />
-                      {new Date(request.dataSolicitacao).toLocaleDateString('pt-BR')}
+                      {new Date(request.dataSolicitacao).toLocaleDateString(
+                        "pt-BR"
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-gray-400" />
-                      {new Date(request.dataPreferencial).toLocaleDateString('pt-BR')}
+                      {new Date(request.dataPreferencial).toLocaleDateString(
+                        "pt-BR"
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -275,8 +282,8 @@ export function RequestsTable() {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      
-                      {request.status === 'pendente' && (
+
+                      {request.status === "pendente" && (
                         <>
                           <Button
                             variant="outline"
@@ -296,8 +303,8 @@ export function RequestsTable() {
                           </Button>
                         </>
                       )}
-                      
-                      {request.status === 'aceita' && (
+
+                      {request.status === "aceita" && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -314,7 +321,7 @@ export function RequestsTable() {
             </TableBody>
           </Table>
         </div>
-        
+
         {filteredRequests.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
             Nenhuma solicitação encontrada com os filtros aplicados.
@@ -322,5 +329,5 @@ export function RequestsTable() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
