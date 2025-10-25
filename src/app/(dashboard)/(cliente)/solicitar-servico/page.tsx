@@ -23,7 +23,7 @@ export default function SolicitarServicoPage() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/dashboard">FlicApp</BreadcrumbLink>
+                <BreadcrumbLink href="/dashboard">FlicAPP</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>

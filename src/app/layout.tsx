@@ -5,8 +5,8 @@ import { RolesProvider } from "@/contexts/roles-context";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "FlicApp",
-  description: "FlicApp",
+  title: "FlicAPP",
+  description: "FlicAPP - Seu App de Serviços",
   icons: {
     icon: "/flicapp_logo.png",
     shortcut: "/flicapp_logo.png",

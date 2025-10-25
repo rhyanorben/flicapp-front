@@ -136,7 +136,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <div className="flex items-center justify-between px-2 py-2">
           <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">
-            FlicApp
+            FlicAPP
           </span>
           <div className="group-data-[collapsible=icon]:hidden">
             <ToggleTheme />
