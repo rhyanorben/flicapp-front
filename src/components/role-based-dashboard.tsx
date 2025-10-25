@@ -29,8 +29,6 @@ export const RoleBasedDashboard = () => {
     );
   }
 
-  console.log('currentRoles', currentRoles);
-
   const currentIsAdmin = session?.user ? isAdmin : demoRole === USER_ROLES.ADMINISTRADOR;
   const currentIsProvider = session?.user ? isProvider : demoRole === USER_ROLES.PRESTADOR;
   const currentIsClient = session?.user ? isClient : demoRole === USER_ROLES.CLIENTE;

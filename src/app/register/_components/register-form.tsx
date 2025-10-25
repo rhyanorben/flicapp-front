@@ -42,23 +42,45 @@ export function RegisterForm() {
   })
 
   async function onSubmit(formData: SignupFormValues) {
-    await authClient.signUp.email({
-      email: formData.email,
-      password: formData.password,
-      name: formData.name
-    }, {
-      onRequest: () => {
-        setIsLoading(true);
-      },
-      onSuccess: () => {
-        router.replace("/dashboard");
-        setIsLoading(false);
-      },
-      onError: (context: { error?: { message?: string } }) => {
-        alert(context?.error?.message || "Erro ao cadastrar");
-        setIsLoading(false);
-      },
-    })
+    setIsLoading(true);
+    
+    try {
+      const registerResponse = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const registerData = await registerResponse.json();
+
+      if (!registerResponse.ok) {
+        throw new Error(registerData.error || "Erro ao cadastrar");
+      }
+
+      await authClient.signIn.email({
+        email: formData.email,
+        password: formData.password,
+      }, {
+        onSuccess: () => {
+          router.replace("/dashboard");
+        },
+        onError: (context: { error?: { message?: string } }) => {
+          alert("Cadastrado com sucesso, mas houve erro no login. Por favor, faça login manualmente.");
+          router.replace("/login");
+        },
+      });
+
+    } catch (error: any) {
+      alert(error?.message || "Erro ao cadastrar");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
 
