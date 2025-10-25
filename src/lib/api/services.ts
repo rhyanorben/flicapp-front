@@ -4,7 +4,7 @@ export interface ServiceRequestData {
   location: string;
   preferredDate: string;
   preferredTime: string;
-  urgency: "low" | "normal" | "high";
+  urgency: "baixa" | "normal" | "alta";
   contactName: string;
   contactPhone: string;
   contactEmail: string;

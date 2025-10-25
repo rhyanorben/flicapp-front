@@ -1,26 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useMemo, useState } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Eye, Star, Search, History, User, Calendar } from "lucide-react";
+  Star,
+  History,
+  User,
+  Calendar,
+  DollarSign,
+  Wrench,
+  FileText,
+  BarChart3,
+  MapPin,
+  MessageCircle,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  GenericTable,
+  TableColumn,
+  TableAction,
+} from "@/components/ui/generic-table";
+import { DetailModalSection } from "@/components/ui/detail-modal";
+import { formatCurrency, formatDate } from "@/lib/utils/table-utils";
 
 interface HistoryOrder {
   id: string;
@@ -31,62 +31,190 @@ interface HistoryOrder {
   prestador: string;
   avaliacao?: number;
   dataFinalizacao: string;
+  valor?: number;
+  localizacao?: string;
+  comentario?: string;
 }
 
 export function HistoryTable() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("todos");
   const [periodFilter, setPeriodFilter] = useState("todos");
 
   // Dados mockados - em produção viria da API
-  const historyOrders: HistoryOrder[] = [
+  const historyOrders: HistoryOrder[] = useMemo(
+    () => [
+      {
+        id: "PED-001",
+        tipoServico: "Limpeza",
+        descricao: "Limpeza residencial completa",
+        status: "concluido",
+        data: "2024-01-15",
+        prestador: "João Silva",
+        avaliacao: 5,
+        dataFinalizacao: "2024-01-16",
+        valor: 150.0,
+        localizacao: "São Paulo, SP",
+        comentario: "Excelente trabalho, muito pontual e organizado!",
+      },
+      {
+        id: "PED-002",
+        tipoServico: "Manutenção",
+        descricao: "Reparo no ar condicionado",
+        status: "concluido",
+        data: "2024-01-10",
+        prestador: "Maria Santos",
+        avaliacao: 4,
+        dataFinalizacao: "2024-01-12",
+        valor: 200.0,
+        localizacao: "São Paulo, SP",
+        comentario: "Resolveu o problema rapidamente.",
+      },
+      {
+        id: "PED-003",
+        tipoServico: "Instalação",
+        descricao: "Instalação de ventilador",
+        status: "concluido",
+        data: "2024-01-05",
+        prestador: "Pedro Costa",
+        dataFinalizacao: "2024-01-07",
+        valor: 120.0,
+        localizacao: "São Paulo, SP",
+      },
+      {
+        id: "PED-004",
+        tipoServico: "Consultoria",
+        descricao: "Consultoria em organização",
+        status: "cancelado",
+        data: "2024-01-02",
+        prestador: "Ana Oliveira",
+        dataFinalizacao: "2024-01-03",
+        valor: 80.0,
+        localizacao: "São Paulo, SP",
+      },
+      {
+        id: "PED-005",
+        tipoServico: "Reparo",
+        descricao: "Reparo de eletrodoméstico",
+        status: "concluido",
+        data: "2023-12-28",
+        prestador: "Carlos Mendes",
+        avaliacao: 3,
+        dataFinalizacao: "2023-12-30",
+        valor: 90.0,
+        localizacao: "São Paulo, SP",
+        comentario: "Serviço realizado conforme esperado.",
+      },
+    ],
+    []
+  );
+
+  // Period filter options
+  const periodOptions = [
+    { value: "todos", label: "Todos os períodos" },
+    { value: "7dias", label: "Últimos 7 dias" },
+    { value: "30dias", label: "Últimos 30 dias" },
+    { value: "90dias", label: "Últimos 90 dias" },
+    { value: "mais90dias", label: "Mais de 90 dias" },
+  ];
+
+  // Column definitions
+  const columns: TableColumn[] = [
+    { key: "id", label: "ID", width: "120px", sortable: true },
+    { key: "tipoServico", label: "Tipo de Serviço", sortable: true },
+    { key: "descricao", label: "Descrição" },
     {
-      id: "PED-001",
-      tipoServico: "Limpeza",
-      descricao: "Limpeza residencial completa",
-      status: "concluido",
-      data: "2024-01-15",
-      prestador: "João Silva",
-      avaliacao: 5,
-      dataFinalizacao: "2024-01-16",
+      key: "status",
+      label: "Status Final",
+      sortable: true,
+      render: (value) => getStatusBadge(value as HistoryOrder["status"]),
     },
     {
-      id: "PED-002",
-      tipoServico: "Manutenção",
-      descricao: "Reparo no ar condicionado",
-      status: "concluido",
-      data: "2024-01-10",
-      prestador: "Maria Santos",
-      avaliacao: 4,
-      dataFinalizacao: "2024-01-12",
+      key: "data",
+      label: "Data Pedido",
+      sortable: true,
+      render: (value) => (
+        <div className="flex items-center gap-2">
+          <Calendar className="h-4 w-4 text-gray-400" />
+          <span>{formatDate(value as string)}</span>
+        </div>
+      ),
     },
     {
-      id: "PED-003",
-      tipoServico: "Instalação",
-      descricao: "Instalação de ventilador",
-      status: "concluido",
-      data: "2024-01-05",
-      prestador: "Pedro Costa",
-      dataFinalizacao: "2024-01-07",
+      key: "dataFinalizacao",
+      label: "Data Finalização",
+      sortable: true,
+      render: (value) => (
+        <div className="flex items-center gap-2">
+          <Calendar className="h-4 w-4 text-gray-400" />
+          <span>{formatDate(value as string)}</span>
+        </div>
+      ),
     },
     {
-      id: "PED-004",
-      tipoServico: "Consultoria",
-      descricao: "Consultoria em organização",
-      status: "cancelado",
-      data: "2024-01-02",
-      prestador: "Ana Oliveira",
-      dataFinalizacao: "2024-01-03",
+      key: "prestador",
+      label: "Prestador",
+      sortable: true,
+      render: (value) => (
+        <div className="flex items-center gap-2">
+          <User className="h-4 w-4 text-gray-400" />
+          <span>{String(value)}</span>
+        </div>
+      ),
     },
     {
-      id: "PED-005",
-      tipoServico: "Reparo",
-      descricao: "Reparo de eletrodoméstico",
-      status: "concluido",
-      data: "2023-12-28",
-      prestador: "Carlos Mendes",
-      avaliacao: 3,
-      dataFinalizacao: "2023-12-30",
+      key: "avaliacao",
+      label: "Avaliação",
+      render: (value) =>
+        value ? (
+          <div className="flex items-center gap-1">
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+            <span>{String(value)}/5</span>
+          </div>
+        ) : (
+          <span className="text-gray-400">-</span>
+        ),
+    },
+  ];
+
+  // Custom actions
+  const customActions: TableAction[] = [
+    {
+      id: "rate",
+      label: "Avaliar Serviço",
+      icon: ({ className }) => <Star className={className} />,
+      onClick: (order) => handleRateOrder(order.id as string),
+      variant: "success",
+      show: (order) =>
+        Boolean(order.status === "concluido" && !order.avaliacao),
+    },
+    {
+      id: "view-rating",
+      label: "Ver Avaliação",
+      icon: ({ className }) => <Star className={className} />,
+      onClick: (order) => handleViewRating(order.id as string),
+      show: (order) => Boolean(order.status === "concluido" && order.avaliacao),
+    },
+    {
+      id: "export-selected",
+      label: "Exportar Selecionados",
+      icon: ({ className }) => (
+        <svg
+          className={className}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+      ),
+      onClick: (order) => {
+        console.log("Exportar pedido:", order.id);
+        // Implementar exportação individual
+      },
     },
   ];
 
@@ -112,24 +240,13 @@ export function HistoryTable() {
     return "mais90dias";
   };
 
-  const filteredOrders = historyOrders.filter((order) => {
-    const matchesSearch =
-      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.prestador.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesStatus =
-      statusFilter === "todos" || order.status === statusFilter;
-    const matchesPeriod =
-      periodFilter === "todos" || getPeriodFilter(order.data) === periodFilter;
-
-    return matchesSearch && matchesStatus && matchesPeriod;
-  });
-
-  const handleViewDetails = (orderId: string) => {
-    console.log("Ver detalhes do pedido:", orderId);
-    // Implementar modal ou navegação para detalhes
-  };
+  // Filter data by period
+  const filteredData = useMemo(() => {
+    if (periodFilter === "todos") return historyOrders;
+    return historyOrders.filter(
+      (order) => getPeriodFilter(order.data) === periodFilter
+    );
+  }, [historyOrders, periodFilter]);
 
   const handleRateOrder = (orderId: string) => {
     console.log("Avaliar pedido:", orderId);
@@ -141,143 +258,134 @@ export function HistoryTable() {
     // Implementar modal para visualizar avaliação
   };
 
+  // Detail modal content
+  const detailModalContent = (order: HistoryOrder) => (
+    <>
+      <DetailModalSection title="ID do Pedido">{order.id}</DetailModalSection>
+
+      <DetailModalSection
+        title="Tipo de Serviço"
+        icon={<Wrench className="h-3 w-3" />}
+      >
+        {order.tipoServico}
+      </DetailModalSection>
+
+      <DetailModalSection
+        title="Descrição"
+        icon={<FileText className="h-3 w-3" />}
+      >
+        {order.descricao}
+      </DetailModalSection>
+
+      <DetailModalSection
+        title="Status"
+        icon={<BarChart3 className="h-3 w-3" />}
+      >
+        {getStatusBadge(order.status)}
+      </DetailModalSection>
+
+      <DetailModalSection
+        title="Data do Pedido"
+        icon={<Calendar className="h-3 w-3" />}
+      >
+        {formatDate(order.data)}
+      </DetailModalSection>
+
+      <DetailModalSection
+        title="Data de Finalização"
+        icon={<Calendar className="h-3 w-3" />}
+      >
+        {formatDate(order.dataFinalizacao)}
+      </DetailModalSection>
+
+      <DetailModalSection title="Prestador" icon={<User className="h-3 w-3" />}>
+        {order.prestador}
+      </DetailModalSection>
+
+      {order.valor && (
+        <DetailModalSection
+          title="Valor"
+          icon={<DollarSign className="h-3 w-3" />}
+        >
+          {formatCurrency(order.valor)}
+        </DetailModalSection>
+      )}
+
+      {order.localizacao && (
+        <DetailModalSection
+          title="Localização"
+          icon={<MapPin className="h-3 w-3" />}
+        >
+          {order.localizacao}
+        </DetailModalSection>
+      )}
+
+      {order.avaliacao && (
+        <DetailModalSection
+          title="Avaliação"
+          icon={<Star className="h-3 w-3" />}
+        >
+          <div className="flex items-center gap-1">
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+            <span>{order.avaliacao}/5</span>
+          </div>
+        </DetailModalSection>
+      )}
+
+      {order.comentario && (
+        <DetailModalSection
+          title="Comentário"
+          icon={<MessageCircle className="h-3 w-3" />}
+        >
+          {order.comentario}
+        </DetailModalSection>
+      )}
+    </>
+  );
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <History className="h-5 w-5" />
-          Histórico de Pedidos
-        </CardTitle>
-        <div className="flex flex-col sm:flex-row gap-4 mt-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Buscar por ID, descrição ou prestador..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <div className="flex gap-2">
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Todos os status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos os status</SelectItem>
-                <SelectItem value="concluido">Concluído</SelectItem>
-                <SelectItem value="cancelado">Cancelado</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={periodFilter} onValueChange={setPeriodFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Todos os períodos" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos os períodos</SelectItem>
-                <SelectItem value="7dias">Últimos 7 dias</SelectItem>
-                <SelectItem value="30dias">Últimos 30 dias</SelectItem>
-                <SelectItem value="90dias">Últimos 90 dias</SelectItem>
-                <SelectItem value="mais90dias">Mais de 90 dias</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Tipo de Serviço</TableHead>
-                <TableHead>Descrição</TableHead>
-                <TableHead>Status Final</TableHead>
-                <TableHead>Data Pedido</TableHead>
-                <TableHead>Data Finalização</TableHead>
-                <TableHead>Prestador</TableHead>
-                <TableHead>Avaliação</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredOrders.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell className="font-medium">{order.id}</TableCell>
-                  <TableCell>{order.tipoServico}</TableCell>
-                  <TableCell className="max-w-xs truncate">
-                    {order.descricao}
-                  </TableCell>
-                  <TableCell>{getStatusBadge(order.status)}</TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-gray-400" />
-                    {new Date(order.data).toLocaleDateString("pt-BR")}
-                  </TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-gray-400" />
-                    {new Date(order.dataFinalizacao).toLocaleDateString(
-                      "pt-BR"
-                    )}
-                  </TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-gray-400" />
-                    {order.prestador}
-                  </TableCell>
-                  <TableCell>
-                    {order.avaliacao ? (
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span>{order.avaliacao}</span>
-                      </div>
-                    ) : (
-                      <span className="text-gray-400">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleViewDetails(order.id)}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
+    <div className="space-y-4">
+      {/* Period Filter */}
+      <div className="flex items-center gap-4">
+        <label className="text-sm font-medium">Filtrar por período:</label>
+        <select
+          value={periodFilter}
+          onChange={(e) => setPeriodFilter(e.target.value)}
+          className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+        >
+          {periodOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-                      {order.status === "concluido" && !order.avaliacao && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleRateOrder(order.id)}
-                          className="text-yellow-600 hover:text-yellow-700"
-                        >
-                          <Star className="h-4 w-4" />
-                        </Button>
-                      )}
-
-                      {order.status === "concluido" && order.avaliacao && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleViewRating(order.id)}
-                          className="text-blue-600 hover:text-blue-700"
-                        >
-                          <Star className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-
-        {filteredOrders.length === 0 && (
-          <div className="text-center py-8 text-muted-foreground">
-            Nenhum pedido encontrado no histórico com os filtros aplicados.
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      {/* Generic Table */}
+      <GenericTable
+        title="Histórico de Pedidos"
+        icon={<History className="h-5 w-5" />}
+        data={filteredData as unknown as Record<string, unknown>[]}
+        columns={columns}
+        actions={customActions}
+        searchPlaceholder="Buscar por ID, descrição ou prestador..."
+        sortOptions={[
+          { value: "id", label: "ID" },
+          { value: "tipoServico", label: "Tipo de Serviço" },
+          { value: "data", label: "Data Pedido" },
+          { value: "dataFinalizacao", label: "Data Finalização" },
+          { value: "status", label: "Status" },
+          { value: "avaliacao", label: "Avaliação" },
+        ]}
+        filterOptions={[
+          { value: "todos", label: "Todos os status" },
+          { value: "concluido", label: "Concluído" },
+          { value: "cancelado", label: "Cancelado" },
+        ]}
+        detailModalContent={(row) =>
+          detailModalContent(row as unknown as HistoryOrder)
+        }
+      />
+    </div>
   );
 }
