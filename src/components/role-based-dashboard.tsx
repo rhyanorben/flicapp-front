@@ -11,7 +11,22 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { USER_ROLES, UserRole } from "@/types/user";
-import { Shield, UserCheck, Users, Settings, BarChart3 } from "lucide-react";
+import {
+  Shield,
+  UserCheck,
+  Users,
+  Settings,
+  BarChart3,
+  TrendingUp,
+  AlertCircle,
+  CheckCircle,
+  Star,
+  Clock,
+  DollarSign,
+  UserPlus,
+  Activity,
+} from "lucide-react";
+import { KpiCard } from "@/components/ui/kpi-card";
 
 export const RoleBasedDashboard = () => {
   const {
@@ -115,6 +130,160 @@ export const RoleBasedDashboard = () => {
           </CardContent>
         </Card>
       )}
+
+      {/* KPI Cards Section */}
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-2xl font-bold">Métricas Principais</h2>
+          <p className="text-muted-foreground">
+            Visão geral das principais métricas do sistema
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Admin KPIs */}
+          {currentIsAdmin && (
+            <>
+              <KpiCard
+                label="Total de Usuários"
+                value={1247}
+                delta={12.5}
+                trend="up"
+                caption="vs mês anterior"
+                tone="primary"
+                icon={<Users className="h-4 w-4 text-primary" />}
+              />
+              <KpiCard
+                label="Solicitações Pendentes"
+                value={23}
+                delta={-8}
+                trend="down"
+                caption="prestadores aguardando"
+                tone="warning"
+                icon={
+                  <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-300" />
+                }
+              />
+              <KpiCard
+                label="Sistema Online"
+                value="99.9%"
+                delta={0.1}
+                trend="up"
+                caption="uptime"
+                tone="success"
+                icon={
+                  <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+                }
+              />
+              <KpiCard
+                label="Receita Total"
+                value="R$ 45.2K"
+                delta={18.3}
+                trend="up"
+                caption="este mês"
+                tone="success"
+                icon={
+                  <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+                }
+              />
+            </>
+          )}
+
+          {/* Provider KPIs */}
+          {currentIsProvider && (
+            <>
+              <KpiCard
+                label="Serviços Ativos"
+                value={8}
+                delta={2}
+                trend="up"
+                caption="serviços oferecidos"
+                tone="primary"
+                icon={<Activity className="h-4 w-4 text-primary" />}
+              />
+              <KpiCard
+                label="Solicitações Pendentes"
+                value={5}
+                delta={-1}
+                trend="down"
+                caption="aguardando resposta"
+                tone="warning"
+                icon={
+                  <Clock className="h-4 w-4 text-amber-600 dark:text-amber-300" />
+                }
+              />
+              <KpiCard
+                label="Avaliação Média"
+                value="4.8"
+                delta={0.2}
+                trend="up"
+                caption="estrelas"
+                tone="success"
+                icon={
+                  <Star className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+                }
+              />
+              <KpiCard
+                label="Serviços Concluídos"
+                value={127}
+                delta={15}
+                trend="up"
+                caption="este mês"
+                tone="success"
+                icon={
+                  <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+                }
+              />
+            </>
+          )}
+
+          {/* Client KPIs */}
+          {currentIsClient && (
+            <>
+              <KpiCard
+                label="Pedidos Ativos"
+                value={3}
+                delta={1}
+                trend="up"
+                caption="em andamento"
+                tone="primary"
+                icon={<Clock className="h-4 w-4 text-primary" />}
+              />
+              <KpiCard
+                label="Serviços Concluídos"
+                value={24}
+                delta={8}
+                trend="up"
+                caption="total histórico"
+                tone="success"
+                icon={
+                  <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+                }
+              />
+              <KpiCard
+                label="Prestadores Favoritos"
+                value={7}
+                delta={2}
+                trend="up"
+                caption="salvos"
+                tone="primary"
+                icon={<Star className="h-4 w-4 text-primary" />}
+              />
+              <KpiCard
+                label="Economia Total"
+                value="R$ 1.2K"
+                delta={25}
+                trend="up"
+                caption="vs preços de mercado"
+                tone="success"
+                icon={
+                  <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+                }
+              />
+            </>
+          )}
+        </div>
+      </div>
 
       {/* Painel Administrativo */}
       {currentIsAdmin && (

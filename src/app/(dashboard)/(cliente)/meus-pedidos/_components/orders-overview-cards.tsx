@@ -1,9 +1,17 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { KpiCard } from "@/components/ui/kpi-card";
 import { Clock, CheckCircle, AlertCircle, XCircle } from "lucide-react";
 
 interface OrderStats {
+  total: number;
+  aguardando: number;
+  emAndamento: number;
+  concluidos: number;
+  cancelados: number;
+}
+
+interface OrderDeltas {
   total: number;
   aguardando: number;
   emAndamento: number;
@@ -21,65 +29,66 @@ export function OrdersOverviewCards() {
     cancelados: 1,
   };
 
-  const cards = [
-    {
-      title: "Total de Pedidos",
-      value: stats.total,
-      icon: Clock,
-      description: "Todos os pedidos",
-      color: "text-blue-600",
-    },
-    {
-      title: "Aguardando",
-      value: stats.aguardando,
-      icon: AlertCircle,
-      description: "Aguardando confirmação",
-      color: "text-yellow-600",
-    },
-    {
-      title: "Em Andamento",
-      value: stats.emAndamento,
-      icon: Clock,
-      description: "Serviços em execução",
-      color: "text-orange-600",
-    },
-    {
-      title: "Concluídos",
-      value: stats.concluidos,
-      icon: CheckCircle,
-      description: "Serviços finalizados",
-      color: "text-green-600",
-    },
-    {
-      title: "Cancelados",
-      value: stats.cancelados,
-      icon: XCircle,
-      description: "Pedidos cancelados",
-      color: "text-red-600",
-    },
-  ];
+  // Dados de variação percentual (vs mês anterior)
+  const deltas: OrderDeltas = {
+    total: 12.5, // +12.5% vs mês anterior
+    aguardando: -15.2, // -15.2% vs mês anterior
+    emAndamento: 8.3, // +8.3% vs mês anterior
+    concluidos: 18.7, // +18.7% vs mês anterior
+    cancelados: -22.1, // -22.1% vs mês anterior
+  };
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-      {cards.map((card) => {
-        const Icon = card.icon;
-        return (
-          <Card key={card.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {card.title}
-              </CardTitle>
-              <Icon className={`h-4 w-4 ${card.color}`} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{card.value}</div>
-              <p className="text-xs text-muted-foreground">
-                {card.description}
-              </p>
-            </CardContent>
-          </Card>
-        );
-      })}
+      <KpiCard
+        label="Total de Pedidos"
+        value={stats.total}
+        delta={deltas.total}
+        trend="up"
+        tone="primary"
+        icon={<Clock className="h-4 w-4 text-primary" />}
+        caption="vs mês anterior"
+      />
+      <KpiCard
+        label="Aguardando"
+        value={stats.aguardando}
+        delta={deltas.aguardando}
+        trend="down"
+        tone="warning"
+        icon={
+          <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-300" />
+        }
+        caption="vs mês anterior"
+      />
+      <KpiCard
+        label="Em Andamento"
+        value={stats.emAndamento}
+        delta={deltas.emAndamento}
+        trend="up"
+        tone="primary"
+        icon={<Clock className="h-4 w-4 text-primary" />}
+        caption="vs mês anterior"
+      />
+      <KpiCard
+        label="Concluídos"
+        value={stats.concluidos}
+        delta={deltas.concluidos}
+        trend="up"
+        tone="success"
+        icon={
+          <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+        }
+        caption="vs mês anterior"
+      />
+      <KpiCard
+        label="Cancelados"
+        value={stats.cancelados}
+        delta={deltas.cancelados}
+        trend="down"
+        tone="danger"
+        icon={<XCircle className="h-4 w-4 text-destructive" />}
+        caption="vs mês anterior"
+      />
     </div>
   );
 }
