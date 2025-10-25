@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { RolesProvider } from "@/contexts/roles-context";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "FlicApp",
@@ -30,6 +31,7 @@ export default function RootLayout({
           <RolesProvider>
             {children}
           </RolesProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
