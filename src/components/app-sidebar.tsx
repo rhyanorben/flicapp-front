@@ -44,29 +44,38 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ];
 
     if (isClient) {
+      const clientItems = [
+        {
+          title: "Solicitar Serviço",
+          url: "/solicitar-servico",
+        },
+        {
+          title: "Meus Pedidos",
+          url: "/meus-pedidos",
+        },
+        {
+          title: "Histórico",
+          url: "/historico",
+        },
+        {
+          title: "Favoritos",
+          url: "/favoritos",
+        },
+      ];
+
+      if (!isProvider) {
+        clientItems.push({
+          title: "Tornar-se um Prestador",
+          url: "/tornar-prestador",
+        });
+      }
+
       baseItems.push(
         {
           title: "Cliente",
           url: "#",
           icon: Users,
-          items: [
-            {
-              title: "Solicitar Serviço",
-              url: "/solicitar-servico",
-            },
-            {
-              title: "Meus Pedidos",
-              url: "/meus-pedidos",
-            },
-            {
-              title: "Histórico",
-              url: "/historico",
-            },
-            {
-              title: "Favoritos",
-              url: "/favoritos",
-            },
-          ],
+          items: clientItems,
         }
       );
     }
@@ -110,6 +119,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           url: "#",
           icon: Shield,
           items: [
+            {
+              title: "Solicitações de Prestador",
+              url: "/admin/solicitacoes-prestador",
+            },
             {
               title: "Gerenciar Usuários",
               url: "#",

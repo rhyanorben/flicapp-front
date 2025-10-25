@@ -43,6 +43,11 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
  * 
  */
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
+/**
+ * Model ProviderRequest
+ * 
+ */
+export type ProviderRequest = $Result.DefaultSelection<Prisma.$ProviderRequestPayload>
 
 /**
  * Enums
@@ -56,11 +61,24 @@ export namespace $Enums {
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
+
+export const ProviderRequestStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type ProviderRequestStatus = (typeof ProviderRequestStatus)[keyof typeof ProviderRequestStatus]
+
 }
 
 export type UserRole = $Enums.UserRole
 
 export const UserRole: typeof $Enums.UserRole
+
+export type ProviderRequestStatus = $Enums.ProviderRequestStatus
+
+export const ProviderRequestStatus: typeof $Enums.ProviderRequestStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -239,6 +257,16 @@ export class PrismaClient<
     * ```
     */
   get verification(): Prisma.VerificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.providerRequest`: Exposes CRUD operations for the **ProviderRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProviderRequests
+    * const providerRequests = await prisma.providerRequest.findMany()
+    * ```
+    */
+  get providerRequest(): Prisma.ProviderRequestDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -684,7 +712,8 @@ export namespace Prisma {
     UserRoleAssignment: 'UserRoleAssignment',
     Session: 'Session',
     Account: 'Account',
-    Verification: 'Verification'
+    Verification: 'Verification',
+    ProviderRequest: 'ProviderRequest'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -703,7 +732,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "userRoleAssignment" | "session" | "account" | "verification"
+      modelProps: "user" | "role" | "userRoleAssignment" | "session" | "account" | "verification" | "providerRequest"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1151,6 +1180,80 @@ export namespace Prisma {
           }
         }
       }
+      ProviderRequest: {
+        payload: Prisma.$ProviderRequestPayload<ExtArgs>
+        fields: Prisma.ProviderRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProviderRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProviderRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.ProviderRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProviderRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>
+          }
+          findMany: {
+            args: Prisma.ProviderRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>[]
+          }
+          create: {
+            args: Prisma.ProviderRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>
+          }
+          createMany: {
+            args: Prisma.ProviderRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProviderRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.ProviderRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>
+          }
+          update: {
+            args: Prisma.ProviderRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProviderRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProviderRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProviderRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProviderRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProviderRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.ProviderRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProviderRequest>
+          }
+          groupBy: {
+            args: Prisma.ProviderRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProviderRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProviderRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<ProviderRequestCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1253,6 +1356,7 @@ export namespace Prisma {
     session?: SessionOmit
     account?: AccountOmit
     verification?: VerificationOmit
+    providerRequest?: ProviderRequestOmit
   }
 
   /* Types for Logging */
@@ -1333,14 +1437,18 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    sessions: number
     accounts: number
+    providerRequests: number
+    reviewedRequests: number
+    sessions: number
     userRoles: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    providerRequests?: boolean | UserCountOutputTypeCountProviderRequestsArgs
+    reviewedRequests?: boolean | UserCountOutputTypeCountReviewedRequestsArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     userRoles?: boolean | UserCountOutputTypeCountUserRolesArgs
   }
 
@@ -1358,15 +1466,29 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
+  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AccountWhereInput
+  export type UserCountOutputTypeCountProviderRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProviderRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReviewedRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProviderRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
   }
 
   /**
@@ -1592,8 +1714,10 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    providerRequests?: boolean | User$providerRequestsArgs<ExtArgs>
+    reviewedRequests?: boolean | User$reviewedRequestsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     userRoles?: boolean | User$userRolesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1630,8 +1754,10 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    providerRequests?: boolean | User$providerRequestsArgs<ExtArgs>
+    reviewedRequests?: boolean | User$reviewedRequestsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     userRoles?: boolean | User$userRolesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -1641,8 +1767,10 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
+      providerRequests: Prisma.$ProviderRequestPayload<ExtArgs>[]
+      reviewedRequests: Prisma.$ProviderRequestPayload<ExtArgs>[]
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
       userRoles: Prisma.$UserRoleAssignmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2047,8 +2175,10 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    providerRequests<T extends User$providerRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$providerRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviewedRequests<T extends User$reviewedRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewedRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userRoles<T extends User$userRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$userRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoleAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2474,30 +2604,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.sessions
-   */
-  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Session
-     */
-    select?: SessionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Session
-     */
-    omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    where?: SessionWhereInput
-    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
-    cursor?: SessionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
-  }
-
-  /**
    * User.accounts
    */
   export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2519,6 +2625,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.providerRequests
+   */
+  export type User$providerRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    where?: ProviderRequestWhereInput
+    orderBy?: ProviderRequestOrderByWithRelationInput | ProviderRequestOrderByWithRelationInput[]
+    cursor?: ProviderRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProviderRequestScalarFieldEnum | ProviderRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.reviewedRequests
+   */
+  export type User$reviewedRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    where?: ProviderRequestWhereInput
+    orderBy?: ProviderRequestOrderByWithRelationInput | ProviderRequestOrderByWithRelationInput[]
+    cursor?: ProviderRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProviderRequestScalarFieldEnum | ProviderRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.sessions
+   */
+  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
   /**
@@ -3785,8 +3963,8 @@ export namespace Prisma {
     roleId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userRoleAssignment"]>
 
   export type UserRoleAssignmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3795,8 +3973,8 @@ export namespace Prisma {
     roleId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userRoleAssignment"]>
 
   export type UserRoleAssignmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3805,8 +3983,8 @@ export namespace Prisma {
     roleId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userRoleAssignment"]>
 
   export type UserRoleAssignmentSelectScalar = {
@@ -3819,23 +3997,23 @@ export namespace Prisma {
 
   export type UserRoleAssignmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "roleId" | "createdAt" | "updatedAt", ExtArgs["result"]["userRoleAssignment"]>
   export type UserRoleAssignmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserRoleAssignmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserRoleAssignmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $UserRoleAssignmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserRoleAssignment"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       role: Prisma.$RolePayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4237,8 +4415,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserRoleAssignmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     role<T extends RoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoleDefaultArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7955,6 +8133,1195 @@ export namespace Prisma {
 
 
   /**
+   * Model ProviderRequest
+   */
+
+  export type AggregateProviderRequest = {
+    _count: ProviderRequestCountAggregateOutputType | null
+    _min: ProviderRequestMinAggregateOutputType | null
+    _max: ProviderRequestMaxAggregateOutputType | null
+  }
+
+  export type ProviderRequestMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    description: string | null
+    experience: string | null
+    phone: string | null
+    address: string | null
+    documentNumber: string | null
+    portfolioLinks: string | null
+    status: $Enums.ProviderRequestStatus | null
+    reviewedBy: string | null
+    reviewedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProviderRequestMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    description: string | null
+    experience: string | null
+    phone: string | null
+    address: string | null
+    documentNumber: string | null
+    portfolioLinks: string | null
+    status: $Enums.ProviderRequestStatus | null
+    reviewedBy: string | null
+    reviewedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProviderRequestCountAggregateOutputType = {
+    id: number
+    userId: number
+    description: number
+    experience: number
+    phone: number
+    address: number
+    documentNumber: number
+    portfolioLinks: number
+    status: number
+    reviewedBy: number
+    reviewedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProviderRequestMinAggregateInputType = {
+    id?: true
+    userId?: true
+    description?: true
+    experience?: true
+    phone?: true
+    address?: true
+    documentNumber?: true
+    portfolioLinks?: true
+    status?: true
+    reviewedBy?: true
+    reviewedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProviderRequestMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    description?: true
+    experience?: true
+    phone?: true
+    address?: true
+    documentNumber?: true
+    portfolioLinks?: true
+    status?: true
+    reviewedBy?: true
+    reviewedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProviderRequestCountAggregateInputType = {
+    id?: true
+    userId?: true
+    description?: true
+    experience?: true
+    phone?: true
+    address?: true
+    documentNumber?: true
+    portfolioLinks?: true
+    status?: true
+    reviewedBy?: true
+    reviewedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProviderRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProviderRequest to aggregate.
+     */
+    where?: ProviderRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProviderRequests to fetch.
+     */
+    orderBy?: ProviderRequestOrderByWithRelationInput | ProviderRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProviderRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProviderRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProviderRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProviderRequests
+    **/
+    _count?: true | ProviderRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProviderRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProviderRequestMaxAggregateInputType
+  }
+
+  export type GetProviderRequestAggregateType<T extends ProviderRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateProviderRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProviderRequest[P]>
+      : GetScalarType<T[P], AggregateProviderRequest[P]>
+  }
+
+
+
+
+  export type ProviderRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProviderRequestWhereInput
+    orderBy?: ProviderRequestOrderByWithAggregationInput | ProviderRequestOrderByWithAggregationInput[]
+    by: ProviderRequestScalarFieldEnum[] | ProviderRequestScalarFieldEnum
+    having?: ProviderRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProviderRequestCountAggregateInputType | true
+    _min?: ProviderRequestMinAggregateInputType
+    _max?: ProviderRequestMaxAggregateInputType
+  }
+
+  export type ProviderRequestGroupByOutputType = {
+    id: string
+    userId: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks: string | null
+    status: $Enums.ProviderRequestStatus
+    reviewedBy: string | null
+    reviewedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ProviderRequestCountAggregateOutputType | null
+    _min: ProviderRequestMinAggregateOutputType | null
+    _max: ProviderRequestMaxAggregateOutputType | null
+  }
+
+  type GetProviderRequestGroupByPayload<T extends ProviderRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProviderRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProviderRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProviderRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], ProviderRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProviderRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    description?: boolean
+    experience?: boolean
+    phone?: boolean
+    address?: boolean
+    documentNumber?: boolean
+    portfolioLinks?: boolean
+    status?: boolean
+    reviewedBy?: boolean
+    reviewedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedByUser?: boolean | ProviderRequest$reviewedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["providerRequest"]>
+
+  export type ProviderRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    description?: boolean
+    experience?: boolean
+    phone?: boolean
+    address?: boolean
+    documentNumber?: boolean
+    portfolioLinks?: boolean
+    status?: boolean
+    reviewedBy?: boolean
+    reviewedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedByUser?: boolean | ProviderRequest$reviewedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["providerRequest"]>
+
+  export type ProviderRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    description?: boolean
+    experience?: boolean
+    phone?: boolean
+    address?: boolean
+    documentNumber?: boolean
+    portfolioLinks?: boolean
+    status?: boolean
+    reviewedBy?: boolean
+    reviewedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedByUser?: boolean | ProviderRequest$reviewedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["providerRequest"]>
+
+  export type ProviderRequestSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    description?: boolean
+    experience?: boolean
+    phone?: boolean
+    address?: boolean
+    documentNumber?: boolean
+    portfolioLinks?: boolean
+    status?: boolean
+    reviewedBy?: boolean
+    reviewedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProviderRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "description" | "experience" | "phone" | "address" | "documentNumber" | "portfolioLinks" | "status" | "reviewedBy" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["providerRequest"]>
+  export type ProviderRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedByUser?: boolean | ProviderRequest$reviewedByUserArgs<ExtArgs>
+  }
+  export type ProviderRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedByUser?: boolean | ProviderRequest$reviewedByUserArgs<ExtArgs>
+  }
+  export type ProviderRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    reviewedByUser?: boolean | ProviderRequest$reviewedByUserArgs<ExtArgs>
+  }
+
+  export type $ProviderRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProviderRequest"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      reviewedByUser: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      description: string
+      experience: string
+      phone: string
+      address: string
+      documentNumber: string
+      portfolioLinks: string | null
+      status: $Enums.ProviderRequestStatus
+      reviewedBy: string | null
+      reviewedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["providerRequest"]>
+    composites: {}
+  }
+
+  type ProviderRequestGetPayload<S extends boolean | null | undefined | ProviderRequestDefaultArgs> = $Result.GetResult<Prisma.$ProviderRequestPayload, S>
+
+  type ProviderRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProviderRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProviderRequestCountAggregateInputType | true
+    }
+
+  export interface ProviderRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProviderRequest'], meta: { name: 'ProviderRequest' } }
+    /**
+     * Find zero or one ProviderRequest that matches the filter.
+     * @param {ProviderRequestFindUniqueArgs} args - Arguments to find a ProviderRequest
+     * @example
+     * // Get one ProviderRequest
+     * const providerRequest = await prisma.providerRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProviderRequestFindUniqueArgs>(args: SelectSubset<T, ProviderRequestFindUniqueArgs<ExtArgs>>): Prisma__ProviderRequestClient<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProviderRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProviderRequestFindUniqueOrThrowArgs} args - Arguments to find a ProviderRequest
+     * @example
+     * // Get one ProviderRequest
+     * const providerRequest = await prisma.providerRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProviderRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, ProviderRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProviderRequestClient<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProviderRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderRequestFindFirstArgs} args - Arguments to find a ProviderRequest
+     * @example
+     * // Get one ProviderRequest
+     * const providerRequest = await prisma.providerRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProviderRequestFindFirstArgs>(args?: SelectSubset<T, ProviderRequestFindFirstArgs<ExtArgs>>): Prisma__ProviderRequestClient<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProviderRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderRequestFindFirstOrThrowArgs} args - Arguments to find a ProviderRequest
+     * @example
+     * // Get one ProviderRequest
+     * const providerRequest = await prisma.providerRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProviderRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, ProviderRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProviderRequestClient<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProviderRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProviderRequests
+     * const providerRequests = await prisma.providerRequest.findMany()
+     * 
+     * // Get first 10 ProviderRequests
+     * const providerRequests = await prisma.providerRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const providerRequestWithIdOnly = await prisma.providerRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProviderRequestFindManyArgs>(args?: SelectSubset<T, ProviderRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProviderRequest.
+     * @param {ProviderRequestCreateArgs} args - Arguments to create a ProviderRequest.
+     * @example
+     * // Create one ProviderRequest
+     * const ProviderRequest = await prisma.providerRequest.create({
+     *   data: {
+     *     // ... data to create a ProviderRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProviderRequestCreateArgs>(args: SelectSubset<T, ProviderRequestCreateArgs<ExtArgs>>): Prisma__ProviderRequestClient<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProviderRequests.
+     * @param {ProviderRequestCreateManyArgs} args - Arguments to create many ProviderRequests.
+     * @example
+     * // Create many ProviderRequests
+     * const providerRequest = await prisma.providerRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProviderRequestCreateManyArgs>(args?: SelectSubset<T, ProviderRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProviderRequests and returns the data saved in the database.
+     * @param {ProviderRequestCreateManyAndReturnArgs} args - Arguments to create many ProviderRequests.
+     * @example
+     * // Create many ProviderRequests
+     * const providerRequest = await prisma.providerRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProviderRequests and only return the `id`
+     * const providerRequestWithIdOnly = await prisma.providerRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProviderRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, ProviderRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProviderRequest.
+     * @param {ProviderRequestDeleteArgs} args - Arguments to delete one ProviderRequest.
+     * @example
+     * // Delete one ProviderRequest
+     * const ProviderRequest = await prisma.providerRequest.delete({
+     *   where: {
+     *     // ... filter to delete one ProviderRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProviderRequestDeleteArgs>(args: SelectSubset<T, ProviderRequestDeleteArgs<ExtArgs>>): Prisma__ProviderRequestClient<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProviderRequest.
+     * @param {ProviderRequestUpdateArgs} args - Arguments to update one ProviderRequest.
+     * @example
+     * // Update one ProviderRequest
+     * const providerRequest = await prisma.providerRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProviderRequestUpdateArgs>(args: SelectSubset<T, ProviderRequestUpdateArgs<ExtArgs>>): Prisma__ProviderRequestClient<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProviderRequests.
+     * @param {ProviderRequestDeleteManyArgs} args - Arguments to filter ProviderRequests to delete.
+     * @example
+     * // Delete a few ProviderRequests
+     * const { count } = await prisma.providerRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProviderRequestDeleteManyArgs>(args?: SelectSubset<T, ProviderRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProviderRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProviderRequests
+     * const providerRequest = await prisma.providerRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProviderRequestUpdateManyArgs>(args: SelectSubset<T, ProviderRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProviderRequests and returns the data updated in the database.
+     * @param {ProviderRequestUpdateManyAndReturnArgs} args - Arguments to update many ProviderRequests.
+     * @example
+     * // Update many ProviderRequests
+     * const providerRequest = await prisma.providerRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProviderRequests and only return the `id`
+     * const providerRequestWithIdOnly = await prisma.providerRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProviderRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, ProviderRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProviderRequest.
+     * @param {ProviderRequestUpsertArgs} args - Arguments to update or create a ProviderRequest.
+     * @example
+     * // Update or create a ProviderRequest
+     * const providerRequest = await prisma.providerRequest.upsert({
+     *   create: {
+     *     // ... data to create a ProviderRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProviderRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProviderRequestUpsertArgs>(args: SelectSubset<T, ProviderRequestUpsertArgs<ExtArgs>>): Prisma__ProviderRequestClient<$Result.GetResult<Prisma.$ProviderRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProviderRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderRequestCountArgs} args - Arguments to filter ProviderRequests to count.
+     * @example
+     * // Count the number of ProviderRequests
+     * const count = await prisma.providerRequest.count({
+     *   where: {
+     *     // ... the filter for the ProviderRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProviderRequestCountArgs>(
+      args?: Subset<T, ProviderRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProviderRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProviderRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProviderRequestAggregateArgs>(args: Subset<T, ProviderRequestAggregateArgs>): Prisma.PrismaPromise<GetProviderRequestAggregateType<T>>
+
+    /**
+     * Group by ProviderRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProviderRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProviderRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProviderRequestGroupByArgs['orderBy'] }
+        : { orderBy?: ProviderRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProviderRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProviderRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProviderRequest model
+   */
+  readonly fields: ProviderRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProviderRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProviderRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    reviewedByUser<T extends ProviderRequest$reviewedByUserArgs<ExtArgs> = {}>(args?: Subset<T, ProviderRequest$reviewedByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProviderRequest model
+   */
+  interface ProviderRequestFieldRefs {
+    readonly id: FieldRef<"ProviderRequest", 'String'>
+    readonly userId: FieldRef<"ProviderRequest", 'String'>
+    readonly description: FieldRef<"ProviderRequest", 'String'>
+    readonly experience: FieldRef<"ProviderRequest", 'String'>
+    readonly phone: FieldRef<"ProviderRequest", 'String'>
+    readonly address: FieldRef<"ProviderRequest", 'String'>
+    readonly documentNumber: FieldRef<"ProviderRequest", 'String'>
+    readonly portfolioLinks: FieldRef<"ProviderRequest", 'String'>
+    readonly status: FieldRef<"ProviderRequest", 'ProviderRequestStatus'>
+    readonly reviewedBy: FieldRef<"ProviderRequest", 'String'>
+    readonly reviewedAt: FieldRef<"ProviderRequest", 'DateTime'>
+    readonly createdAt: FieldRef<"ProviderRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"ProviderRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProviderRequest findUnique
+   */
+  export type ProviderRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderRequest to fetch.
+     */
+    where: ProviderRequestWhereUniqueInput
+  }
+
+  /**
+   * ProviderRequest findUniqueOrThrow
+   */
+  export type ProviderRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderRequest to fetch.
+     */
+    where: ProviderRequestWhereUniqueInput
+  }
+
+  /**
+   * ProviderRequest findFirst
+   */
+  export type ProviderRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderRequest to fetch.
+     */
+    where?: ProviderRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProviderRequests to fetch.
+     */
+    orderBy?: ProviderRequestOrderByWithRelationInput | ProviderRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProviderRequests.
+     */
+    cursor?: ProviderRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProviderRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProviderRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProviderRequests.
+     */
+    distinct?: ProviderRequestScalarFieldEnum | ProviderRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ProviderRequest findFirstOrThrow
+   */
+  export type ProviderRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderRequest to fetch.
+     */
+    where?: ProviderRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProviderRequests to fetch.
+     */
+    orderBy?: ProviderRequestOrderByWithRelationInput | ProviderRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProviderRequests.
+     */
+    cursor?: ProviderRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProviderRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProviderRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProviderRequests.
+     */
+    distinct?: ProviderRequestScalarFieldEnum | ProviderRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ProviderRequest findMany
+   */
+  export type ProviderRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ProviderRequests to fetch.
+     */
+    where?: ProviderRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProviderRequests to fetch.
+     */
+    orderBy?: ProviderRequestOrderByWithRelationInput | ProviderRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProviderRequests.
+     */
+    cursor?: ProviderRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProviderRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProviderRequests.
+     */
+    skip?: number
+    distinct?: ProviderRequestScalarFieldEnum | ProviderRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ProviderRequest create
+   */
+  export type ProviderRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProviderRequest.
+     */
+    data: XOR<ProviderRequestCreateInput, ProviderRequestUncheckedCreateInput>
+  }
+
+  /**
+   * ProviderRequest createMany
+   */
+  export type ProviderRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProviderRequests.
+     */
+    data: ProviderRequestCreateManyInput | ProviderRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProviderRequest createManyAndReturn
+   */
+  export type ProviderRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProviderRequests.
+     */
+    data: ProviderRequestCreateManyInput | ProviderRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProviderRequest update
+   */
+  export type ProviderRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProviderRequest.
+     */
+    data: XOR<ProviderRequestUpdateInput, ProviderRequestUncheckedUpdateInput>
+    /**
+     * Choose, which ProviderRequest to update.
+     */
+    where: ProviderRequestWhereUniqueInput
+  }
+
+  /**
+   * ProviderRequest updateMany
+   */
+  export type ProviderRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProviderRequests.
+     */
+    data: XOR<ProviderRequestUpdateManyMutationInput, ProviderRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which ProviderRequests to update
+     */
+    where?: ProviderRequestWhereInput
+    /**
+     * Limit how many ProviderRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProviderRequest updateManyAndReturn
+   */
+  export type ProviderRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update ProviderRequests.
+     */
+    data: XOR<ProviderRequestUpdateManyMutationInput, ProviderRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which ProviderRequests to update
+     */
+    where?: ProviderRequestWhereInput
+    /**
+     * Limit how many ProviderRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProviderRequest upsert
+   */
+  export type ProviderRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProviderRequest to update in case it exists.
+     */
+    where: ProviderRequestWhereUniqueInput
+    /**
+     * In case the ProviderRequest found by the `where` argument doesn't exist, create a new ProviderRequest with this data.
+     */
+    create: XOR<ProviderRequestCreateInput, ProviderRequestUncheckedCreateInput>
+    /**
+     * In case the ProviderRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProviderRequestUpdateInput, ProviderRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * ProviderRequest delete
+   */
+  export type ProviderRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+    /**
+     * Filter which ProviderRequest to delete.
+     */
+    where: ProviderRequestWhereUniqueInput
+  }
+
+  /**
+   * ProviderRequest deleteMany
+   */
+  export type ProviderRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProviderRequests to delete
+     */
+    where?: ProviderRequestWhereInput
+    /**
+     * Limit how many ProviderRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProviderRequest.reviewedByUser
+   */
+  export type ProviderRequest$reviewedByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ProviderRequest without action
+   */
+  export type ProviderRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProviderRequest
+     */
+    select?: ProviderRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProviderRequest
+     */
+    omit?: ProviderRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProviderRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8047,6 +9414,25 @@ export namespace Prisma {
   export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+  export const ProviderRequestScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    description: 'description',
+    experience: 'experience',
+    phone: 'phone',
+    address: 'address',
+    documentNumber: 'documentNumber',
+    portfolioLinks: 'portfolioLinks',
+    status: 'status',
+    reviewedBy: 'reviewedBy',
+    reviewedAt: 'reviewedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProviderRequestScalarFieldEnum = (typeof ProviderRequestScalarFieldEnum)[keyof typeof ProviderRequestScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -8126,6 +9512,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ProviderRequestStatus'
+   */
+  export type EnumProviderRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProviderRequestStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProviderRequestStatus[]'
+   */
+  export type ListEnumProviderRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProviderRequestStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -8153,8 +9553,10 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
+    providerRequests?: ProviderRequestListRelationFilter
+    reviewedRequests?: ProviderRequestListRelationFilter
+    sessions?: SessionListRelationFilter
     userRoles?: UserRoleAssignmentListRelationFilter
   }
 
@@ -8166,8 +9568,10 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
+    providerRequests?: ProviderRequestOrderByRelationAggregateInput
+    reviewedRequests?: ProviderRequestOrderByRelationAggregateInput
+    sessions?: SessionOrderByRelationAggregateInput
     userRoles?: UserRoleAssignmentOrderByRelationAggregateInput
   }
 
@@ -8182,8 +9586,10 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
+    providerRequests?: ProviderRequestListRelationFilter
+    reviewedRequests?: ProviderRequestListRelationFilter
+    sessions?: SessionListRelationFilter
     userRoles?: UserRoleAssignmentListRelationFilter
   }, "id" | "email">
 
@@ -8272,8 +9678,8 @@ export namespace Prisma {
     roleId?: StringFilter<"UserRoleAssignment"> | string
     createdAt?: DateTimeFilter<"UserRoleAssignment"> | Date | string
     updatedAt?: DateTimeFilter<"UserRoleAssignment"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type UserRoleAssignmentOrderByWithRelationInput = {
@@ -8282,8 +9688,8 @@ export namespace Prisma {
     roleId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     role?: RoleOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type UserRoleAssignmentWhereUniqueInput = Prisma.AtLeast<{
@@ -8296,8 +9702,8 @@ export namespace Prisma {
     roleId?: StringFilter<"UserRoleAssignment"> | string
     createdAt?: DateTimeFilter<"UserRoleAssignment"> | Date | string
     updatedAt?: DateTimeFilter<"UserRoleAssignment"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_roleId">
 
   export type UserRoleAssignmentOrderByWithAggregationInput = {
@@ -8544,6 +9950,104 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
   }
 
+  export type ProviderRequestWhereInput = {
+    AND?: ProviderRequestWhereInput | ProviderRequestWhereInput[]
+    OR?: ProviderRequestWhereInput[]
+    NOT?: ProviderRequestWhereInput | ProviderRequestWhereInput[]
+    id?: StringFilter<"ProviderRequest"> | string
+    userId?: StringFilter<"ProviderRequest"> | string
+    description?: StringFilter<"ProviderRequest"> | string
+    experience?: StringFilter<"ProviderRequest"> | string
+    phone?: StringFilter<"ProviderRequest"> | string
+    address?: StringFilter<"ProviderRequest"> | string
+    documentNumber?: StringFilter<"ProviderRequest"> | string
+    portfolioLinks?: StringNullableFilter<"ProviderRequest"> | string | null
+    status?: EnumProviderRequestStatusFilter<"ProviderRequest"> | $Enums.ProviderRequestStatus
+    reviewedBy?: StringNullableFilter<"ProviderRequest"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"ProviderRequest"> | Date | string | null
+    createdAt?: DateTimeFilter<"ProviderRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ProviderRequest"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    reviewedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type ProviderRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    description?: SortOrder
+    experience?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    documentNumber?: SortOrder
+    portfolioLinks?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reviewedBy?: SortOrderInput | SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    reviewedByUser?: UserOrderByWithRelationInput
+  }
+
+  export type ProviderRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ProviderRequestWhereInput | ProviderRequestWhereInput[]
+    OR?: ProviderRequestWhereInput[]
+    NOT?: ProviderRequestWhereInput | ProviderRequestWhereInput[]
+    userId?: StringFilter<"ProviderRequest"> | string
+    description?: StringFilter<"ProviderRequest"> | string
+    experience?: StringFilter<"ProviderRequest"> | string
+    phone?: StringFilter<"ProviderRequest"> | string
+    address?: StringFilter<"ProviderRequest"> | string
+    documentNumber?: StringFilter<"ProviderRequest"> | string
+    portfolioLinks?: StringNullableFilter<"ProviderRequest"> | string | null
+    status?: EnumProviderRequestStatusFilter<"ProviderRequest"> | $Enums.ProviderRequestStatus
+    reviewedBy?: StringNullableFilter<"ProviderRequest"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"ProviderRequest"> | Date | string | null
+    createdAt?: DateTimeFilter<"ProviderRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ProviderRequest"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    reviewedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type ProviderRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    description?: SortOrder
+    experience?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    documentNumber?: SortOrder
+    portfolioLinks?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reviewedBy?: SortOrderInput | SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProviderRequestCountOrderByAggregateInput
+    _max?: ProviderRequestMaxOrderByAggregateInput
+    _min?: ProviderRequestMinOrderByAggregateInput
+  }
+
+  export type ProviderRequestScalarWhereWithAggregatesInput = {
+    AND?: ProviderRequestScalarWhereWithAggregatesInput | ProviderRequestScalarWhereWithAggregatesInput[]
+    OR?: ProviderRequestScalarWhereWithAggregatesInput[]
+    NOT?: ProviderRequestScalarWhereWithAggregatesInput | ProviderRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    userId?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    description?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    experience?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    phone?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    address?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    documentNumber?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    portfolioLinks?: StringNullableWithAggregatesFilter<"ProviderRequest"> | string | null
+    status?: EnumProviderRequestStatusWithAggregatesFilter<"ProviderRequest"> | $Enums.ProviderRequestStatus
+    reviewedBy?: StringNullableWithAggregatesFilter<"ProviderRequest"> | string | null
+    reviewedAt?: DateTimeNullableWithAggregatesFilter<"ProviderRequest"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ProviderRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ProviderRequest"> | Date | string
+  }
+
   export type UserCreateInput = {
     id: string
     name: string
@@ -8552,8 +10056,10 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestCreateNestedManyWithoutReviewedByUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     userRoles?: UserRoleAssignmentCreateNestedManyWithoutUserInput
   }
 
@@ -8565,8 +10071,10 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestUncheckedCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     userRoles?: UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -8578,8 +10086,10 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUpdateManyWithoutReviewedByUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     userRoles?: UserRoleAssignmentUpdateManyWithoutUserNestedInput
   }
 
@@ -8591,8 +10101,10 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUncheckedUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     userRoles?: UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -8683,8 +10195,8 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutUserRolesInput
     role: RoleCreateNestedOneWithoutUserRolesInput
+    user: UserCreateNestedOneWithoutUserRolesInput
   }
 
   export type UserRoleAssignmentUncheckedCreateInput = {
@@ -8699,8 +10211,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserRolesNestedInput
     role?: RoleUpdateOneRequiredWithoutUserRolesNestedInput
+    user?: UserUpdateOneRequiredWithoutUserRolesNestedInput
   }
 
   export type UserRoleAssignmentUncheckedUpdateInput = {
@@ -8983,6 +10495,116 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProviderRequestCreateInput = {
+    id?: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutProviderRequestsInput
+    reviewedByUser?: UserCreateNestedOneWithoutReviewedRequestsInput
+  }
+
+  export type ProviderRequestUncheckedCreateInput = {
+    id?: string
+    userId: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedBy?: string | null
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutProviderRequestsNestedInput
+    reviewedByUser?: UserUpdateOneWithoutReviewedRequestsNestedInput
+  }
+
+  export type ProviderRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderRequestCreateManyInput = {
+    id?: string
+    userId: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedBy?: string | null
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -9029,16 +10651,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type SessionListRelationFilter = {
-    every?: SessionWhereInput
-    some?: SessionWhereInput
-    none?: SessionWhereInput
-  }
-
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
     none?: AccountWhereInput
+  }
+
+  export type ProviderRequestListRelationFilter = {
+    every?: ProviderRequestWhereInput
+    some?: ProviderRequestWhereInput
+    none?: ProviderRequestWhereInput
+  }
+
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
   }
 
   export type UserRoleAssignmentListRelationFilter = {
@@ -9052,11 +10680,15 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type SessionOrderByRelationAggregateInput = {
+  export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type AccountOrderByRelationAggregateInput = {
+  export type ProviderRequestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9190,14 +10822,14 @@ export namespace Prisma {
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type RoleScalarRelationFilter = {
     is?: RoleWhereInput
     isNot?: RoleWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type UserRoleAssignmentUserIdRoleIdCompoundUniqueInput = {
@@ -9362,11 +10994,74 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type SessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  export type EnumProviderRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProviderRequestStatus | EnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProviderRequestStatusFilter<$PrismaModel> | $Enums.ProviderRequestStatus
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type ProviderRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    description?: SortOrder
+    experience?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    documentNumber?: SortOrder
+    portfolioLinks?: SortOrder
+    status?: SortOrder
+    reviewedBy?: SortOrder
+    reviewedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProviderRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    description?: SortOrder
+    experience?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    documentNumber?: SortOrder
+    portfolioLinks?: SortOrder
+    status?: SortOrder
+    reviewedBy?: SortOrder
+    reviewedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProviderRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    description?: SortOrder
+    experience?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    documentNumber?: SortOrder
+    portfolioLinks?: SortOrder
+    status?: SortOrder
+    reviewedBy?: SortOrder
+    reviewedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumProviderRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProviderRequestStatus | EnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProviderRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProviderRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProviderRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumProviderRequestStatusFilter<$PrismaModel>
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -9376,6 +11071,27 @@ export namespace Prisma {
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
   }
 
+  export type ProviderRequestCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProviderRequestCreateWithoutUserInput, ProviderRequestUncheckedCreateWithoutUserInput> | ProviderRequestCreateWithoutUserInput[] | ProviderRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProviderRequestCreateOrConnectWithoutUserInput | ProviderRequestCreateOrConnectWithoutUserInput[]
+    createMany?: ProviderRequestCreateManyUserInputEnvelope
+    connect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+  }
+
+  export type ProviderRequestCreateNestedManyWithoutReviewedByUserInput = {
+    create?: XOR<ProviderRequestCreateWithoutReviewedByUserInput, ProviderRequestUncheckedCreateWithoutReviewedByUserInput> | ProviderRequestCreateWithoutReviewedByUserInput[] | ProviderRequestUncheckedCreateWithoutReviewedByUserInput[]
+    connectOrCreate?: ProviderRequestCreateOrConnectWithoutReviewedByUserInput | ProviderRequestCreateOrConnectWithoutReviewedByUserInput[]
+    createMany?: ProviderRequestCreateManyReviewedByUserInputEnvelope
+    connect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+  }
+
+  export type SessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
   export type UserRoleAssignmentCreateNestedManyWithoutUserInput = {
     create?: XOR<UserRoleAssignmentCreateWithoutUserInput, UserRoleAssignmentUncheckedCreateWithoutUserInput> | UserRoleAssignmentCreateWithoutUserInput[] | UserRoleAssignmentUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleAssignmentCreateOrConnectWithoutUserInput | UserRoleAssignmentCreateOrConnectWithoutUserInput[]
@@ -9383,18 +11099,32 @@ export namespace Prisma {
     connect?: UserRoleAssignmentWhereUniqueInput | UserRoleAssignmentWhereUniqueInput[]
   }
 
-  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-  }
-
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
     createMany?: AccountCreateManyUserInputEnvelope
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type ProviderRequestUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProviderRequestCreateWithoutUserInput, ProviderRequestUncheckedCreateWithoutUserInput> | ProviderRequestCreateWithoutUserInput[] | ProviderRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProviderRequestCreateOrConnectWithoutUserInput | ProviderRequestCreateOrConnectWithoutUserInput[]
+    createMany?: ProviderRequestCreateManyUserInputEnvelope
+    connect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+  }
+
+  export type ProviderRequestUncheckedCreateNestedManyWithoutReviewedByUserInput = {
+    create?: XOR<ProviderRequestCreateWithoutReviewedByUserInput, ProviderRequestUncheckedCreateWithoutReviewedByUserInput> | ProviderRequestCreateWithoutReviewedByUserInput[] | ProviderRequestUncheckedCreateWithoutReviewedByUserInput[]
+    connectOrCreate?: ProviderRequestCreateOrConnectWithoutReviewedByUserInput | ProviderRequestCreateOrConnectWithoutReviewedByUserInput[]
+    createMany?: ProviderRequestCreateManyReviewedByUserInputEnvelope
+    connect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+  }
+
+  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput = {
@@ -9420,20 +11150,6 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type SessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
-  }
-
   export type AccountUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -9446,6 +11162,48 @@ export namespace Prisma {
     update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type ProviderRequestUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProviderRequestCreateWithoutUserInput, ProviderRequestUncheckedCreateWithoutUserInput> | ProviderRequestCreateWithoutUserInput[] | ProviderRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProviderRequestCreateOrConnectWithoutUserInput | ProviderRequestCreateOrConnectWithoutUserInput[]
+    upsert?: ProviderRequestUpsertWithWhereUniqueWithoutUserInput | ProviderRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProviderRequestCreateManyUserInputEnvelope
+    set?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    disconnect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    delete?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    connect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    update?: ProviderRequestUpdateWithWhereUniqueWithoutUserInput | ProviderRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProviderRequestUpdateManyWithWhereWithoutUserInput | ProviderRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProviderRequestScalarWhereInput | ProviderRequestScalarWhereInput[]
+  }
+
+  export type ProviderRequestUpdateManyWithoutReviewedByUserNestedInput = {
+    create?: XOR<ProviderRequestCreateWithoutReviewedByUserInput, ProviderRequestUncheckedCreateWithoutReviewedByUserInput> | ProviderRequestCreateWithoutReviewedByUserInput[] | ProviderRequestUncheckedCreateWithoutReviewedByUserInput[]
+    connectOrCreate?: ProviderRequestCreateOrConnectWithoutReviewedByUserInput | ProviderRequestCreateOrConnectWithoutReviewedByUserInput[]
+    upsert?: ProviderRequestUpsertWithWhereUniqueWithoutReviewedByUserInput | ProviderRequestUpsertWithWhereUniqueWithoutReviewedByUserInput[]
+    createMany?: ProviderRequestCreateManyReviewedByUserInputEnvelope
+    set?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    disconnect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    delete?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    connect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    update?: ProviderRequestUpdateWithWhereUniqueWithoutReviewedByUserInput | ProviderRequestUpdateWithWhereUniqueWithoutReviewedByUserInput[]
+    updateMany?: ProviderRequestUpdateManyWithWhereWithoutReviewedByUserInput | ProviderRequestUpdateManyWithWhereWithoutReviewedByUserInput[]
+    deleteMany?: ProviderRequestScalarWhereInput | ProviderRequestScalarWhereInput[]
+  }
+
+  export type SessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type UserRoleAssignmentUpdateManyWithoutUserNestedInput = {
@@ -9462,20 +11220,6 @@ export namespace Prisma {
     deleteMany?: UserRoleAssignmentScalarWhereInput | UserRoleAssignmentScalarWhereInput[]
   }
 
-  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
-  }
-
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -9488,6 +11232,48 @@ export namespace Prisma {
     update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type ProviderRequestUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProviderRequestCreateWithoutUserInput, ProviderRequestUncheckedCreateWithoutUserInput> | ProviderRequestCreateWithoutUserInput[] | ProviderRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProviderRequestCreateOrConnectWithoutUserInput | ProviderRequestCreateOrConnectWithoutUserInput[]
+    upsert?: ProviderRequestUpsertWithWhereUniqueWithoutUserInput | ProviderRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProviderRequestCreateManyUserInputEnvelope
+    set?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    disconnect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    delete?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    connect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    update?: ProviderRequestUpdateWithWhereUniqueWithoutUserInput | ProviderRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProviderRequestUpdateManyWithWhereWithoutUserInput | ProviderRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProviderRequestScalarWhereInput | ProviderRequestScalarWhereInput[]
+  }
+
+  export type ProviderRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput = {
+    create?: XOR<ProviderRequestCreateWithoutReviewedByUserInput, ProviderRequestUncheckedCreateWithoutReviewedByUserInput> | ProviderRequestCreateWithoutReviewedByUserInput[] | ProviderRequestUncheckedCreateWithoutReviewedByUserInput[]
+    connectOrCreate?: ProviderRequestCreateOrConnectWithoutReviewedByUserInput | ProviderRequestCreateOrConnectWithoutReviewedByUserInput[]
+    upsert?: ProviderRequestUpsertWithWhereUniqueWithoutReviewedByUserInput | ProviderRequestUpsertWithWhereUniqueWithoutReviewedByUserInput[]
+    createMany?: ProviderRequestCreateManyReviewedByUserInputEnvelope
+    set?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    disconnect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    delete?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    connect?: ProviderRequestWhereUniqueInput | ProviderRequestWhereUniqueInput[]
+    update?: ProviderRequestUpdateWithWhereUniqueWithoutReviewedByUserInput | ProviderRequestUpdateWithWhereUniqueWithoutReviewedByUserInput[]
+    updateMany?: ProviderRequestUpdateManyWithWhereWithoutReviewedByUserInput | ProviderRequestUpdateManyWithWhereWithoutReviewedByUserInput[]
+    deleteMany?: ProviderRequestScalarWhereInput | ProviderRequestScalarWhereInput[]
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput = {
@@ -9550,24 +11336,16 @@ export namespace Prisma {
     deleteMany?: UserRoleAssignmentScalarWhereInput | UserRoleAssignmentScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutUserRolesInput = {
-    create?: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUserRolesInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type RoleCreateNestedOneWithoutUserRolesInput = {
     create?: XOR<RoleCreateWithoutUserRolesInput, RoleUncheckedCreateWithoutUserRolesInput>
     connectOrCreate?: RoleCreateOrConnectWithoutUserRolesInput
     connect?: RoleWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutUserRolesNestedInput = {
+  export type UserCreateNestedOneWithoutUserRolesInput = {
     create?: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
     connectOrCreate?: UserCreateOrConnectWithoutUserRolesInput
-    upsert?: UserUpsertWithoutUserRolesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserRolesInput, UserUpdateWithoutUserRolesInput>, UserUncheckedUpdateWithoutUserRolesInput>
   }
 
   export type RoleUpdateOneRequiredWithoutUserRolesNestedInput = {
@@ -9576,6 +11354,14 @@ export namespace Prisma {
     upsert?: RoleUpsertWithoutUserRolesInput
     connect?: RoleWhereUniqueInput
     update?: XOR<XOR<RoleUpdateToOneWithWhereWithoutUserRolesInput, RoleUpdateWithoutUserRolesInput>, RoleUncheckedUpdateWithoutUserRolesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutUserRolesNestedInput = {
+    create?: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserRolesInput
+    upsert?: UserUpsertWithoutUserRolesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserRolesInput, UserUpdateWithoutUserRolesInput>, UserUncheckedUpdateWithoutUserRolesInput>
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -9608,6 +11394,40 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAccountsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedOneWithoutProviderRequestsInput = {
+    create?: XOR<UserCreateWithoutProviderRequestsInput, UserUncheckedCreateWithoutProviderRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProviderRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReviewedRequestsInput = {
+    create?: XOR<UserCreateWithoutReviewedRequestsInput, UserUncheckedCreateWithoutReviewedRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReviewedRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumProviderRequestStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ProviderRequestStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutProviderRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutProviderRequestsInput, UserUncheckedCreateWithoutProviderRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProviderRequestsInput
+    upsert?: UserUpsertWithoutProviderRequestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProviderRequestsInput, UserUpdateWithoutProviderRequestsInput>, UserUncheckedUpdateWithoutProviderRequestsInput>
+  }
+
+  export type UserUpdateOneWithoutReviewedRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutReviewedRequestsInput, UserUncheckedCreateWithoutReviewedRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReviewedRequestsInput
+    upsert?: UserUpsertWithoutReviewedRequestsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReviewedRequestsInput, UserUpdateWithoutReviewedRequestsInput>, UserUncheckedUpdateWithoutReviewedRequestsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -9774,34 +11594,21 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type SessionCreateWithoutUserInput = {
-    id: string
-    expiresAt: Date | string
-    token: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
+  export type NestedEnumProviderRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProviderRequestStatus | EnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProviderRequestStatusFilter<$PrismaModel> | $Enums.ProviderRequestStatus
   }
 
-  export type SessionUncheckedCreateWithoutUserInput = {
-    id: string
-    expiresAt: Date | string
-    token: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
-  }
-
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionCreateManyUserInputEnvelope = {
-    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
-    skipDuplicates?: boolean
+  export type NestedEnumProviderRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProviderRequestStatus | EnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProviderRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProviderRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProviderRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumProviderRequestStatusFilter<$PrismaModel>
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -9844,6 +11651,116 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProviderRequestCreateWithoutUserInput = {
+    id?: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reviewedByUser?: UserCreateNestedOneWithoutReviewedRequestsInput
+  }
+
+  export type ProviderRequestUncheckedCreateWithoutUserInput = {
+    id?: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedBy?: string | null
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderRequestCreateOrConnectWithoutUserInput = {
+    where: ProviderRequestWhereUniqueInput
+    create: XOR<ProviderRequestCreateWithoutUserInput, ProviderRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProviderRequestCreateManyUserInputEnvelope = {
+    data: ProviderRequestCreateManyUserInput | ProviderRequestCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProviderRequestCreateWithoutReviewedByUserInput = {
+    id?: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutProviderRequestsInput
+  }
+
+  export type ProviderRequestUncheckedCreateWithoutReviewedByUserInput = {
+    id?: string
+    userId: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderRequestCreateOrConnectWithoutReviewedByUserInput = {
+    where: ProviderRequestWhereUniqueInput
+    create: XOR<ProviderRequestCreateWithoutReviewedByUserInput, ProviderRequestUncheckedCreateWithoutReviewedByUserInput>
+  }
+
+  export type ProviderRequestCreateManyReviewedByUserInputEnvelope = {
+    data: ProviderRequestCreateManyReviewedByUserInput | ProviderRequestCreateManyReviewedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SessionCreateWithoutUserInput = {
+    id: string
+    expiresAt: Date | string
+    token: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ipAddress?: string | null
+    userAgent?: string | null
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id: string
+    expiresAt: Date | string
+    token: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ipAddress?: string | null
+    userAgent?: string | null
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserRoleAssignmentCreateWithoutUserInput = {
     id?: string
     createdAt?: Date | string
@@ -9866,36 +11783,6 @@ export namespace Prisma {
   export type UserRoleAssignmentCreateManyUserInputEnvelope = {
     data: UserRoleAssignmentCreateManyUserInput | UserRoleAssignmentCreateManyUserInput[]
     skipDuplicates?: boolean
-  }
-
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    expiresAt?: DateTimeFilter<"Session"> | Date | string
-    token?: StringFilter<"Session"> | string
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-    updatedAt?: DateTimeFilter<"Session"> | Date | string
-    ipAddress?: StringNullableFilter<"Session"> | string | null
-    userAgent?: StringNullableFilter<"Session"> | string | null
-    userId?: StringFilter<"Session"> | string
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -9931,6 +11818,87 @@ export namespace Prisma {
     password?: StringNullableFilter<"Account"> | string | null
     createdAt?: DateTimeFilter<"Account"> | Date | string
     updatedAt?: DateTimeFilter<"Account"> | Date | string
+  }
+
+  export type ProviderRequestUpsertWithWhereUniqueWithoutUserInput = {
+    where: ProviderRequestWhereUniqueInput
+    update: XOR<ProviderRequestUpdateWithoutUserInput, ProviderRequestUncheckedUpdateWithoutUserInput>
+    create: XOR<ProviderRequestCreateWithoutUserInput, ProviderRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProviderRequestUpdateWithWhereUniqueWithoutUserInput = {
+    where: ProviderRequestWhereUniqueInput
+    data: XOR<ProviderRequestUpdateWithoutUserInput, ProviderRequestUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ProviderRequestUpdateManyWithWhereWithoutUserInput = {
+    where: ProviderRequestScalarWhereInput
+    data: XOR<ProviderRequestUpdateManyMutationInput, ProviderRequestUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ProviderRequestScalarWhereInput = {
+    AND?: ProviderRequestScalarWhereInput | ProviderRequestScalarWhereInput[]
+    OR?: ProviderRequestScalarWhereInput[]
+    NOT?: ProviderRequestScalarWhereInput | ProviderRequestScalarWhereInput[]
+    id?: StringFilter<"ProviderRequest"> | string
+    userId?: StringFilter<"ProviderRequest"> | string
+    description?: StringFilter<"ProviderRequest"> | string
+    experience?: StringFilter<"ProviderRequest"> | string
+    phone?: StringFilter<"ProviderRequest"> | string
+    address?: StringFilter<"ProviderRequest"> | string
+    documentNumber?: StringFilter<"ProviderRequest"> | string
+    portfolioLinks?: StringNullableFilter<"ProviderRequest"> | string | null
+    status?: EnumProviderRequestStatusFilter<"ProviderRequest"> | $Enums.ProviderRequestStatus
+    reviewedBy?: StringNullableFilter<"ProviderRequest"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"ProviderRequest"> | Date | string | null
+    createdAt?: DateTimeFilter<"ProviderRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ProviderRequest"> | Date | string
+  }
+
+  export type ProviderRequestUpsertWithWhereUniqueWithoutReviewedByUserInput = {
+    where: ProviderRequestWhereUniqueInput
+    update: XOR<ProviderRequestUpdateWithoutReviewedByUserInput, ProviderRequestUncheckedUpdateWithoutReviewedByUserInput>
+    create: XOR<ProviderRequestCreateWithoutReviewedByUserInput, ProviderRequestUncheckedCreateWithoutReviewedByUserInput>
+  }
+
+  export type ProviderRequestUpdateWithWhereUniqueWithoutReviewedByUserInput = {
+    where: ProviderRequestWhereUniqueInput
+    data: XOR<ProviderRequestUpdateWithoutReviewedByUserInput, ProviderRequestUncheckedUpdateWithoutReviewedByUserInput>
+  }
+
+  export type ProviderRequestUpdateManyWithWhereWithoutReviewedByUserInput = {
+    where: ProviderRequestScalarWhereInput
+    data: XOR<ProviderRequestUpdateManyMutationInput, ProviderRequestUncheckedUpdateManyWithoutReviewedByUserInput>
+  }
+
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    expiresAt?: DateTimeFilter<"Session"> | Date | string
+    token?: StringFilter<"Session"> | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    updatedAt?: DateTimeFilter<"Session"> | Date | string
+    ipAddress?: StringNullableFilter<"Session"> | string | null
+    userAgent?: StringNullableFilter<"Session"> | string | null
+    userId?: StringFilter<"Session"> | string
   }
 
   export type UserRoleAssignmentUpsertWithWhereUniqueWithoutUserInput = {
@@ -10000,35 +11968,6 @@ export namespace Prisma {
     data: XOR<UserRoleAssignmentUpdateManyMutationInput, UserRoleAssignmentUncheckedUpdateManyWithoutRoleInput>
   }
 
-  export type UserCreateWithoutUserRolesInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified?: boolean
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutUserRolesInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified?: boolean
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutUserRolesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
-  }
-
   export type RoleCreateWithoutUserRolesInput = {
     id?: string
     name: $Enums.UserRole
@@ -10048,39 +11987,37 @@ export namespace Prisma {
     create: XOR<RoleCreateWithoutUserRolesInput, RoleUncheckedCreateWithoutUserRolesInput>
   }
 
-  export type UserUpsertWithoutUserRolesInput = {
-    update: XOR<UserUpdateWithoutUserRolesInput, UserUncheckedUpdateWithoutUserRolesInput>
+  export type UserCreateWithoutUserRolesInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestCreateNestedManyWithoutReviewedByUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutUserRolesInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestUncheckedCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutUserRolesInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutUserRolesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutUserRolesInput, UserUncheckedUpdateWithoutUserRolesInput>
-  }
-
-  export type UserUpdateWithoutUserRolesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutUserRolesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoleUpsertWithoutUserRolesInput = {
@@ -10108,6 +12045,45 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserUpsertWithoutUserRolesInput = {
+    update: XOR<UserUpdateWithoutUserRolesInput, UserUncheckedUpdateWithoutUserRolesInput>
+    create: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserRolesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserRolesInput, UserUncheckedUpdateWithoutUserRolesInput>
+  }
+
+  export type UserUpdateWithoutUserRolesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUpdateManyWithoutReviewedByUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserRolesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUncheckedUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id: string
     name: string
@@ -10117,6 +12093,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestCreateNestedManyWithoutReviewedByUserInput
     userRoles?: UserRoleAssignmentCreateNestedManyWithoutUserInput
   }
 
@@ -10129,6 +12107,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestUncheckedCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
     userRoles?: UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -10157,6 +12137,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUpdateManyWithoutReviewedByUserNestedInput
     userRoles?: UserRoleAssignmentUpdateManyWithoutUserNestedInput
   }
 
@@ -10169,6 +12151,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUncheckedUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
     userRoles?: UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -10180,6 +12164,8 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerRequests?: ProviderRequestCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestCreateNestedManyWithoutReviewedByUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     userRoles?: UserRoleAssignmentCreateNestedManyWithoutUserInput
   }
@@ -10192,6 +12178,8 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    providerRequests?: ProviderRequestUncheckedCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     userRoles?: UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
   }
@@ -10220,6 +12208,8 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerRequests?: ProviderRequestUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUpdateManyWithoutReviewedByUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     userRoles?: UserRoleAssignmentUpdateManyWithoutUserNestedInput
   }
@@ -10232,18 +12222,154 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerRequests?: ProviderRequestUncheckedUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     userRoles?: UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type SessionCreateManyUserInput = {
+  export type UserCreateWithoutProviderRequestsInput = {
     id: string
-    expiresAt: Date | string
-    token: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestCreateNestedManyWithoutReviewedByUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleAssignmentCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutProviderRequestsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutProviderRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutProviderRequestsInput, UserUncheckedCreateWithoutProviderRequestsInput>
+  }
+
+  export type UserCreateWithoutReviewedRequestsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleAssignmentCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutReviewedRequestsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutReviewedRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReviewedRequestsInput, UserUncheckedCreateWithoutReviewedRequestsInput>
+  }
+
+  export type UserUpsertWithoutProviderRequestsInput = {
+    update: XOR<UserUpdateWithoutProviderRequestsInput, UserUncheckedUpdateWithoutProviderRequestsInput>
+    create: XOR<UserCreateWithoutProviderRequestsInput, UserUncheckedCreateWithoutProviderRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutProviderRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutProviderRequestsInput, UserUncheckedUpdateWithoutProviderRequestsInput>
+  }
+
+  export type UserUpdateWithoutProviderRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUpdateManyWithoutReviewedByUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutProviderRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutReviewedRequestsInput = {
+    update: XOR<UserUpdateWithoutReviewedRequestsInput, UserUncheckedUpdateWithoutReviewedRequestsInput>
+    create: XOR<UserCreateWithoutReviewedRequestsInput, UserUncheckedCreateWithoutReviewedRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReviewedRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReviewedRequestsInput, UserUncheckedUpdateWithoutReviewedRequestsInput>
+  }
+
+  export type UserUpdateWithoutReviewedRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReviewedRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -10261,41 +12387,51 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ProviderRequestCreateManyUserInput = {
+    id?: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedBy?: string | null
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProviderRequestCreateManyReviewedByUserInput = {
+    id?: string
+    userId: string
+    description: string
+    experience: string
+    phone: string
+    address: string
+    documentNumber: string
+    portfolioLinks?: string | null
+    status?: $Enums.ProviderRequestStatus
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SessionCreateManyUserInput = {
+    id: string
+    expiresAt: Date | string
+    token: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ipAddress?: string | null
+    userAgent?: string | null
+  }
+
   export type UserRoleAssignmentCreateManyUserInput = {
     id?: string
     roleId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type SessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -10341,6 +12477,126 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderRequestUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewedByUser?: UserUpdateOneWithoutReviewedRequestsNestedInput
+  }
+
+  export type ProviderRequestUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderRequestUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderRequestUpdateWithoutReviewedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutProviderRequestsNestedInput
+  }
+
+  export type ProviderRequestUncheckedUpdateWithoutReviewedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProviderRequestUncheckedUpdateManyWithoutReviewedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    experience?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserRoleAssignmentUpdateWithoutUserInput = {
