@@ -19,10 +19,12 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-const SIDEBAR_STATE_KEY = "flicapp_sidebar_state";
+const NAV_ACCORDION_COOKIE_NAME = "nav_accordion_state";
+const NAV_ACCORDION_COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export function NavMain({
   items,
+  initialOpenState = {},
 }: {
   items: {
     title: string;
@@ -34,40 +36,30 @@ export function NavMain({
       url: string;
     }[];
   }[];
+  initialOpenState?: Record<string, boolean>;
 }) {
   const { isMobile, setOpenMobile, setOpen } = useSidebar();
 
   const [openItems, setOpenItems] = useState<Record<string, boolean>>(() => {
-    // Always use the same initial state for server and client to prevent hydration issues
+    // Use the initial state passed from server (from cookie) or fallback to isActive
     return items.reduce((acc, item) => {
       if (item.items && item.items.length > 0) {
-        acc[item.title] = item.isActive || false;
+        acc[item.title] =
+          initialOpenState[item.title] ?? item.isActive ?? false;
       }
       return acc;
     }, {} as Record<string, boolean>);
   });
 
-  // Load from localStorage after hydration
+  // Update cookie when accordion state changes
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
-        const stored = localStorage.getItem(SIDEBAR_STATE_KEY);
-        if (stored) {
-          const parsedState = JSON.parse(stored);
-          setOpenItems(parsedState);
-        }
+        document.cookie = `${NAV_ACCORDION_COOKIE_NAME}=${JSON.stringify(
+          openItems
+        )}; path=/; max-age=${NAV_ACCORDION_COOKIE_MAX_AGE}`;
       } catch (error) {
-        console.error("Erro ao carregar estado do sidebar:", error);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        localStorage.setItem(SIDEBAR_STATE_KEY, JSON.stringify(openItems));
-      } catch (error) {
-        console.error("Erro ao salvar estado do sidebar:", error);
+        console.error("Erro ao salvar estado do accordion:", error);
       }
     }
   }, [openItems]);

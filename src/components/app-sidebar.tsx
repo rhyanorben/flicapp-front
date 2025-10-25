@@ -24,6 +24,7 @@ const iconMap: Record<string, LucideIcon> = {
 
 export function AppSidebar({
   navMain,
+  accordionState = {},
   ...props
 }: React.ComponentProps<typeof Sidebar> & {
   navMain: Array<{
@@ -36,6 +37,7 @@ export function AppSidebar({
       url: string;
     }>;
   }>;
+  accordionState?: Record<string, boolean>;
 }) {
   // Convert icon strings to actual icon components
   const processedNavMain = navMain.map((item) => ({
@@ -60,7 +62,7 @@ export function AppSidebar({
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={data.navMain} initialOpenState={accordionState} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
