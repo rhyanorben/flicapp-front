@@ -1,55 +1,19 @@
 import { OrdersOverviewCards } from "./_components/orders-overview-cards";
 import { OrdersTable } from "./_components/orders-table";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function MeusPedidosPage() {
   return (
-    <>
-      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-        <div className="flex items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator
-            orientation="vertical"
-            className="mr-2 data-[orientation=vertical]:h-4"
-          />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/dashboard">FlicApp</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/dashboard">Cliente</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Meus Pedidos</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Meus Pedidos</h1>
+          <p className="text-muted-foreground">
+            Acompanhe todos os seus pedidos de serviço
+          </p>
         </div>
-      </header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="space-y-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Meus Pedidos</h1>
-            <p className="text-muted-foreground">
-              Acompanhe todos os seus pedidos de serviço
-            </p>
-          </div>
-          <OrdersOverviewCards />
-          <OrdersTable />
-        </div>
+        <OrdersOverviewCards />
+        <OrdersTable />
       </div>
-    </>
+    </div>
   );
 }

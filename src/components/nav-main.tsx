@@ -82,9 +82,8 @@ export function NavMain({
   const handleLinkClick = () => {
     if (isMobile) {
       setOpenMobile(false);
-    } else {
-      setOpen(false);
     }
+    // Desktop: sidebar permanece aberto
   };
 
   return (

@@ -4,10 +4,8 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -18,6 +16,7 @@ import {
   FormDescription,
 } from "@/components/ui/form";
 import { Loader2 } from "lucide-react";
+import { useSubmitProviderRequest } from "@/lib/queries/provider-requests";
 
 const providerRequestSchema = z.object({
   description: z.string().min(20, {
@@ -41,8 +40,7 @@ const providerRequestSchema = z.object({
 type ProviderRequestFormValues = z.infer<typeof providerRequestSchema>;
 
 export function ProviderRequestForm() {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const submitProviderRequest = useSubmitProviderRequest();
 
   const form = useForm<ProviderRequestFormValues>({
     resolver: zodResolver(providerRequestSchema),
@@ -56,33 +54,8 @@ export function ProviderRequestForm() {
     },
   });
 
-  async function onSubmit(formData: ProviderRequestFormValues) {
-    setIsLoading(true);
-
-    try {
-      const response = await fetch("/api/provider-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Erro ao enviar solicitação");
-      }
-
-      alert(
-        "Solicitação enviada com sucesso! Aguarde a análise do administrador."
-      );
-      router.push("/dashboard");
-    } catch (error: any) {
-      alert(error?.message || "Erro ao enviar solicitação");
-    } finally {
-      setIsLoading(false);
-    }
+  function onSubmit(formData: ProviderRequestFormValues) {
+    submitProviderRequest.mutate(formData);
   }
 
   return (
@@ -98,7 +71,7 @@ export function ProviderRequestForm() {
                 <Textarea
                   placeholder="Descreva os serviços que você pretende oferecer..."
                   {...field}
-                  disabled={isLoading}
+                  disabled={submitProviderRequest.isPending}
                   rows={4}
                 />
               </FormControl>
@@ -120,7 +93,7 @@ export function ProviderRequestForm() {
                 <Textarea
                   placeholder="Conte-nos sobre sua experiência profissional, anos de atuação, projetos realizados..."
                   {...field}
-                  disabled={isLoading}
+                  disabled={submitProviderRequest.isPending}
                   rows={5}
                 />
               </FormControl>
@@ -142,7 +115,7 @@ export function ProviderRequestForm() {
                 <Input
                   placeholder="(00) 00000-0000"
                   {...field}
-                  disabled={isLoading}
+                  disabled={submitProviderRequest.isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -160,7 +133,7 @@ export function ProviderRequestForm() {
                 <Input
                   placeholder="Rua, número, bairro, cidade - UF"
                   {...field}
-                  disabled={isLoading}
+                  disabled={submitProviderRequest.isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -178,7 +151,7 @@ export function ProviderRequestForm() {
                 <Input
                   placeholder="000.000.000-00 ou 00.000.000/0000-00"
                   {...field}
-                  disabled={isLoading}
+                  disabled={submitProviderRequest.isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -196,7 +169,7 @@ export function ProviderRequestForm() {
                 <Textarea
                   placeholder="Cole aqui links para seu portfólio, redes sociais profissionais, etc. (um por linha)"
                   {...field}
-                  disabled={isLoading}
+                  disabled={submitProviderRequest.isPending}
                   rows={3}
                 />
               </FormControl>
@@ -208,8 +181,12 @@ export function ProviderRequestForm() {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? (
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={submitProviderRequest.isPending}
+        >
+          {submitProviderRequest.isPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Enviando...

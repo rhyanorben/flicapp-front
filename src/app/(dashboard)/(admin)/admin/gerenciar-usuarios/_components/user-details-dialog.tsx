@@ -12,9 +12,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
 import { UserRole } from "@/app/generated/prisma";
 import { Loader2 } from "lucide-react";
+import { useUpdateUserRoles } from "@/lib/queries/users";
 
 interface User {
   id: string;
@@ -39,8 +39,7 @@ export function UserDetailsDialog({
   onUpdate,
 }: UserDetailsDialogProps) {
   const [selectedRoles, setSelectedRoles] = useState<UserRole[]>(user.roles);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const { toast } = useToast();
+  const updateUserRoles = useUpdateUserRoles();
 
   useEffect(() => {
     setSelectedRoles(user.roles);
@@ -52,66 +51,19 @@ export function UserDetailsDialog({
     );
   };
 
-  const handleSave = async () => {
-    setIsUpdating(true);
-
-    try {
-      const rolesToAdd = selectedRoles.filter((r) => !user.roles.includes(r));
-      const rolesToRemove = user.roles.filter(
-        (r) => !selectedRoles.includes(r)
-      );
-
-      for (const role of rolesToAdd) {
-        const response = await fetch(`/api/user/${user.id}/roles/manage`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            roleName: role,
-            action: "assign",
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Erro ao adicionar role ${role}`);
-        }
+  const handleSave = () => {
+    updateUserRoles.mutate(
+      {
+        userId: user.id,
+        data: { roles: selectedRoles },
+      },
+      {
+        onSuccess: () => {
+          onUpdate();
+          onClose();
+        },
       }
-
-      for (const role of rolesToRemove) {
-        const response = await fetch(`/api/user/${user.id}/roles/manage`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            roleName: role,
-            action: "remove",
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Erro ao remover role ${role}`);
-        }
-      }
-
-      toast({
-        title: "Sucesso",
-        description: "Roles do usuário atualizadas com sucesso",
-      });
-
-      onUpdate();
-      onClose();
-    } catch (error) {
-      console.error("Error updating user roles:", error);
-      toast({
-        title: "Erro",
-        description: "Erro ao atualizar roles do usuário",
-        variant: "destructive",
-      });
-    } finally {
-      setIsUpdating(false);
-    }
+    );
   };
 
   return (
@@ -194,11 +146,15 @@ export function UserDetailsDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} disabled={isUpdating}>
+          <Button
+            variant="outline"
+            onClick={onClose}
+            disabled={updateUserRoles.isPending}
+          >
             Cancelar
           </Button>
-          <Button onClick={handleSave} disabled={isUpdating}>
-            {isUpdating ? (
+          <Button onClick={handleSave} disabled={updateUserRoles.isPending}>
+            {updateUserRoles.isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Salvando...

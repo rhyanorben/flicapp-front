@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +22,7 @@ import {
   Briefcase,
   Link2,
 } from "lucide-react";
+import { useUpdateProviderRequest } from "@/lib/queries/provider-requests";
 
 interface User {
   id: string;
@@ -61,34 +61,18 @@ export function RequestDetailsDialog({
   onClose,
   onUpdate,
 }: RequestDetailsDialogProps) {
-  const [isProcessing, setIsProcessing] = useState(false);
+  const updateProviderRequest = useUpdateProviderRequest();
 
-  const handleAction = async (action: "approve" | "reject") => {
-    setIsProcessing(true);
-
-    try {
-      const response = await fetch(`/api/provider-request/${request.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+  const handleAction = (action: "approve" | "reject") => {
+    updateProviderRequest.mutate(
+      { id: request.id, action },
+      {
+        onSuccess: () => {
+          onClose();
+          onUpdate();
         },
-        body: JSON.stringify({ action }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Erro ao processar solicitação");
       }
-
-      alert(data.message);
-      onClose();
-      onUpdate();
-    } catch (error: any) {
-      alert(error?.message || "Erro ao processar solicitação");
-    } finally {
-      setIsProcessing(false);
-    }
+    );
   };
 
   const getStatusBadge = (status: string) => {
@@ -272,10 +256,10 @@ export function RequestDetailsDialog({
               <Button
                 variant="destructive"
                 onClick={() => handleAction("reject")}
-                disabled={isProcessing}
+                disabled={updateProviderRequest.isPending}
                 className="flex-1 sm:flex-none"
               >
-                {isProcessing ? (
+                {updateProviderRequest.isPending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <>
@@ -286,10 +270,10 @@ export function RequestDetailsDialog({
               </Button>
               <Button
                 onClick={() => handleAction("approve")}
-                disabled={isProcessing}
+                disabled={updateProviderRequest.isPending}
                 className="flex-1 sm:flex-none"
               >
-                {isProcessing ? (
+                {updateProviderRequest.isPending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <>

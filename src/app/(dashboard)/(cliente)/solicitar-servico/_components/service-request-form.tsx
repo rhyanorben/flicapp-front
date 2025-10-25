@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MapPin, User, MessageSquare } from "lucide-react";
+import { useSubmitServiceRequest } from "@/lib/queries/services";
 
 interface ServiceRequestData {
   serviceType: string;
@@ -19,7 +20,7 @@ interface ServiceRequestData {
   location: string;
   preferredDate: string;
   preferredTime: string;
-  urgency: string;
+  urgency: "low" | "normal" | "high";
   contactName: string;
   contactPhone: string;
   contactEmail: string;
@@ -40,7 +41,7 @@ export function ServiceRequestForm() {
     additionalNotes: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submitServiceRequest = useSubmitServiceRequest();
 
   const handleInputChange = (
     field: keyof ServiceRequestData,
@@ -54,36 +55,24 @@ export function ServiceRequestForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
-    try {
-      // Aqui você implementaria a lógica para enviar os dados
-      console.log("Dados do serviço:", formData);
-
-      // Simular envio
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Resetar formulário após sucesso
-      setFormData({
-        serviceType: "",
-        description: "",
-        location: "",
-        preferredDate: "",
-        preferredTime: "",
-        urgency: "normal",
-        contactName: "",
-        contactPhone: "",
-        contactEmail: "",
-        additionalNotes: "",
-      });
-
-      alert("Solicitação enviada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao enviar solicitação:", error);
-      alert("Erro ao enviar solicitação. Tente novamente.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    submitServiceRequest.mutate(formData, {
+      onSuccess: () => {
+        // Resetar formulário após sucesso
+        setFormData({
+          serviceType: "",
+          description: "",
+          location: "",
+          preferredDate: "",
+          preferredTime: "",
+          urgency: "normal",
+          contactName: "",
+          contactPhone: "",
+          contactEmail: "",
+          additionalNotes: "",
+        });
+      },
+    });
   };
 
   return (
@@ -279,7 +268,7 @@ export function ServiceRequestForm() {
         <Button
           onClick={handleSubmit}
           disabled={
-            isSubmitting ||
+            submitServiceRequest.isPending ||
             !formData.serviceType ||
             !formData.description ||
             !formData.location ||
@@ -287,7 +276,7 @@ export function ServiceRequestForm() {
             !formData.contactPhone
           }
         >
-          {isSubmitting ? "Enviando..." : "Solicitar Serviço"}
+          {submitServiceRequest.isPending ? "Enviando..." : "Solicitar Serviço"}
         </Button>
       </div>
     </div>

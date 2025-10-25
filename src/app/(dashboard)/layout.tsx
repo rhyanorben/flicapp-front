@@ -1,10 +1,10 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProviderWrapper } from "@/components/sidebar-provider-wrapper";
-import { SidebarInset } from "@/components/ui/sidebar";
+import DashboardHeaderWrapper from "@/components/dashboard-header-wrapper";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { getUserRoles } from "@/lib/role-utils";
 import { buildNavigation } from "@/lib/sidebar-utils";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({
@@ -27,10 +27,17 @@ export default async function DashboardLayout({
 
   const navMain = buildNavigation(isClient, isProvider, isAdmin);
 
+  // Read sidebar state from cookie on server side
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   return (
-    <SidebarProviderWrapper>
+    <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar navMain={navMain} />
-      <SidebarInset>{children}</SidebarInset>
-    </SidebarProviderWrapper>
+      <SidebarInset>
+        <DashboardHeaderWrapper />
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

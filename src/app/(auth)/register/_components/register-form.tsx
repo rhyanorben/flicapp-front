@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -16,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { useRegister } from "@/lib/queries/auth";
 
 const registerSchema = z
   .object({
@@ -27,11 +26,9 @@ const registerSchema = z
     password: z
       .string()
       .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
-    confirmPassword: z
-      .string()
-      .min(6, {
-        message: "A confirmação de senha deve ter pelo menos 6 caracteres",
-      }),
+    confirmPassword: z.string().min(6, {
+      message: "A confirmação de senha deve ter pelo menos 6 caracteres",
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não coincidem",
@@ -43,8 +40,7 @@ type SignupFormValues = z.infer<typeof registerSchema>;
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const registerMutation = useRegister();
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(registerSchema),
@@ -56,50 +52,12 @@ export function RegisterForm() {
     },
   });
 
-  async function onSubmit(formData: SignupFormValues) {
-    setIsLoading(true);
-
-    try {
-      const registerResponse = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-
-      const registerData = await registerResponse.json();
-
-      if (!registerResponse.ok) {
-        throw new Error(registerData.error || "Erro ao cadastrar");
-      }
-
-      await authClient.signIn.email(
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-        {
-          onSuccess: () => {
-            router.replace("/dashboard");
-          },
-          onError: (context: { error?: { message?: string } }) => {
-            alert(
-              "Cadastrado com sucesso, mas houve erro no login. Por favor, faça login manualmente."
-            );
-            router.replace("/login");
-          },
-        }
-      );
-    } catch (error: any) {
-      alert(error?.message || "Erro ao cadastrar");
-    } finally {
-      setIsLoading(false);
-    }
+  function onSubmit(formData: SignupFormValues) {
+    registerMutation.mutate({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    });
   }
 
   return (
@@ -115,7 +73,7 @@ export function RegisterForm() {
                 <Input
                   placeholder="Seu nome completo"
                   {...field}
-                  disabled={isLoading}
+                  disabled={registerMutation.isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -134,7 +92,7 @@ export function RegisterForm() {
                   placeholder="seu@email.com"
                   type="email"
                   {...field}
-                  disabled={isLoading}
+                  disabled={registerMutation.isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -154,7 +112,7 @@ export function RegisterForm() {
                     placeholder="••••••••"
                     type={showPassword ? "text" : "password"}
                     {...field}
-                    disabled={isLoading}
+                    disabled={registerMutation.isPending}
                   />
                   <Button
                     type="button"
@@ -162,7 +120,7 @@ export function RegisterForm() {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
-                    disabled={isLoading}
+                    disabled={registerMutation.isPending}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4 text-muted-foreground" />
@@ -192,7 +150,7 @@ export function RegisterForm() {
                     placeholder="••••••••"
                     type={showConfirmPassword ? "text" : "password"}
                     {...field}
-                    disabled={isLoading}
+                    disabled={registerMutation.isPending}
                   />
                   <Button
                     type="button"
@@ -200,7 +158,7 @@ export function RegisterForm() {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    disabled={isLoading}
+                    disabled={registerMutation.isPending}
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-4 w-4 text-muted-foreground" />
@@ -218,8 +176,12 @@ export function RegisterForm() {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {form.formState.isSubmitting ? (
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={registerMutation.isPending}
+        >
+          {registerMutation.isPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Cadastrando...
