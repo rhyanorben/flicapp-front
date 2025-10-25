@@ -18,6 +18,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 const NAV_ACCORDION_COOKIE_NAME = "nav_accordion_state";
 const NAV_ACCORDION_COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
@@ -86,10 +87,10 @@ export function NavMain({
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton tooltip={item.title} asChild>
-                  <a href={item.url} onClick={handleLinkClick}>
+                  <Link href={item.url} onClick={handleLinkClick}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             );
@@ -116,9 +117,9 @@ export function NavMain({
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton asChild>
-                          <a href={subItem.url} onClick={handleLinkClick}>
+                          <Link href={subItem.url} onClick={handleLinkClick}>
                             <span>{subItem.title}</span>
-                          </a>
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}
