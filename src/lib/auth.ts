@@ -14,5 +14,4 @@ export const auth = betterAuth({
         requireEmailVerification: false,
     },
     plugins: [],
-    callbacks: {},
 });
