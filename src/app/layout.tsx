@@ -4,6 +4,9 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { RolesProvider } from "@/contexts/roles-context";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/components/providers";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "FlicAPP",
@@ -21,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning className={inter.className}>
       <body>
         <Providers>
           <ThemeProvider

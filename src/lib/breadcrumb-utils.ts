@@ -13,7 +13,7 @@ export interface BreadcrumbItem {
  */
 const segmentLabels: Record<string, string> = {
   // Dashboard
-  dashboard: "Dashboard",
+  dashboard: "Home",
 
   // Cliente routes
   "solicitar-servico": "Solicitar Serviço",
@@ -55,7 +55,7 @@ export function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
   const segments = pathname.replace(/^\//, "").split("/").filter(Boolean);
 
   if (segments.length === 0) {
-    return [{ label: "Dashboard", href: "/dashboard", isLast: true }];
+    return [{ label: "Home", href: "/dashboard", isLast: true }];
   }
 
   const breadcrumbs: BreadcrumbItem[] = [];
@@ -69,7 +69,7 @@ export function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
   // Handle special case for dashboard root
   if (segments.length === 1 && segments[0] === "dashboard") {
     breadcrumbs.push({
-      label: "Dashboard",
+      label: "Home",
       isLast: true,
     });
     return breadcrumbs;
