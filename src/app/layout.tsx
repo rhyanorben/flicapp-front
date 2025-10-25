@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { RolesProvider } from "@/contexts/roles-context";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/components/providers";
+import NextTopLoader from "nextjs-toploader";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning className={inter.className}>
       <body>
+        <NextTopLoader />
         <Providers>
           <ThemeProvider
             attribute="class"
