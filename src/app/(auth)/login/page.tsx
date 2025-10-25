@@ -1,8 +1,8 @@
-import { LoginForm } from "@/app/login/_components/login-form";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/landing/header";
 import Footer from "@/components/landing/footer";
+import { LoginForm } from "./_components/login-form";
 
 export default function LoginPage() {
   return (

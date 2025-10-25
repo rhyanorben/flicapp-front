@@ -1,7 +1,7 @@
 "use client"
 
+import { RegisterForm } from "@/app/(auth)/register/_components/register-form"
 import React from "react"
-import { RegisterForm } from "@/app/register/_components/register-form"
 
 export default function Hero() {
   return (
