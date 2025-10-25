@@ -181,6 +181,22 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProviderRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  description: 'description',
+  experience: 'experience',
+  phone: 'phone',
+  address: 'address',
+  documentNumber: 'documentNumber',
+  portfolioLinks: 'portfolioLinks',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -201,13 +217,20 @@ exports.UserRole = exports.$Enums.UserRole = {
   CLIENTE: 'CLIENTE'
 };
 
+exports.ProviderRequestStatus = exports.$Enums.ProviderRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Role: 'Role',
   UserRoleAssignment: 'UserRoleAssignment',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  ProviderRequest: 'ProviderRequest'
 };
 
 /**

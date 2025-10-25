@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/app/generated/prisma"
@@ -14,36 +8,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  ADMINISTRADOR
-  PRESTADOR
-  CLIENTE
-}
-
 model User {
-  id            String              @id
-  name          String
-  email         String
-  emailVerified Boolean             @default(false)
-  image         String?
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  userRoles     UserRoleAssignment[]
+  id               String               @id
+  name             String
+  email            String               @unique
+  emailVerified    Boolean              @default(false)
+  image            String?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @default(now()) @updatedAt
+  accounts         Account[]
+  providerRequests ProviderRequest[]    @relation("UserProviderRequests")
+  reviewedRequests ProviderRequest[]    @relation("ReviewedProviderRequests")
+  sessions         Session[]
+  userRoles        UserRoleAssignment[]
 
-  @@unique([email])
   @@map("user")
 }
 
 model Role {
-  id        String              @id @default(cuid())
-  name      UserRole
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @updatedAt
+  id        String               @id @default(cuid())
+  name      UserRole             @unique
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
   userRoles UserRoleAssignment[]
 
-  @@unique([name])
   @@map("role")
 }
 
@@ -53,8 +41,8 @@ model UserRoleAssignment {
   roleId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, roleId])
   @@map("user_role_assignment")
@@ -63,7 +51,7 @@ model UserRoleAssignment {
 model Session {
   id        String   @id
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
@@ -71,7 +59,6 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@map("session")
 }
 
@@ -80,7 +67,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -90,6 +76,7 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -103,4 +90,36 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model ProviderRequest {
+  id             String                @id @default(cuid())
+  userId         String
+  user           User                  @relation("UserProviderRequests", fields: [userId], references: [id], onDelete: Cascade)
+  description    String
+  experience     String
+  phone          String
+  address        String
+  documentNumber String
+  portfolioLinks String?
+  status         ProviderRequestStatus @default(PENDING)
+  reviewedBy     String?
+  reviewedByUser User?                 @relation("ReviewedProviderRequests", fields: [reviewedBy], references: [id])
+  reviewedAt     DateTime?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  @@map("provider_request")
+}
+
+enum UserRole {
+  ADMINISTRADOR
+  PRESTADOR
+  CLIENTE
+}
+
+enum ProviderRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
