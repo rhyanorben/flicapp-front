@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { KpiCard } from "@/components/ui/kpi-card";
 import {
   Clock,
   CheckCircle,
@@ -19,6 +19,15 @@ export function RequestsOverviewCards() {
     totalGanhos: 2840.0,
   };
 
+  // Dados de variação percentual (vs mês anterior)
+  const deltas = {
+    pendentes: 8.5, // +8.5% vs mês anterior
+    aceitas: 15.3, // +15.3% vs mês anterior
+    recusadas: -12.7, // -12.7% vs mês anterior
+    expiradas: -18.2, // -18.2% vs mês anterior
+    totalGanhos: 7.2, // +7.2% vs mês anterior
+  };
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -28,80 +37,55 @@ export function RequestsOverviewCards() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-      <Card className="border-orange-200 bg-orange-50">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-orange-800">
-            Pendentes
-          </CardTitle>
-          <Clock className="h-4 w-4 text-orange-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-orange-900">
-            {stats.pendentes}
-          </div>
-          <p className="text-xs text-orange-700">Aguardando sua resposta</p>
-        </CardContent>
-      </Card>
-
-      <Card className="border-green-200 bg-green-50">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-green-800">
-            Aceitas
-          </CardTitle>
-          <CheckCircle className="h-4 w-4 text-green-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-green-900">
-            {stats.aceitas}
-          </div>
-          <p className="text-xs text-green-700">Serviços aceitos</p>
-        </CardContent>
-      </Card>
-
-      <Card className="border-red-200 bg-red-50">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-red-800">
-            Recusadas
-          </CardTitle>
-          <XCircle className="h-4 w-4 text-red-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-red-900">
-            {stats.recusadas}
-          </div>
-          <p className="text-xs text-red-700">Solicitações recusadas</p>
-        </CardContent>
-      </Card>
-
-      <Card className="border-yellow-200 bg-yellow-50">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-yellow-800">
-            Expiradas
-          </CardTitle>
-          <AlertTriangle className="h-4 w-4 text-yellow-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-yellow-900">
-            {stats.expiradas}
-          </div>
-          <p className="text-xs text-yellow-700">Prazo esgotado</p>
-        </CardContent>
-      </Card>
-
-      <Card className="border-blue-200 bg-blue-50">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-blue-800">
-            Ganhos Potenciais
-          </CardTitle>
-          <TrendingUp className="h-4 w-4 text-blue-600" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-blue-900">
-            {formatCurrency(stats.totalGanhos)}
-          </div>
-          <p className="text-xs text-blue-700">Valor total das pendentes</p>
-        </CardContent>
-      </Card>
+      <KpiCard
+        label="Pendentes"
+        value={stats.pendentes}
+        delta={deltas.pendentes}
+        trend="up"
+        tone="warning"
+        icon={<Clock className="h-4 w-4 text-amber-600 dark:text-amber-300" />}
+        caption="vs mês anterior"
+      />
+      <KpiCard
+        label="Aceitas"
+        value={stats.aceitas}
+        delta={deltas.aceitas}
+        trend="up"
+        tone="success"
+        icon={
+          <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+        }
+        caption="vs mês anterior"
+      />
+      <KpiCard
+        label="Recusadas"
+        value={stats.recusadas}
+        delta={deltas.recusadas}
+        trend="down"
+        tone="danger"
+        icon={<XCircle className="h-4 w-4 text-destructive" />}
+        caption="vs mês anterior"
+      />
+      <KpiCard
+        label="Expiradas"
+        value={stats.expiradas}
+        delta={deltas.expiradas}
+        trend="down"
+        tone="warning"
+        icon={
+          <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-300" />
+        }
+        caption="vs mês anterior"
+      />
+      <KpiCard
+        label="Ganhos Potenciais"
+        value={formatCurrency(stats.totalGanhos)}
+        delta={deltas.totalGanhos}
+        trend="up"
+        tone="primary"
+        icon={<TrendingUp className="h-4 w-4 text-primary" />}
+        caption="vs mês anterior"
+      />
     </div>
   );
 }

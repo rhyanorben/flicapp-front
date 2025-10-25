@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { KpiCard } from "@/components/ui/kpi-card";
 import { Button } from "@/components/ui/button";
-import { DollarSign, TrendingUp, TrendingDown, Target } from "lucide-react";
+import { DollarSign, TrendingUp, Target } from "lucide-react";
 
 export function FinancialStats() {
   const [period, setPeriod] = useState("mes");
@@ -46,15 +46,15 @@ export function FinancialStats() {
   };
 
   const getPercentageChange = (current: number, previous: number) => {
-    return ((current - previous) / previous) * 100;
+    const change = ((current - previous) / previous) * 100;
+    // Limitar a 2 casas decimais para valores mais legíveis
+    return Math.round(change * 100) / 100;
   };
 
-  const getChangeColor = (change: number) => {
-    return change >= 0 ? "text-green-600" : "text-red-600";
-  };
-
-  const getChangeIcon = (change: number) => {
-    return change >= 0 ? TrendingUp : TrendingDown;
+  const getTrend = (change: number): "up" | "down" | "flat" => {
+    if (change > 0) return "up";
+    if (change < 0) return "down";
+    return "flat";
   };
 
   const totalGanhosChange = getPercentageChange(
@@ -70,9 +70,9 @@ export function FinancialStats() {
     currentData.ticketAnterior
   );
 
-  const TotalGanhosIcon = getChangeIcon(totalGanhosChange);
-  const ServicosIcon = getChangeIcon(servicosChange);
-  const TicketIcon = getChangeIcon(ticketChange);
+  const totalGanhosTrend = getTrend(totalGanhosChange);
+  const servicosTrend = getTrend(servicosChange);
+  const ticketTrend = getTrend(ticketChange);
 
   return (
     <div className="space-y-4">
@@ -104,74 +104,35 @@ export function FinancialStats() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-green-200 bg-green-50">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-800">
-              Total de Ganhos
-            </CardTitle>
-            <DollarSign className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-900">
-              {formatCurrency(currentData.totalGanhos)}
-            </div>
-            <div className="flex items-center gap-1 text-xs">
-              <TotalGanhosIcon
-                className={`h-3 w-3 ${getChangeColor(totalGanhosChange)}`}
-              />
-              <span className={getChangeColor(totalGanhosChange)}>
-                {Math.abs(totalGanhosChange).toFixed(1)}%
-              </span>
-              <span className="text-green-700">vs período anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-blue-200 bg-blue-50">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-800">
-              Serviços Realizados
-            </CardTitle>
-            <Target className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-900">
-              {currentData.servicosRealizados}
-            </div>
-            <div className="flex items-center gap-1 text-xs">
-              <ServicosIcon
-                className={`h-3 w-3 ${getChangeColor(servicosChange)}`}
-              />
-              <span className={getChangeColor(servicosChange)}>
-                {Math.abs(servicosChange).toFixed(1)}%
-              </span>
-              <span className="text-blue-700">vs período anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-purple-200 bg-purple-50">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-purple-800">
-              Ticket Médio
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-purple-900">
-              {formatCurrency(currentData.ticketMedio)}
-            </div>
-            <div className="flex items-center gap-1 text-xs">
-              <TicketIcon
-                className={`h-3 w-3 ${getChangeColor(ticketChange)}`}
-              />
-              <span className={getChangeColor(ticketChange)}>
-                {Math.abs(ticketChange).toFixed(1)}%
-              </span>
-              <span className="text-purple-700">vs período anterior</span>
-            </div>
-          </CardContent>
-        </Card>
+        <KpiCard
+          label="Total de Ganhos"
+          value={formatCurrency(currentData.totalGanhos)}
+          delta={totalGanhosChange}
+          trend={totalGanhosTrend}
+          tone="success"
+          icon={
+            <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+          }
+          caption="vs período anterior"
+        />
+        <KpiCard
+          label="Serviços Realizados"
+          value={currentData.servicosRealizados}
+          delta={servicosChange}
+          trend={servicosTrend}
+          tone="primary"
+          icon={<Target className="h-4 w-4 text-primary" />}
+          caption="vs período anterior"
+        />
+        <KpiCard
+          label="Ticket Médio"
+          value={formatCurrency(currentData.ticketMedio)}
+          delta={ticketChange}
+          trend={ticketTrend}
+          tone="primary"
+          icon={<TrendingUp className="h-4 w-4 text-primary" />}
+          caption="vs período anterior"
+        />
       </div>
     </div>
   );

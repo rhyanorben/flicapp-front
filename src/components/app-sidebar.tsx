@@ -13,6 +13,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
+import Link from "next/link";
 
 // Icon mapping for string to component conversion
 const iconMap: Record<string, LucideIcon> = {
@@ -52,10 +54,19 @@ export function AppSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div className="flex items-center justify-between px-2 py-2">
-          <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">
+        <div className="flex items-center justify-between p-2">
+          {/* <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">
             FlicAPP
-          </span>
+          </span> */}
+          <Link href="/dashboard">
+            <Image
+              src="/logo-flicapp-horizontal.png"
+              alt="FlicAPP"
+              className="group-data-[collapsible=icon]:hidden"
+              width={170}
+              height={40}
+            />
+          </Link>
           <div className="group-data-[collapsible=icon]:hidden">
             <ToggleTheme />
           </div>
