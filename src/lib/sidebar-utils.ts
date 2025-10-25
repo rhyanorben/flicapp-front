@@ -33,7 +33,6 @@ export function buildNavigation(
       title: "Dashboard",
       url: "/dashboard",
       icon: "PieChart",
-      isActive: true,
     },
   ];
 

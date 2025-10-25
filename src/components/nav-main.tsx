@@ -2,6 +2,7 @@
 
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 import {
   Collapsible,
@@ -39,7 +40,8 @@ export function NavMain({
   }[];
   initialOpenState?: Record<string, boolean>;
 }) {
-  const { isMobile, setOpenMobile, setOpen } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
+  const pathname = usePathname();
 
   const [openItems, setOpenItems] = useState<Record<string, boolean>>(() => {
     // Use the initial state passed from server (from cookie) or fallback to isActive
@@ -79,14 +81,37 @@ export function NavMain({
     // Desktop: sidebar permanece aberto
   };
 
+  // Function to check if an item is active
+  const isItemActive = (url: string) => {
+    if (url === "/dashboard") {
+      return pathname === "/dashboard";
+    }
+    return pathname.startsWith(url) && url !== "/dashboard";
+  };
+
+  // Function to check if a parent item should be open (has active children)
+  const shouldParentBeOpen = (items: { title: string; url: string }[]) => {
+    return items.some((subItem) => isItemActive(subItem.url));
+  };
+
   return (
     <SidebarGroup>
       <SidebarMenu>
         {items.map((item) => {
           if (!item.items || item.items.length === 0) {
+            const isActive = isItemActive(item.url);
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} asChild>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  asChild
+                  isActive={isActive}
+                  className={
+                    isActive
+                      ? "data-[active=true]:border-l-4 data-[active=true]:border-blue-400"
+                      : ""
+                  }
+                >
                   <Link href={item.url} onClick={handleLinkClick}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
@@ -96,17 +121,23 @@ export function NavMain({
             );
           }
 
+          const hasActiveChild = shouldParentBeOpen(item.items || []);
+          const shouldBeOpen = openItems[item.title] ?? hasActiveChild;
+
           return (
             <Collapsible
               key={item.title}
               asChild
-              open={openItems[item.title] ?? item.isActive ?? false}
+              open={shouldBeOpen}
               onOpenChange={(isOpen) => handleOpenChange(item.title, isOpen)}
               className="group/collapsible"
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    isActive={hasActiveChild}
+                  >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -114,15 +145,21 @@ export function NavMain({
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.items?.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
-                          <Link href={subItem.url} onClick={handleLinkClick}>
-                            <span>{subItem.title}</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
+                    {item.items?.map((subItem) => {
+                      const isSubItemActive = isItemActive(subItem.url);
+                      return (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={isSubItemActive}
+                          >
+                            <Link href={subItem.url} onClick={handleLinkClick}>
+                              <span>{subItem.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      );
+                    })}
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </SidebarMenuItem>
