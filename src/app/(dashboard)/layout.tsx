@@ -31,9 +31,15 @@ export default async function DashboardLayout({
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
+  // Read accordion state from cookie on server side
+  const accordionStateCookie = cookieStore.get("nav_accordion_state")?.value;
+  const accordionState = accordionStateCookie
+    ? JSON.parse(accordionStateCookie)
+    : {};
+
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar navMain={navMain} />
+      <AppSidebar navMain={navMain} accordionState={accordionState} />
       <SidebarInset>
         <DashboardHeaderWrapper />
         {children}
