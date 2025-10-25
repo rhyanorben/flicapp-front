@@ -68,7 +68,10 @@ export async function getUserRoles(userId: string): Promise<UserRole[]> {
   return userRoles.map((userRole) => userRole.role.name);
 }
 
-export async function userHasRole(userId: string, roleName: UserRole): Promise<boolean> {
+export async function userHasRole(
+  userId: string,
+  roleName: UserRole
+): Promise<boolean> {
   const role = await prisma.role.findUnique({
     where: { name: roleName },
   });
@@ -89,7 +92,10 @@ export async function userHasRole(userId: string, roleName: UserRole): Promise<b
   return !!userRole;
 }
 
-export async function userHasAnyRole(userId: string, roleNames: UserRole[]): Promise<boolean> {
+export async function userHasAnyRole(
+  userId: string,
+  roleNames: UserRole[]
+): Promise<boolean> {
   const userRoles = await getUserRoles(userId);
   return roleNames.some((roleName) => userRoles.includes(roleName));
 }

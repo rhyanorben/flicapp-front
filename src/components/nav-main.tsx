@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
-import { useState, useEffect } from "react"
+import { ChevronRight, type LucideIcon } from "lucide-react";
+import { useState, useEffect } from "react";
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarMenu,
@@ -17,7 +17,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 const SIDEBAR_STATE_KEY = "flicapp_sidebar_state";
 
@@ -25,29 +25,20 @@ export function NavMain({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+      title: string;
+      url: string;
+    }[];
+  }[];
 }) {
   const { isMobile, setOpenMobile, setOpen } = useSidebar();
-  
+
   const [openItems, setOpenItems] = useState<Record<string, boolean>>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const stored = localStorage.getItem(SIDEBAR_STATE_KEY);
-        if (stored) {
-          return JSON.parse(stored);
-        }
-      } catch (error) {
-        console.error("Erro ao carregar estado do sidebar:", error);
-      }
-    }
+    // Always use the same initial state for server and client to prevent hydration issues
     return items.reduce((acc, item) => {
       if (item.items && item.items.length > 0) {
         acc[item.title] = item.isActive || false;
@@ -55,6 +46,21 @@ export function NavMain({
       return acc;
     }, {} as Record<string, boolean>);
   });
+
+  // Load from localStorage after hydration
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem(SIDEBAR_STATE_KEY);
+        if (stored) {
+          const parsedState = JSON.parse(stored);
+          setOpenItems(parsedState);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar estado do sidebar:", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -67,7 +73,7 @@ export function NavMain({
   }, [openItems]);
 
   const handleOpenChange = (title: string, isOpen: boolean) => {
-    setOpenItems(prev => ({
+    setOpenItems((prev) => ({
       ...prev,
       [title]: isOpen,
     }));
@@ -76,9 +82,8 @@ export function NavMain({
   const handleLinkClick = () => {
     if (isMobile) {
       setOpenMobile(false);
-    } else {
-      setOpen(false);
     }
+    // Desktop: sidebar permanece aberto
   };
 
   return (
@@ -95,7 +100,7 @@ export function NavMain({
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            )
+            );
           }
 
           return (
@@ -129,9 +134,9 @@ export function NavMain({
                 </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>
-          )
+          );
         })}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

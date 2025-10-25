@@ -10,7 +10,6 @@ declare module "better-auth" {
 }
 
 declare module "better-auth/react" {
-  
   interface Session {
     user: {
       id: string;

@@ -12,10 +12,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!session) {
-      return NextResponse.json(
-        { error: "Não autenticado" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
     const userId = session.user.id;
@@ -45,7 +42,14 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { description, experience, phone, address, documentNumber, portfolioLinks } = body;
+    const {
+      description,
+      experience,
+      phone,
+      address,
+      documentNumber,
+      portfolioLinks,
+    } = body;
 
     if (!description || !experience || !phone || !address || !documentNumber) {
       return NextResponse.json(
@@ -68,9 +72,9 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(
-      { 
+      {
         message: "Solicitação enviada com sucesso",
-        request: providerRequest 
+        request: providerRequest,
       },
       { status: 201 }
     );
@@ -90,10 +94,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!session) {
-      return NextResponse.json(
-        { error: "Não autenticado" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
     const userId = session.user.id;
@@ -116,4 +117,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-

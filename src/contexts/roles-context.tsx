@@ -2,7 +2,13 @@
 
 import { authClient } from "@/lib/auth-client";
 import { UserRole, USER_ROLES, getRoleDisplayName } from "@/types/user";
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface RolesContextType {
   userRoles: UserRole[];
@@ -31,7 +37,7 @@ export function RolesProvider({ children }: { children: ReactNode }) {
       try {
         const stored = localStorage.getItem(ROLES_STORAGE_KEY);
         const timestamp = localStorage.getItem(ROLES_TIMESTAMP_KEY);
-        
+
         if (stored && timestamp) {
           const age = Date.now() - parseInt(timestamp);
           if (age < CACHE_DURATION) {
@@ -62,7 +68,7 @@ export function RolesProvider({ children }: { children: ReactNode }) {
       if (response.ok) {
         const roles = await response.json();
         setUserRoles(roles);
-        
+
         if (typeof window !== "undefined") {
           localStorage.setItem(ROLES_STORAGE_KEY, JSON.stringify(roles));
           localStorage.setItem(ROLES_TIMESTAMP_KEY, Date.now().toString());
@@ -85,8 +91,9 @@ export function RolesProvider({ children }: { children: ReactNode }) {
     isProvider: userRoles.includes(USER_ROLES.PRESTADOR),
     isClient: userRoles.includes(USER_ROLES.CLIENTE),
     hasRole: (role: UserRole) => userRoles.includes(role),
-    hasAnyRole: (roles: UserRole[]) => roles.some(role => userRoles.includes(role)),
-    rolesDisplayNames: userRoles.map(role => getRoleDisplayName(role)),
+    hasAnyRole: (roles: UserRole[]) =>
+      roles.some((role) => userRoles.includes(role)),
+    rolesDisplayNames: userRoles.map((role) => getRoleDisplayName(role)),
     isLoading: isPending || isLoadingRoles,
     user: session?.user,
     session,
@@ -94,9 +101,7 @@ export function RolesProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <RolesContext.Provider value={value}>
-      {children}
-    </RolesContext.Provider>
+    <RolesContext.Provider value={value}>{children}</RolesContext.Provider>
   );
 }
 
@@ -107,4 +112,3 @@ export function useRolesContext() {
   }
   return context;
 }
-

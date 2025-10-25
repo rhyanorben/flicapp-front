@@ -9,7 +9,7 @@ export async function POST(
   try {
     const { userId } = await params;
     const { roleName, action } = await request.json();
-    
+
     if (!userId || !roleName) {
       return NextResponse.json(
         { error: "User ID e Role Name são obrigatórios" },
@@ -18,14 +18,11 @@ export async function POST(
     }
 
     if (!Object.values(USER_ROLES).includes(roleName)) {
-      return NextResponse.json(
-        { error: "Role inválida" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Role inválida" }, { status: 400 });
     }
 
     let result;
-    
+
     if (action === "assign") {
       result = await assignRoleToUser(userId, roleName);
     } else if (action === "remove") {

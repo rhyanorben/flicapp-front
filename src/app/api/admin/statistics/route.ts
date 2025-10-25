@@ -12,10 +12,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!session) {
-      return NextResponse.json(
-        { error: "Não autenticado" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
     const userId = session.user.id;
@@ -25,25 +22,40 @@ export async function GET(request: NextRequest) {
 
     if (!isAdmin) {
       return NextResponse.json(
-        { error: "Acesso negado. Apenas administradores podem visualizar estatísticas." },
+        {
+          error:
+            "Acesso negado. Apenas administradores podem visualizar estatísticas.",
+        },
         { status: 403 }
       );
     }
 
     const totalUsers = await prisma.user.count();
 
-    const adminRole = await prisma.role.findUnique({ where: { name: "ADMINISTRADOR" } });
-    const providerRole = await prisma.role.findUnique({ where: { name: "PRESTADOR" } });
-    const clientRole = await prisma.role.findUnique({ where: { name: "CLIENTE" } });
+    const adminRole = await prisma.role.findUnique({
+      where: { name: "ADMINISTRADOR" },
+    });
+    const providerRole = await prisma.role.findUnique({
+      where: { name: "PRESTADOR" },
+    });
+    const clientRole = await prisma.role.findUnique({
+      where: { name: "CLIENTE" },
+    });
 
     const totalAdmins = adminRole
-      ? await prisma.userRoleAssignment.count({ where: { roleId: adminRole.id } })
+      ? await prisma.userRoleAssignment.count({
+          where: { roleId: adminRole.id },
+        })
       : 0;
     const totalProviders = providerRole
-      ? await prisma.userRoleAssignment.count({ where: { roleId: providerRole.id } })
+      ? await prisma.userRoleAssignment.count({
+          where: { roleId: providerRole.id },
+        })
       : 0;
     const totalClients = clientRole
-      ? await prisma.userRoleAssignment.count({ where: { roleId: clientRole.id } })
+      ? await prisma.userRoleAssignment.count({
+          where: { roleId: clientRole.id },
+        })
       : 0;
 
     const totalProviderRequests = await prisma.providerRequest.count();
@@ -98,14 +110,17 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    const requestsByMonth = requestsLastSixMonths.reduce((acc: any, request) => {
-      const month = new Date(request.createdAt).toLocaleDateString("pt-BR", {
-        year: "numeric",
-        month: "short",
-      });
-      acc[month] = (acc[month] || 0) + 1;
-      return acc;
-    }, {});
+    const requestsByMonth = requestsLastSixMonths.reduce(
+      (acc: any, request) => {
+        const month = new Date(request.createdAt).toLocaleDateString("pt-BR", {
+          year: "numeric",
+          month: "short",
+        });
+        acc[month] = (acc[month] || 0) + 1;
+        return acc;
+      },
+      {}
+    );
 
     const recentRequests = await prisma.providerRequest.findMany({
       take: 10,
@@ -148,4 +163,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
