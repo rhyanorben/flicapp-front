@@ -125,19 +125,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             },
             {
               title: "Gerenciar Usuários",
-              url: "#",
-            },
-            {
-              title: "Configurações do Sistema",
-              url: "#",
+              url: "/admin/gerenciar-usuarios",
             },
             {
               title: "Relatórios Completos",
-              url: "#",
-            },
-            {
-              title: "Moderação",
-              url: "#",
+              url: "/admin/relatorios-completos",
             },
           ],
         }
