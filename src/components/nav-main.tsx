@@ -38,16 +38,7 @@ export function NavMain({
   const { isMobile, setOpenMobile, setOpen } = useSidebar();
 
   const [openItems, setOpenItems] = useState<Record<string, boolean>>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const stored = localStorage.getItem(SIDEBAR_STATE_KEY);
-        if (stored) {
-          return JSON.parse(stored);
-        }
-      } catch (error) {
-        console.error("Erro ao carregar estado do sidebar:", error);
-      }
-    }
+    // Always use the same initial state for server and client to prevent hydration issues
     return items.reduce((acc, item) => {
       if (item.items && item.items.length > 0) {
         acc[item.title] = item.isActive || false;
@@ -55,6 +46,21 @@ export function NavMain({
       return acc;
     }, {} as Record<string, boolean>);
   });
+
+  // Load from localStorage after hydration
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem(SIDEBAR_STATE_KEY);
+        if (stored) {
+          const parsedState = JSON.parse(stored);
+          setOpenItems(parsedState);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar estado do sidebar:", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
