@@ -2,7 +2,7 @@
 
 import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,7 +32,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session } = authClient.useSession();
 
   const handleLogout = async () => {
     try {

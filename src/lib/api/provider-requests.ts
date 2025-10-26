@@ -1,10 +1,21 @@
+export interface ServiceSelection {
+  serviceType: string;
+  experienceLevel: string;
+  customService?: string;
+}
+
 export interface ProviderRequestData {
+  services: ServiceSelection[];
   description: string;
   experience: string;
   phone: string;
+  cep: string;
   address: string;
   documentNumber: string;
-  portfolioLinks?: string;
+  portfolioLinks?: Array<{
+    url: string;
+    title: string;
+  }>;
 }
 
 export interface User {
@@ -17,6 +28,7 @@ export interface ProviderRequest {
   id: string;
   userId: string;
   user: User;
+  services: ServiceSelection[];
   description: string;
   experience: string;
   phone: string;
@@ -24,6 +36,7 @@ export interface ProviderRequest {
   documentNumber: string;
   portfolioLinks: string | null;
   status: string;
+  rejectionReason?: string;
   reviewedBy: string | null;
   reviewedByUser: User | null;
   reviewedAt: string | null;
@@ -69,16 +82,31 @@ export async function getProviderRequests(): Promise<ProviderRequest[]> {
   return response.json();
 }
 
+export async function getUserOwnProviderRequests(): Promise<ProviderRequest[]> {
+  const response = await fetch("/api/provider-request");
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("Não autenticado");
+    }
+    const error = await response.json();
+    throw new Error(error.error || "Erro ao buscar solicitações");
+  }
+
+  return response.json();
+}
+
 export async function updateProviderRequest(
   id: string,
-  action: "approve" | "reject"
+  action: "approve" | "reject",
+  rejectionReason?: string
 ): Promise<{ message: string }> {
   const response = await fetch(`/api/provider-request/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ action }),
+    body: JSON.stringify({ action, rejectionReason }),
   });
 
   if (!response.ok) {

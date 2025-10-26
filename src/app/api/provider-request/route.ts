@@ -43,15 +43,25 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const {
+      services,
       description,
       experience,
       phone,
+      cep,
       address,
       documentNumber,
       portfolioLinks,
     } = body;
 
-    if (!description || !experience || !phone || !address || !documentNumber) {
+    if (
+      !services ||
+      !description ||
+      !experience ||
+      !phone ||
+      !cep ||
+      !address ||
+      !documentNumber
+    ) {
       return NextResponse.json(
         { error: "Todos os campos obrigatórios devem ser preenchidos" },
         { status: 400 }
@@ -61,12 +71,15 @@ export async function POST(request: NextRequest) {
     const providerRequest = await prisma.providerRequest.create({
       data: {
         userId,
+        services: services || null,
         description,
         experience,
         phone,
+        cep,
         address,
         documentNumber,
-        portfolioLinks: portfolioLinks || null,
+        portfolioLinks: portfolioLinks ? JSON.stringify(portfolioLinks) : null,
+        portfolioLinksJson: portfolioLinks || null,
         status: "PENDING",
       },
     });

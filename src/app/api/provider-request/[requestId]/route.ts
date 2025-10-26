@@ -90,10 +90,17 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const { action } = body;
+    const { action, rejectionReason } = body;
 
     if (!action || (action !== "approve" && action !== "reject")) {
       return NextResponse.json({ error: "Ação inválida" }, { status: 400 });
+    }
+
+    if (action === "reject" && !rejectionReason) {
+      return NextResponse.json(
+        { error: "Motivo da rejeição é obrigatório" },
+        { status: 400 }
+      );
     }
 
     const providerRequest = await prisma.providerRequest.findUnique({
@@ -125,6 +132,7 @@ export async function PATCH(
       },
       data: {
         status: action === "approve" ? "APPROVED" : "REJECTED",
+        rejectionReason: action === "reject" ? rejectionReason : null,
         reviewedBy: userId,
         reviewedAt: new Date(),
       },

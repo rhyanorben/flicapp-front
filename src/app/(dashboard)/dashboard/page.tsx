@@ -1,6 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Instagram, MessageCircle, ShieldCheck, Zap, Sparkles, LifeBuoy } from "lucide-react";
+import {
+  Instagram,
+  MessageCircle,
+  ShieldCheck,
+  Zap,
+  Sparkles,
+  LifeBuoy,
+} from "lucide-react";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -20,8 +28,10 @@ export default function Page() {
             className="animate-in fade-in-0 slide-in-from-bottom-2 duration-700 text-base md:text-lg text-muted-foreground leading-relaxed"
             style={{ animationDelay: "120ms" }}
           >
-            Resolva seus problemas do dia a dia com um clique. <br className="hidden sm:block" />
-            Conectamos você aos melhores prestadores de serviço da sua região de forma rápida, segura e com a ajuda de Inteligência Artificial.
+            Resolva seus problemas do dia a dia com um clique.{" "}
+            <br className="hidden sm:block" />
+            Conectamos você aos melhores prestadores de serviço da sua região de
+            forma rápida, segura e com a ajuda de Inteligência Artificial.
           </p>
           <div
             className="mt-10 flex items-center justify-center gap-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-700"
@@ -31,20 +41,28 @@ export default function Page() {
               asChild
               className="transition-transform duration-300 hover:scale-[1.04] hover:shadow-lg"
             >
-              <a href="https://instagram.com/seu_perfil" target="_blank" rel="noopener noreferrer">
+              <Link
+                href="https://instagram.com/seu_perfil"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Instagram className="w-4 h-4" />
                 Instagram
-              </a>
+              </Link>
             </Button>
             <Button
               variant="outline"
               asChild
               className="transition-transform duration-300 hover:scale-[1.04] hover:shadow-lg"
             >
-              <a href="https://wa.me/5599999999999" target="_blank" rel="noopener noreferrer">
+              <Link
+                href="https://wa.me/5599999999999"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp
-              </a>
+              </Link>
             </Button>
           </div>
         </div>
@@ -54,7 +72,10 @@ export default function Page() {
       <section className="relative pb-10">
         <h2 className="text-2xl font-semibold mb-6">Destaques / Benefícios</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2" style={{ animationDelay: "80ms" }}>
+          <Card
+            className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2"
+            style={{ animationDelay: "80ms" }}
+          >
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <ShieldCheck className="w-5 h-5 text-primary" />
@@ -66,7 +87,10 @@ export default function Page() {
             </CardContent>
           </Card>
 
-          <Card className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2" style={{ animationDelay: "140ms" }}>
+          <Card
+            className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2"
+            style={{ animationDelay: "140ms" }}
+          >
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Zap className="w-5 h-5 text-primary" />
@@ -78,7 +102,10 @@ export default function Page() {
             </CardContent>
           </Card>
 
-          <Card className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2" style={{ animationDelay: "200ms" }}>
+          <Card
+            className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2"
+            style={{ animationDelay: "200ms" }}
+          >
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Sparkles className="w-5 h-5 text-primary" />
@@ -90,7 +117,10 @@ export default function Page() {
             </CardContent>
           </Card>
 
-          <Card className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2" style={{ animationDelay: "260ms" }}>
+          <Card
+            className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2"
+            style={{ animationDelay: "260ms" }}
+          >
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <LifeBuoy className="w-5 h-5 text-primary" />
@@ -108,9 +138,15 @@ export default function Page() {
       <footer className="mt-6 rounded-lg border bg-foreground/[0.05] dark:bg-foreground/[0.08] px-6 py-6">
         <div className="flex flex-col gap-4 items-center justify-between sm:flex-row">
           <div className="flex gap-5 text-sm text-foreground/80">
-            <a href="#" className="transition-colors hover:text-primary">Sobre</a>
-            <a href="#" className="transition-colors hover:text-primary">Contato</a>
-            <a href="#" className="transition-colors hover:text-primary">Política de Privacidade</a>
+            <a href="#" className="transition-colors hover:text-primary">
+              Sobre
+            </a>
+            <a href="#" className="transition-colors hover:text-primary">
+              Contato
+            </a>
+            <a href="#" className="transition-colors hover:text-primary">
+              Política de Privacidade
+            </a>
           </div>
           <div className="flex items-center gap-4 text-foreground/80">
             <a
@@ -132,7 +168,9 @@ export default function Page() {
               <MessageCircle className="w-5 h-5" />
             </a>
           </div>
-          <div className="text-xs text-foreground/70">© 2025 FlicApp — Todos os direitos reservados.</div>
+          <div className="text-xs text-foreground/70">
+            © 2025 FlicApp — Todos os direitos reservados.
+          </div>
         </div>
       </footer>
     </div>
