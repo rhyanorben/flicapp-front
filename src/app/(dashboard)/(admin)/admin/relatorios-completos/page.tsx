@@ -9,8 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { OverviewCards } from "./_components/overview-cards";
-import { UsersChart } from "./_components/users-chart";
-import { RequestsSummary } from "./_components/requests-summary";
+import { DashboardFilters } from "./_components/dashboard-filters";
+import { UsersTrendChart } from "./_components/users-trend-chart";
+import { RequestsStatusChart } from "./_components/requests-status-chart";
+import { UserDistributionDonut } from "./_components/user-distribution-donut";
+import { ApprovalRateRadial } from "./_components/approval-rate-radial";
+import { MetricsProgress } from "./_components/metrics-progress";
+import { RecentRequestsTable } from "./_components/recent-requests-table";
+import { ActivityFeed } from "./_components/activity-feed";
+import { Separator } from "@/components/ui/separator";
 import { useStatistics } from "@/lib/queries/admin";
 
 function RelatoriosCompletosData() {
@@ -35,63 +42,53 @@ function RelatoriosCompletosData() {
   }
 
   return (
-    <>
+    <div className="space-y-6">
+      {/* Filter Bar */}
+      <DashboardFilters />
+
+      {/* Row 1: KPI Cards with Sparklines */}
       <OverviewCards data={statistics} />
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <UsersChart data={statistics.users.byMonth} />
-        <Card>
-          <CardHeader>
-            <CardTitle>Resumo de Solicitações</CardTitle>
-            <CardDescription>
-              Status das solicitações de prestador
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Total</span>
-                <span className="text-2xl font-bold">
-                  {statistics.providerRequests.total}
-                </span>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Pendentes</span>
-                  <span className="font-medium">
-                    {statistics.providerRequests.pending}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Aprovadas</span>
-                  <span className="font-medium">
-                    {statistics.providerRequests.approved}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Rejeitadas</span>
-                  <span className="font-medium">
-                    {statistics.providerRequests.rejected}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <Separator />
+
+      {/* Row 2: Main Charts */}
+      <div className="grid gap-4 xl:grid-cols-12">
+        <UsersTrendChart data={statistics.users.byMonth} />
+        <RequestsStatusChart data={statistics.providerRequests.byMonth} />
       </div>
 
-      <RequestsSummary
-        requests={statistics.providerRequests.recent}
-        requestsByMonth={statistics.providerRequests.byMonth}
-      />
-    </>
+      <Separator />
+
+      {/* Row 3: Distribution Charts */}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <UserDistributionDonut data={statistics.users} />
+        <ApprovalRateRadial data={statistics.providerRequests} />
+        <MetricsProgress data={statistics} />
+      </div>
+
+      <Separator />
+
+      {/* Row 4: Details and Activity */}
+      <div className="grid gap-4 xl:grid-cols-12">
+        <RecentRequestsTable requests={statistics.providerRequests.recent} />
+        <ActivityFeed />
+      </div>
+    </div>
   );
 }
 
 function RelatoriosCompletosDataSkeleton() {
   return (
-    <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="space-y-6">
+      {/* Filter Bar Skeleton */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="h-10 w-full bg-muted animate-pulse rounded" />
+        </CardContent>
+      </Card>
+
+      {/* Row 1: KPI Cards Skeleton */}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <Card key={i}>
             <CardHeader>
@@ -102,54 +99,72 @@ function RelatoriosCompletosDataSkeleton() {
         ))}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+      {/* Row 2: Main Charts Skeleton */}
+      <div className="grid gap-4 xl:grid-cols-12">
+        <Card className="xl:col-span-8">
           <CardHeader>
             <div className="h-6 w-32 bg-muted animate-pulse rounded" />
             <div className="h-4 w-48 bg-muted animate-pulse rounded" />
           </CardHeader>
           <CardContent>
-            <div className="h-64 w-full bg-muted animate-pulse rounded" />
+            <div className="h-80 w-full bg-muted animate-pulse rounded" />
           </CardContent>
         </Card>
-        <Card>
+        <Card className="xl:col-span-4">
           <CardHeader>
             <div className="h-6 w-40 bg-muted animate-pulse rounded" />
             <div className="h-4 w-56 bg-muted animate-pulse rounded" />
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="h-8 w-full bg-muted animate-pulse rounded" />
-              <div className="space-y-2">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-6 w-full bg-muted animate-pulse rounded"
-                  />
-                ))}
-              </div>
-            </div>
+            <div className="h-80 w-full bg-muted animate-pulse rounded" />
           </CardContent>
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <div className="h-6 w-48 bg-muted animate-pulse rounded" />
-          <div className="h-4 w-64 bg-muted animate-pulse rounded" />
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-16 w-full bg-muted animate-pulse rounded"
-              />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </>
+      {/* Row 3: Distribution Charts Skeleton */}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <Card key={i}>
+            <CardHeader>
+              <div className="h-6 w-32 bg-muted animate-pulse rounded" />
+              <div className="h-4 w-48 bg-muted animate-pulse rounded" />
+            </CardHeader>
+            <CardContent>
+              <div className="h-64 w-full bg-muted animate-pulse rounded" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Row 4: Details and Activity Skeleton */}
+      <div className="grid gap-4 xl:grid-cols-12">
+        <Card className="xl:col-span-8">
+          <CardHeader>
+            <div className="h-6 w-48 bg-muted animate-pulse rounded" />
+            <div className="h-4 w-64 bg-muted animate-pulse rounded" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-16 w-full bg-muted animate-pulse rounded"
+                />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="xl:col-span-4">
+          <CardHeader>
+            <div className="h-6 w-32 bg-muted animate-pulse rounded" />
+            <div className="h-4 w-48 bg-muted animate-pulse rounded" />
+          </CardHeader>
+          <CardContent>
+            <div className="h-80 w-full bg-muted animate-pulse rounded" />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }
 

@@ -1,178 +1,134 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Instagram,
-  MessageCircle,
-  ShieldCheck,
-  Zap,
-  Sparkles,
-  LifeBuoy,
-} from "lucide-react";
-import Link from "next/link";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useUserRole } from "@/hooks/use-user-role";
+import { UserRole } from "@/types/user";
+import { useRoleDashboard } from "@/lib/queries/dashboard";
+import { RoleSelector } from "./_components/role-selector";
+import { AdminDashboard } from "./_components/admin-dashboard";
+import { ClientDashboard } from "./_components/client-dashboard";
+import { ProviderDashboard } from "./_components/provider-dashboard";
+
+// Tipo para aceitar todos os tipos de dados dos dashboards
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DashboardData = any;
+
+const ROLE_DASHBOARD_TITLES = {
+  CLIENTE: "Meu Dashboard",
+  PRESTADOR: "Dashboard do Prestador",
+  ADMINISTRADOR: "Dashboard Administrativo",
+};
+
+const ROLE_DASHBOARD_DESCRIPTIONS = {
+  CLIENTE: "Gerencie seus serviços e acompanhe seus pedidos",
+  PRESTADOR: "Monitore suas solicitações e gerencie sua agenda",
+  ADMINISTRADOR: "Visão geral completa do sistema FlicApp",
+};
 
 export default function Page() {
-  return (
-    <div className="relative flex flex-1 flex-col gap-8 p-4 pt-0">
-      {/* Background gradient and subtle decorative shapes */}
-      <div className="pointer-events-none absolute inset-x-0 -top-10 h-52 bg-gradient-to-b from-primary/15 to-transparent dark:from-primary/10 blur-2xl" />
-      <div className="pointer-events-none absolute -top-20 -left-24 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-violet-400/10 dark:bg-violet-300/10 blur-3xl" />
+  const { userRoles, isLoading: isLoadingRoles } = useUserRole();
+  const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
 
-      {/* Hero */}
-      <section className="relative flex flex-1 items-center justify-center">
-        <div className="text-center max-w-4xl mx-auto py-20">
-          <h1 className="animate-in fade-in-0 slide-in-from-bottom-2 duration-700 text-4xl md:text-5xl font-bold tracking-tight mb-6">
-            Home
-          </h1>
-          <p
-            className="animate-in fade-in-0 slide-in-from-bottom-2 duration-700 text-base md:text-lg text-muted-foreground leading-relaxed"
-            style={{ animationDelay: "120ms" }}
-          >
-            Resolva seus problemas do dia a dia com um clique.{" "}
-            <br className="hidden sm:block" />
-            Conectamos você aos melhores prestadores de serviço da sua região de
-            forma rápida, segura e com a ajuda de Inteligência Artificial.
+  // Determinar role padrão ou selecionada
+  useEffect(() => {
+    if (userRoles.length > 0 && !selectedRole) {
+      // Prioridade: ADMINISTRADOR > PRESTADOR > CLIENTE
+      if (userRoles.includes("ADMINISTRADOR")) {
+        setSelectedRole("ADMINISTRADOR");
+      } else if (userRoles.includes("PRESTADOR")) {
+        setSelectedRole("PRESTADOR");
+      } else {
+        setSelectedRole("CLIENTE");
+      }
+    }
+  }, [userRoles, selectedRole]);
+
+  // Buscar dados baseado na role selecionada
+  const { data, isLoading, error } = useRoleDashboard(
+    selectedRole || "CLIENTE"
+  );
+
+  // Loading state geral
+  if (isLoadingRoles) {
+    return (
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="h-8 w-64 bg-muted animate-pulse rounded" />
+        <div className="h-4 w-96 bg-muted animate-pulse rounded" />
+        <div className="h-96 w-full bg-muted animate-pulse rounded" />
+      </div>
+    );
+  }
+
+  // Se não tem roles, mostrar erro
+  if (userRoles.length === 0) {
+    return (
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-sm text-muted-foreground">
+            Nenhuma role encontrada para este usuário
           </p>
-          <div
-            className="mt-10 flex items-center justify-center gap-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-700"
-            style={{ animationDelay: "220ms" }}
-          >
-            <Button
-              asChild
-              className="transition-transform duration-300 hover:scale-[1.04] hover:shadow-lg"
-            >
-              <Link
-                href="https://instagram.com/seu_perfil"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Instagram className="w-4 h-4" />
-                Instagram
-              </Link>
-            </Button>
-            <Button
-              variant="outline"
-              asChild
-              className="transition-transform duration-300 hover:scale-[1.04] hover:shadow-lg"
-            >
-              <Link
-                href="https://wa.me/5599999999999"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <MessageCircle className="w-4 h-4" />
-                WhatsApp
-              </Link>
-            </Button>
+        </div>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <p className="text-muted-foreground">
+            Entre em contato com o administrador para configurar suas permissões
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const hasMultipleRoles = userRoles.length > 1;
+  const currentTitle = selectedRole
+    ? ROLE_DASHBOARD_TITLES[selectedRole]
+    : "Dashboard";
+  const currentDescription = selectedRole
+    ? ROLE_DASHBOARD_DESCRIPTIONS[selectedRole]
+    : "Seu dashboard personalizado";
+
+  return (
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">{currentTitle}</h1>
+        <p className="text-sm text-muted-foreground">{currentDescription}</p>
+      </div>
+
+      {/* Role Selector (apenas se múltiplas roles) */}
+      {hasMultipleRoles && selectedRole && (
+        <RoleSelector
+          userRoles={userRoles}
+          selectedRole={selectedRole}
+          onRoleChange={setSelectedRole}
+        />
+      )}
+
+      {/* Dashboard específico baseado na role */}
+      {selectedRole === "ADMINISTRADOR" && (
+        <AdminDashboard data={data as DashboardData} isLoading={isLoading} />
+      )}
+
+      {selectedRole === "PRESTADOR" && (
+        <ProviderDashboard data={data as DashboardData} isLoading={isLoading} />
+      )}
+
+      {selectedRole === "CLIENTE" && (
+        <ClientDashboard data={data as DashboardData} isLoading={isLoading} />
+      )}
+
+      {/* Error state */}
+      {error && (
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <p className="text-muted-foreground mb-2">
+              Erro ao carregar dados do dashboard
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Tente recarregar a página
+            </p>
           </div>
         </div>
-      </section>
-
-      {/* Destaques / Benefícios */}
-      <section className="relative pb-10">
-        <h2 className="text-2xl font-semibold mb-6">Destaques / Benefícios</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card
-            className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2"
-            style={{ animationDelay: "80ms" }}
-          >
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <ShieldCheck className="w-5 h-5 text-primary" />
-                Segurança garantida
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Seus dados e transações com proteção e transparência.
-            </CardContent>
-          </Card>
-
-          <Card
-            className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2"
-            style={{ animationDelay: "140ms" }}
-          >
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Zap className="w-5 h-5 text-primary" />
-                Agilidade
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Encontre e contrate em poucos cliques, sem complicação.
-            </CardContent>
-          </Card>
-
-          <Card
-            className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2"
-            style={{ animationDelay: "200ms" }}
-          >
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Sparkles className="w-5 h-5 text-primary" />
-                IA que recomenda os melhores
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Sugestões inteligentes com base no seu perfil e necessidade.
-            </CardContent>
-          </Card>
-
-          <Card
-            className="transition-transform duration-300 hover:scale-[1.02] hover:shadow-md animate-in fade-in-0 slide-in-from-bottom-2"
-            style={{ animationDelay: "260ms" }}
-          >
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <LifeBuoy className="w-5 h-5 text-primary" />
-                Suporte 24h
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Estamos disponíveis para ajudar quando você precisar.
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Rodapé elegante */}
-      <footer className="mt-6 rounded-lg border bg-foreground/[0.05] dark:bg-foreground/[0.08] px-6 py-6">
-        <div className="flex flex-col gap-4 items-center justify-between sm:flex-row">
-          <div className="flex gap-5 text-sm text-foreground/80">
-            <a href="#" className="transition-colors hover:text-primary">
-              Sobre
-            </a>
-            <a href="#" className="transition-colors hover:text-primary">
-              Contato
-            </a>
-            <a href="#" className="transition-colors hover:text-primary">
-              Política de Privacidade
-            </a>
-          </div>
-          <div className="flex items-center gap-4 text-foreground/80">
-            <a
-              href="https://instagram.com/seu_perfil"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="transition-transform hover:scale-110 hover:text-primary"
-            >
-              <Instagram className="w-5 h-5" />
-            </a>
-            <a
-              href="https://wa.me/5599999999999"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp"
-              className="transition-transform hover:scale-110 hover:text-primary"
-            >
-              <MessageCircle className="w-5 h-5" />
-            </a>
-          </div>
-          <div className="text-xs text-foreground/70">
-            © 2025 FlicApp — Todos os direitos reservados.
-          </div>
-        </div>
-      </footer>
+      )}
     </div>
   );
 }
