@@ -93,21 +93,25 @@ model Verification {
 }
 
 model ProviderRequest {
-  id             String                @id @default(cuid())
-  userId         String
-  user           User                  @relation("UserProviderRequests", fields: [userId], references: [id], onDelete: Cascade)
-  description    String
-  experience     String
-  phone          String
-  address        String
-  documentNumber String
-  portfolioLinks String?
-  status         ProviderRequestStatus @default(PENDING)
-  reviewedBy     String?
-  reviewedByUser User?                 @relation("ReviewedProviderRequests", fields: [reviewedBy], references: [id])
-  reviewedAt     DateTime?
-  createdAt      DateTime              @default(now())
-  updatedAt      DateTime              @updatedAt
+  id                 String                @id @default(cuid())
+  userId             String
+  user               User                  @relation("UserProviderRequests", fields: [userId], references: [id], onDelete: Cascade)
+  services           Json? // Array of service selections with experience levels
+  description        String
+  experience         String
+  phone              String
+  cep                String? // CEP field for address lookup
+  address            String
+  documentNumber     String
+  portfolioLinks     String? // Legacy field - will be migrated to JSON later
+  portfolioLinksJson Json? // New JSON field for portfolio links with titles and URLs
+  status             ProviderRequestStatus @default(PENDING)
+  rejectionReason    String? // Motivo da rejeição
+  reviewedBy         String?
+  reviewedByUser     User?                 @relation("ReviewedProviderRequests", fields: [reviewedBy], references: [id])
+  reviewedAt         DateTime?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
 
   @@map("provider_request")
 }

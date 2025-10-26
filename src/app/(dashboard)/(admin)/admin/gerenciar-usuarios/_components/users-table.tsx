@@ -2,31 +2,15 @@
 
 import { useState, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
-import { User, Mail, Calendar, Shield } from "lucide-react";
+import { User, Mail, Calendar, Shield, Eye } from "lucide-react";
 import { UserRole } from "@/app/generated/prisma";
 import { UserDetailsDialog } from "./user-details-dialog";
 import {
-  ModernTable,
-  ModernTableRow,
-  ModernTableHeader,
-  ModernTableCell,
-} from "@/components/ui/modern-table";
-import { RowActions, ActionIcons } from "@/components/ui/row-actions";
-import {
-  TableControls,
-  SearchInput,
-  SortOption,
-  FilterOption,
-} from "@/components/ui/table-controls";
-import { TablePagination } from "@/components/ui/table-pagination";
-import {
-  exportToCSV,
-  exportToJSON,
-  formatDate,
-  sortByString,
-  sortByDate,
-  paginateData,
-} from "@/lib/utils/table-utils";
+  GenericTable,
+  TableColumn,
+  TableAction,
+} from "@/components/ui/generic-table";
+import { DetailModalSection } from "@/components/ui/detail-modal";
 
 interface User {
   id: string;
@@ -45,32 +29,6 @@ interface UsersTableProps {
 export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [roleFilter, setRoleFilter] = useState("todos");
-  const [sortField, setSortField] = useState<string>("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const ITEMS_PER_PAGE = 10;
-
-  // Sort and filter options
-  const sortOptions: SortOption[] = [
-    { value: "name", label: "Nome", icon: <User className="h-3 w-3" /> },
-    { value: "email", label: "Email", icon: <Mail className="h-3 w-3" /> },
-    {
-      value: "createdAt",
-      label: "Data de Cadastro",
-      icon: <Calendar className="h-3 w-3" />,
-    },
-    { value: "roles", label: "Roles", icon: <Shield className="h-3 w-3" /> },
-  ];
-
-  const filterOptions: FilterOption[] = [
-    { value: "todos", label: "Todos os roles" },
-    { value: "ADMINISTRADOR", label: "Administrador" },
-    { value: "PRESTADOR", label: "Prestador" },
-    { value: "CLIENTE", label: "Cliente" },
-  ];
 
   const getRoleBadges = (roles: UserRole[]) => {
     return roles.map((role) => {
@@ -79,13 +37,16 @@ export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
 
       switch (role) {
         case "ADMINISTRADOR":
-          className = "bg-red-100 text-red-800 border-red-300";
+          className =
+            "bg-red-100 text-red-800 border-red-300 dark:bg-red-950/20 dark:text-red-400 dark:border-red-800";
           break;
         case "PRESTADOR":
-          className = "bg-blue-100 text-blue-800 border-blue-300";
+          className =
+            "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-800";
           break;
         case "CLIENTE":
-          className = "bg-green-100 text-green-800 border-green-300";
+          className =
+            "bg-green-100 text-green-800 border-green-300 dark:bg-green-950/20 dark:text-green-400 dark:border-green-800";
           break;
       }
 
@@ -99,91 +60,6 @@ export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
     });
   };
 
-  // Filter and sort logic
-  const filteredAndSortedUsers = useMemo(() => {
-    let filtered = users.filter((user) => {
-      const matchesSearch =
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesRole =
-        roleFilter === "todos" || user.roles.includes(roleFilter as UserRole);
-
-      return matchesSearch && matchesRole;
-    });
-
-    if (sortField) {
-      if (sortField === "createdAt") {
-        filtered = sortByDate(filtered, sortField as keyof User, sortOrder);
-      } else if (sortField === "roles") {
-        filtered = filtered.sort((a, b) => {
-          const aRoles = a.roles.length;
-          const bRoles = b.roles.length;
-          if (aRoles < bRoles) return sortOrder === "asc" ? -1 : 1;
-          if (aRoles > bRoles) return sortOrder === "asc" ? 1 : -1;
-          return 0;
-        });
-      } else {
-        filtered = sortByString(filtered, sortField as keyof User, sortOrder);
-      }
-    }
-
-    return filtered;
-  }, [users, searchTerm, roleFilter, sortField, sortOrder]);
-
-  const { paginatedData, totalPages, totalItems } = paginateData(
-    filteredAndSortedUsers,
-    currentPage,
-    ITEMS_PER_PAGE
-  );
-
-  const handleSortChange = (value: string) => {
-    if (sortField === value) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(value);
-      setSortOrder("asc");
-    }
-    setCurrentPage(1);
-  };
-
-  const handleFilterChange = (value: string) => {
-    setRoleFilter(value);
-    setCurrentPage(1);
-  };
-
-  const handleSelectUser = (userId: string) => {
-    setSelectedUsers((prev) =>
-      prev.includes(userId)
-        ? prev.filter((id) => id !== userId)
-        : [...prev, userId]
-    );
-  };
-
-  const handleSelectAll = () => {
-    if (selectedUsers.length === paginatedData.length) {
-      setSelectedUsers([]);
-    } else {
-      setSelectedUsers(paginatedData.map((user) => user.id));
-    }
-  };
-
-  const handleExportCSV = () => {
-    const headers = {
-      id: "ID",
-      name: "Nome",
-      email: "Email",
-      image: "Imagem",
-      roles: "Roles",
-      createdAt: "Data de Cadastro",
-    };
-    exportToCSV(filteredAndSortedUsers, "usuarios", headers);
-  };
-
-  const handleExportJSON = () => {
-    exportToJSON(filteredAndSortedUsers, "usuarios");
-  };
-
   const handleViewUser = (user: User) => {
     setSelectedUser(user);
     setIsDialogOpen(true);
@@ -194,135 +70,141 @@ export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
     setSelectedUser(null);
   };
 
-  if (users.length === 0) {
-    return (
-      <div className="text-center py-10 text-muted-foreground">
-        Nenhum usuário encontrado
-      </div>
-    );
-  }
+  // Configuração das colunas
+  const columns: TableColumn[] = useMemo(
+    () => [
+      {
+        key: "name",
+        label: "Nome",
+        sortable: true,
+        render: (value: unknown, row: Record<string, unknown>) => {
+          const user = row as unknown as User;
+          return (
+            <div className="space-y-1">
+              <p className="font-medium">{user.name}</p>
+            </div>
+          );
+        },
+      },
+      {
+        key: "email",
+        label: "Email",
+        sortable: true,
+        render: (value: unknown, row: Record<string, unknown>) => {
+          const user = row as unknown as User;
+          return (
+            <div className="space-y-1">
+              <p className="text-sm text-muted-foreground">{user.email}</p>
+            </div>
+          );
+        },
+      },
+      {
+        key: "roles",
+        label: "Roles",
+        render: (value: unknown, row: Record<string, unknown>) => {
+          const user = row as unknown as User;
+          return (
+            <div className="flex gap-1 flex-wrap">
+              {getRoleBadges(user.roles)}
+            </div>
+          );
+        },
+      },
+      {
+        key: "createdAt",
+        label: "Data de Cadastro",
+        sortable: true,
+        render: (value: unknown, row: Record<string, unknown>) => {
+          const user = row as unknown as User;
+          return (
+            <div className="text-sm">
+              {new Date(user.createdAt).toLocaleDateString("pt-BR")}
+              <p className="text-xs text-muted-foreground">
+                {new Date(user.createdAt).toLocaleTimeString("pt-BR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+            </div>
+          );
+        },
+      },
+    ],
+    []
+  );
+
+  // Ações customizadas
+  const customActions: TableAction[] = useMemo(
+    () => [
+      {
+        id: "view",
+        label: "Ver Detalhes",
+        icon: ({ className }) => <Eye className={className} />,
+        onClick: (row: Record<string, unknown>) => {
+          const user = row as unknown as User;
+          handleViewUser(user);
+        },
+        variant: "default",
+      },
+    ],
+    []
+  );
+
+  // Conteúdo do modal de detalhes
+  const detailModalContent = (user: User) => (
+    <>
+      <DetailModalSection
+        title="ID do Usuário"
+        icon={<User className="h-3 w-3" />}
+      >
+        {user.id}
+      </DetailModalSection>
+
+      <DetailModalSection title="Nome" icon={<User className="h-3 w-3" />}>
+        {user.name}
+      </DetailModalSection>
+
+      <DetailModalSection title="Email" icon={<Mail className="h-3 w-3" />}>
+        {user.email}
+      </DetailModalSection>
+
+      <DetailModalSection title="Roles" icon={<Shield className="h-3 w-3" />}>
+        <div className="flex gap-1 flex-wrap">{getRoleBadges(user.roles)}</div>
+      </DetailModalSection>
+
+      <DetailModalSection
+        title="Data de Cadastro"
+        icon={<Calendar className="h-3 w-3" />}
+      >
+        {new Date(user.createdAt).toLocaleString("pt-BR")}
+      </DetailModalSection>
+    </>
+  );
 
   return (
     <>
-      <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <SearchInput
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder="Buscar por nome ou email..."
-        />
-        <TableControls
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          sortOptions={sortOptions}
-          currentSort={sortField}
-          onSortChange={handleSortChange}
-          filterOptions={filterOptions}
-          currentFilter={roleFilter}
-          onFilterChange={handleFilterChange}
-          onExportCSV={handleExportCSV}
-          onExportJSON={handleExportJSON}
-        />
-      </div>
-
-      <ModernTable useGridLayout={true} gridColumns="40px 1fr 1fr 1fr 1fr 40px">
-        <ModernTableHeader gridColumns="40px 1fr 1fr 1fr 1fr 40px">
-          <div className="flex items-center justify-center border-r border-border/20 pr-3">
-            <input
-              type="checkbox"
-              className="w-4 h-4 rounded border-border/40 cursor-pointer"
-              checked={
-                paginatedData.length > 0 &&
-                selectedUsers.length === paginatedData.length
-              }
-              onChange={handleSelectAll}
-            />
-          </div>
-          <div className="flex items-center gap-1.5 border-r border-border/20 px-3">
-            <User className="h-3 w-3" />
-            <span>Nome</span>
-          </div>
-          <div className="flex items-center gap-1.5 border-r border-border/20 px-3">
-            <Mail className="h-3 w-3" />
-            <span>Email</span>
-          </div>
-          <div className="flex items-center gap-1.5 border-r border-border/20 px-3">
-            <Shield className="h-3 w-3" />
-            <span>Roles</span>
-          </div>
-          <div className="flex items-center gap-1.5 border-r border-border/20 px-3">
-            <Calendar className="h-3 w-3" />
-            <span>Data de Cadastro</span>
-          </div>
-          <div className="flex items-center justify-center px-3">
-            <span className="text-xs">⚙️</span>
-          </div>
-        </ModernTableHeader>
-
-        {paginatedData.map((user) => (
-          <ModernTableRow
-            key={user.id}
-            isSelected={selectedUsers.includes(user.id)}
-            onClick={() => handleViewUser(user)}
-            gridColumns="40px 1fr 1fr 1fr 1fr 40px"
-          >
-            <ModernTableCell borderRight={true}>
-              <input
-                type="checkbox"
-                className="w-4 h-4 rounded border-border/40 cursor-pointer"
-                checked={selectedUsers.includes(user.id)}
-                onChange={(e) => {
-                  e.stopPropagation();
-                  handleSelectUser(user.id);
-                }}
-              />
-            </ModernTableCell>
-            <ModernTableCell borderRight={true}>
-              <span className="font-medium text-foreground">{user.name}</span>
-            </ModernTableCell>
-            <ModernTableCell borderRight={true}>
-              <span className="text-foreground">{user.email}</span>
-            </ModernTableCell>
-            <ModernTableCell borderRight={true}>
-              <div className="flex gap-1 flex-wrap">
-                {getRoleBadges(user.roles)}
-              </div>
-            </ModernTableCell>
-            <ModernTableCell borderRight={true}>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-gray-400" />
-                <span className="text-foreground">
-                  {formatDate(user.createdAt)}
-                </span>
-              </div>
-            </ModernTableCell>
-            <ModernTableCell>
-              <RowActions
-                actions={[
-                  {
-                    id: "view",
-                    label: "Ver Detalhes",
-                    icon: ActionIcons.View,
-                    onClick: () => handleViewUser(user),
-                  },
-                ]}
-              />
-            </ModernTableCell>
-          </ModernTableRow>
-        ))}
-      </ModernTable>
-
-      {paginatedData.length === 0 && (
-        <div className="text-center py-8 text-muted-foreground">
-          Nenhum usuário encontrado com os filtros aplicados.
-        </div>
-      )}
-
-      <TablePagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        totalItems={totalItems}
-        itemsPerPage={ITEMS_PER_PAGE}
-        onPageChange={setCurrentPage}
+      <GenericTable
+        data={users as unknown as Record<string, unknown>[]}
+        columns={columns}
+        actions={customActions}
+        searchPlaceholder="Buscar por nome ou email..."
+        sortOptions={[
+          { value: "name", label: "Nome" },
+          { value: "email", label: "Email" },
+          { value: "createdAt", label: "Data de Cadastro" },
+        ]}
+        filterOptions={[
+          { value: "todos", label: "Todos os roles" },
+          { value: "ADMINISTRADOR", label: "Administrador" },
+          { value: "PRESTADOR", label: "Prestador" },
+          { value: "CLIENTE", label: "Cliente" },
+        ]}
+        onRowClick={(row) => {
+          const user = row as unknown as User;
+          handleViewUser(user);
+        }}
+        detailModalContent={(row) => detailModalContent(row as unknown as User)}
       />
 
       {selectedUser && (

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -9,78 +8,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
 import { OverviewCards } from "./_components/overview-cards";
 import { UsersChart } from "./_components/users-chart";
 import { RequestsSummary } from "./_components/requests-summary";
+import { useStatistics } from "@/lib/queries/admin";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface ProviderRequest {
-  id: string;
-  userId: string;
-  user: User;
-  status: string;
-  createdAt: string;
-}
-
-interface StatisticsData {
-  users: {
-    total: number;
-    admins: number;
-    providers: number;
-    clients: number;
-    byMonth: {
-      [month: string]: number;
-    };
-  };
-  providerRequests: {
-    total: number;
-    pending: number;
-    approved: number;
-    rejected: number;
-    byMonth: {
-      [month: string]: number;
-    };
-    recent: ProviderRequest[];
-  };
-}
-
-export default function RelatoriosCompletosPage() {
-  const [statistics, setStatistics] = useState<StatisticsData | null>(null);
-  const [isFetching, setIsFetching] = useState(true);
+function RelatoriosCompletosData() {
   const router = useRouter();
+  const { data: statistics, isLoading, error } = useStatistics();
 
-  const fetchStatistics = async () => {
-    try {
-      const response = await fetch("/api/admin/statistics");
-      if (response.ok) {
-        const data = await response.json();
-        setStatistics(data);
-      } else if (response.status === 403) {
-        router.push("/dashboard");
-      }
-    } catch (error) {
-      console.error("Error fetching statistics:", error);
-    } finally {
-      setIsFetching(false);
-    }
-  };
+  // Handle 403 redirect
+  if (error?.message === "Acesso negado") {
+    router.push("/dashboard");
+  }
 
-  useEffect(() => {
-    fetchStatistics();
-  }, [router]);
-
-  if (isFetching) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
+  if (isLoading) {
+    return <RelatoriosCompletosDataSkeleton />;
   }
 
   if (!statistics) {
@@ -92,17 +35,7 @@ export default function RelatoriosCompletosPage() {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Relatórios Completos</CardTitle>
-          <CardDescription>
-            Visão geral detalhada de usuários, serviços e estatísticas do
-            sistema
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
+    <>
       <OverviewCards data={statistics} />
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -151,6 +84,88 @@ export default function RelatoriosCompletosPage() {
         requests={statistics.providerRequests.recent}
         requestsByMonth={statistics.providerRequests.byMonth}
       />
+    </>
+  );
+}
+
+function RelatoriosCompletosDataSkeleton() {
+  return (
+    <>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i}>
+            <CardHeader>
+              <div className="h-4 w-24 bg-muted animate-pulse rounded" />
+              <div className="h-8 w-16 bg-muted animate-pulse rounded" />
+            </CardHeader>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <div className="h-6 w-32 bg-muted animate-pulse rounded" />
+            <div className="h-4 w-48 bg-muted animate-pulse rounded" />
+          </CardHeader>
+          <CardContent>
+            <div className="h-64 w-full bg-muted animate-pulse rounded" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <div className="h-6 w-40 bg-muted animate-pulse rounded" />
+            <div className="h-4 w-56 bg-muted animate-pulse rounded" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="h-8 w-full bg-muted animate-pulse rounded" />
+              <div className="space-y-2">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-6 w-full bg-muted animate-pulse rounded"
+                  />
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <div className="h-6 w-48 bg-muted animate-pulse rounded" />
+          <div className="h-4 w-64 bg-muted animate-pulse rounded" />
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-16 w-full bg-muted animate-pulse rounded"
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </>
+  );
+}
+
+export default function RelatoriosCompletosPage() {
+  return (
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl">Relatórios Completos</CardTitle>
+          <CardDescription>
+            Visão geral detalhada de usuários, serviços e estatísticas do
+            sistema
+          </CardDescription>
+        </CardHeader>
+      </Card>
+      <RelatoriosCompletosData />
     </div>
   );
 }

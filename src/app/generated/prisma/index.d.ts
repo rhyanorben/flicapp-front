@@ -8148,10 +8148,12 @@ export namespace Prisma {
     description: string | null
     experience: string | null
     phone: string | null
+    cep: string | null
     address: string | null
     documentNumber: string | null
     portfolioLinks: string | null
     status: $Enums.ProviderRequestStatus | null
+    rejectionReason: string | null
     reviewedBy: string | null
     reviewedAt: Date | null
     createdAt: Date | null
@@ -8164,10 +8166,12 @@ export namespace Prisma {
     description: string | null
     experience: string | null
     phone: string | null
+    cep: string | null
     address: string | null
     documentNumber: string | null
     portfolioLinks: string | null
     status: $Enums.ProviderRequestStatus | null
+    rejectionReason: string | null
     reviewedBy: string | null
     reviewedAt: Date | null
     createdAt: Date | null
@@ -8177,13 +8181,17 @@ export namespace Prisma {
   export type ProviderRequestCountAggregateOutputType = {
     id: number
     userId: number
+    services: number
     description: number
     experience: number
     phone: number
+    cep: number
     address: number
     documentNumber: number
     portfolioLinks: number
+    portfolioLinksJson: number
     status: number
+    rejectionReason: number
     reviewedBy: number
     reviewedAt: number
     createdAt: number
@@ -8198,10 +8206,12 @@ export namespace Prisma {
     description?: true
     experience?: true
     phone?: true
+    cep?: true
     address?: true
     documentNumber?: true
     portfolioLinks?: true
     status?: true
+    rejectionReason?: true
     reviewedBy?: true
     reviewedAt?: true
     createdAt?: true
@@ -8214,10 +8224,12 @@ export namespace Prisma {
     description?: true
     experience?: true
     phone?: true
+    cep?: true
     address?: true
     documentNumber?: true
     portfolioLinks?: true
     status?: true
+    rejectionReason?: true
     reviewedBy?: true
     reviewedAt?: true
     createdAt?: true
@@ -8227,13 +8239,17 @@ export namespace Prisma {
   export type ProviderRequestCountAggregateInputType = {
     id?: true
     userId?: true
+    services?: true
     description?: true
     experience?: true
     phone?: true
+    cep?: true
     address?: true
     documentNumber?: true
     portfolioLinks?: true
+    portfolioLinksJson?: true
     status?: true
+    rejectionReason?: true
     reviewedBy?: true
     reviewedAt?: true
     createdAt?: true
@@ -8316,13 +8332,17 @@ export namespace Prisma {
   export type ProviderRequestGroupByOutputType = {
     id: string
     userId: string
+    services: JsonValue | null
     description: string
     experience: string
     phone: string
+    cep: string | null
     address: string
     documentNumber: string
     portfolioLinks: string | null
+    portfolioLinksJson: JsonValue | null
     status: $Enums.ProviderRequestStatus
+    rejectionReason: string | null
     reviewedBy: string | null
     reviewedAt: Date | null
     createdAt: Date
@@ -8349,13 +8369,17 @@ export namespace Prisma {
   export type ProviderRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    services?: boolean
     description?: boolean
     experience?: boolean
     phone?: boolean
+    cep?: boolean
     address?: boolean
     documentNumber?: boolean
     portfolioLinks?: boolean
+    portfolioLinksJson?: boolean
     status?: boolean
+    rejectionReason?: boolean
     reviewedBy?: boolean
     reviewedAt?: boolean
     createdAt?: boolean
@@ -8367,13 +8391,17 @@ export namespace Prisma {
   export type ProviderRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    services?: boolean
     description?: boolean
     experience?: boolean
     phone?: boolean
+    cep?: boolean
     address?: boolean
     documentNumber?: boolean
     portfolioLinks?: boolean
+    portfolioLinksJson?: boolean
     status?: boolean
+    rejectionReason?: boolean
     reviewedBy?: boolean
     reviewedAt?: boolean
     createdAt?: boolean
@@ -8385,13 +8413,17 @@ export namespace Prisma {
   export type ProviderRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    services?: boolean
     description?: boolean
     experience?: boolean
     phone?: boolean
+    cep?: boolean
     address?: boolean
     documentNumber?: boolean
     portfolioLinks?: boolean
+    portfolioLinksJson?: boolean
     status?: boolean
+    rejectionReason?: boolean
     reviewedBy?: boolean
     reviewedAt?: boolean
     createdAt?: boolean
@@ -8403,20 +8435,24 @@ export namespace Prisma {
   export type ProviderRequestSelectScalar = {
     id?: boolean
     userId?: boolean
+    services?: boolean
     description?: boolean
     experience?: boolean
     phone?: boolean
+    cep?: boolean
     address?: boolean
     documentNumber?: boolean
     portfolioLinks?: boolean
+    portfolioLinksJson?: boolean
     status?: boolean
+    rejectionReason?: boolean
     reviewedBy?: boolean
     reviewedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProviderRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "description" | "experience" | "phone" | "address" | "documentNumber" | "portfolioLinks" | "status" | "reviewedBy" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["providerRequest"]>
+  export type ProviderRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "services" | "description" | "experience" | "phone" | "cep" | "address" | "documentNumber" | "portfolioLinks" | "portfolioLinksJson" | "status" | "rejectionReason" | "reviewedBy" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["providerRequest"]>
   export type ProviderRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     reviewedByUser?: boolean | ProviderRequest$reviewedByUserArgs<ExtArgs>
@@ -8439,13 +8475,17 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
+      services: Prisma.JsonValue | null
       description: string
       experience: string
       phone: string
+      cep: string | null
       address: string
       documentNumber: string
       portfolioLinks: string | null
+      portfolioLinksJson: Prisma.JsonValue | null
       status: $Enums.ProviderRequestStatus
+      rejectionReason: string | null
       reviewedBy: string | null
       reviewedAt: Date | null
       createdAt: Date
@@ -8877,13 +8917,17 @@ export namespace Prisma {
   interface ProviderRequestFieldRefs {
     readonly id: FieldRef<"ProviderRequest", 'String'>
     readonly userId: FieldRef<"ProviderRequest", 'String'>
+    readonly services: FieldRef<"ProviderRequest", 'Json'>
     readonly description: FieldRef<"ProviderRequest", 'String'>
     readonly experience: FieldRef<"ProviderRequest", 'String'>
     readonly phone: FieldRef<"ProviderRequest", 'String'>
+    readonly cep: FieldRef<"ProviderRequest", 'String'>
     readonly address: FieldRef<"ProviderRequest", 'String'>
     readonly documentNumber: FieldRef<"ProviderRequest", 'String'>
     readonly portfolioLinks: FieldRef<"ProviderRequest", 'String'>
+    readonly portfolioLinksJson: FieldRef<"ProviderRequest", 'Json'>
     readonly status: FieldRef<"ProviderRequest", 'ProviderRequestStatus'>
+    readonly rejectionReason: FieldRef<"ProviderRequest", 'String'>
     readonly reviewedBy: FieldRef<"ProviderRequest", 'String'>
     readonly reviewedAt: FieldRef<"ProviderRequest", 'DateTime'>
     readonly createdAt: FieldRef<"ProviderRequest", 'DateTime'>
@@ -9417,13 +9461,17 @@ export namespace Prisma {
   export const ProviderRequestScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
+    services: 'services',
     description: 'description',
     experience: 'experience',
     phone: 'phone',
+    cep: 'cep',
     address: 'address',
     documentNumber: 'documentNumber',
     portfolioLinks: 'portfolioLinks',
+    portfolioLinksJson: 'portfolioLinksJson',
     status: 'status',
+    rejectionReason: 'rejectionReason',
     reviewedBy: 'reviewedBy',
     reviewedAt: 'reviewedAt',
     createdAt: 'createdAt',
@@ -9441,6 +9489,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -9455,6 +9511,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -9508,6 +9573,20 @@ export namespace Prisma {
    * Reference to a field of type 'UserRole[]'
    */
   export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -9956,13 +10035,17 @@ export namespace Prisma {
     NOT?: ProviderRequestWhereInput | ProviderRequestWhereInput[]
     id?: StringFilter<"ProviderRequest"> | string
     userId?: StringFilter<"ProviderRequest"> | string
+    services?: JsonNullableFilter<"ProviderRequest">
     description?: StringFilter<"ProviderRequest"> | string
     experience?: StringFilter<"ProviderRequest"> | string
     phone?: StringFilter<"ProviderRequest"> | string
+    cep?: StringNullableFilter<"ProviderRequest"> | string | null
     address?: StringFilter<"ProviderRequest"> | string
     documentNumber?: StringFilter<"ProviderRequest"> | string
     portfolioLinks?: StringNullableFilter<"ProviderRequest"> | string | null
+    portfolioLinksJson?: JsonNullableFilter<"ProviderRequest">
     status?: EnumProviderRequestStatusFilter<"ProviderRequest"> | $Enums.ProviderRequestStatus
+    rejectionReason?: StringNullableFilter<"ProviderRequest"> | string | null
     reviewedBy?: StringNullableFilter<"ProviderRequest"> | string | null
     reviewedAt?: DateTimeNullableFilter<"ProviderRequest"> | Date | string | null
     createdAt?: DateTimeFilter<"ProviderRequest"> | Date | string
@@ -9974,13 +10057,17 @@ export namespace Prisma {
   export type ProviderRequestOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
+    services?: SortOrderInput | SortOrder
     description?: SortOrder
     experience?: SortOrder
     phone?: SortOrder
+    cep?: SortOrderInput | SortOrder
     address?: SortOrder
     documentNumber?: SortOrder
     portfolioLinks?: SortOrderInput | SortOrder
+    portfolioLinksJson?: SortOrderInput | SortOrder
     status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     reviewedBy?: SortOrderInput | SortOrder
     reviewedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -9995,13 +10082,17 @@ export namespace Prisma {
     OR?: ProviderRequestWhereInput[]
     NOT?: ProviderRequestWhereInput | ProviderRequestWhereInput[]
     userId?: StringFilter<"ProviderRequest"> | string
+    services?: JsonNullableFilter<"ProviderRequest">
     description?: StringFilter<"ProviderRequest"> | string
     experience?: StringFilter<"ProviderRequest"> | string
     phone?: StringFilter<"ProviderRequest"> | string
+    cep?: StringNullableFilter<"ProviderRequest"> | string | null
     address?: StringFilter<"ProviderRequest"> | string
     documentNumber?: StringFilter<"ProviderRequest"> | string
     portfolioLinks?: StringNullableFilter<"ProviderRequest"> | string | null
+    portfolioLinksJson?: JsonNullableFilter<"ProviderRequest">
     status?: EnumProviderRequestStatusFilter<"ProviderRequest"> | $Enums.ProviderRequestStatus
+    rejectionReason?: StringNullableFilter<"ProviderRequest"> | string | null
     reviewedBy?: StringNullableFilter<"ProviderRequest"> | string | null
     reviewedAt?: DateTimeNullableFilter<"ProviderRequest"> | Date | string | null
     createdAt?: DateTimeFilter<"ProviderRequest"> | Date | string
@@ -10013,13 +10104,17 @@ export namespace Prisma {
   export type ProviderRequestOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
+    services?: SortOrderInput | SortOrder
     description?: SortOrder
     experience?: SortOrder
     phone?: SortOrder
+    cep?: SortOrderInput | SortOrder
     address?: SortOrder
     documentNumber?: SortOrder
     portfolioLinks?: SortOrderInput | SortOrder
+    portfolioLinksJson?: SortOrderInput | SortOrder
     status?: SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     reviewedBy?: SortOrderInput | SortOrder
     reviewedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -10035,13 +10130,17 @@ export namespace Prisma {
     NOT?: ProviderRequestScalarWhereWithAggregatesInput | ProviderRequestScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"ProviderRequest"> | string
     userId?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    services?: JsonNullableWithAggregatesFilter<"ProviderRequest">
     description?: StringWithAggregatesFilter<"ProviderRequest"> | string
     experience?: StringWithAggregatesFilter<"ProviderRequest"> | string
     phone?: StringWithAggregatesFilter<"ProviderRequest"> | string
+    cep?: StringNullableWithAggregatesFilter<"ProviderRequest"> | string | null
     address?: StringWithAggregatesFilter<"ProviderRequest"> | string
     documentNumber?: StringWithAggregatesFilter<"ProviderRequest"> | string
     portfolioLinks?: StringNullableWithAggregatesFilter<"ProviderRequest"> | string | null
+    portfolioLinksJson?: JsonNullableWithAggregatesFilter<"ProviderRequest">
     status?: EnumProviderRequestStatusWithAggregatesFilter<"ProviderRequest"> | $Enums.ProviderRequestStatus
+    rejectionReason?: StringNullableWithAggregatesFilter<"ProviderRequest"> | string | null
     reviewedBy?: StringNullableWithAggregatesFilter<"ProviderRequest"> | string | null
     reviewedAt?: DateTimeNullableWithAggregatesFilter<"ProviderRequest"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ProviderRequest"> | Date | string
@@ -10497,13 +10596,17 @@ export namespace Prisma {
 
   export type ProviderRequestCreateInput = {
     id?: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10514,13 +10617,17 @@ export namespace Prisma {
   export type ProviderRequestUncheckedCreateInput = {
     id?: string
     userId: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedBy?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
@@ -10529,13 +10636,17 @@ export namespace Prisma {
 
   export type ProviderRequestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10546,13 +10657,17 @@ export namespace Prisma {
   export type ProviderRequestUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10562,13 +10677,17 @@ export namespace Prisma {
   export type ProviderRequestCreateManyInput = {
     id?: string
     userId: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedBy?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
@@ -10577,13 +10696,17 @@ export namespace Prisma {
 
   export type ProviderRequestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10592,13 +10715,17 @@ export namespace Prisma {
   export type ProviderRequestUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10993,6 +11120,29 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type EnumProviderRequestStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ProviderRequestStatus | EnumProviderRequestStatusFieldRefInput<$PrismaModel>
@@ -11009,13 +11159,17 @@ export namespace Prisma {
   export type ProviderRequestCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    services?: SortOrder
     description?: SortOrder
     experience?: SortOrder
     phone?: SortOrder
+    cep?: SortOrder
     address?: SortOrder
     documentNumber?: SortOrder
     portfolioLinks?: SortOrder
+    portfolioLinksJson?: SortOrder
     status?: SortOrder
+    rejectionReason?: SortOrder
     reviewedBy?: SortOrder
     reviewedAt?: SortOrder
     createdAt?: SortOrder
@@ -11028,10 +11182,12 @@ export namespace Prisma {
     description?: SortOrder
     experience?: SortOrder
     phone?: SortOrder
+    cep?: SortOrder
     address?: SortOrder
     documentNumber?: SortOrder
     portfolioLinks?: SortOrder
     status?: SortOrder
+    rejectionReason?: SortOrder
     reviewedBy?: SortOrder
     reviewedAt?: SortOrder
     createdAt?: SortOrder
@@ -11044,14 +11200,42 @@ export namespace Prisma {
     description?: SortOrder
     experience?: SortOrder
     phone?: SortOrder
+    cep?: SortOrder
     address?: SortOrder
     documentNumber?: SortOrder
     portfolioLinks?: SortOrder
     status?: SortOrder
+    rejectionReason?: SortOrder
     reviewedBy?: SortOrder
     reviewedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumProviderRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -11600,6 +11784,29 @@ export namespace Prisma {
     notIn?: $Enums.ProviderRequestStatus[] | ListEnumProviderRequestStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumProviderRequestStatusFilter<$PrismaModel> | $Enums.ProviderRequestStatus
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumProviderRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ProviderRequestStatus | EnumProviderRequestStatusFieldRefInput<$PrismaModel>
@@ -11653,13 +11860,17 @@ export namespace Prisma {
 
   export type ProviderRequestCreateWithoutUserInput = {
     id?: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11668,13 +11879,17 @@ export namespace Prisma {
 
   export type ProviderRequestUncheckedCreateWithoutUserInput = {
     id?: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedBy?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
@@ -11693,13 +11908,17 @@ export namespace Prisma {
 
   export type ProviderRequestCreateWithoutReviewedByUserInput = {
     id?: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11709,13 +11928,17 @@ export namespace Prisma {
   export type ProviderRequestUncheckedCreateWithoutReviewedByUserInput = {
     id?: string
     userId: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11842,13 +12065,17 @@ export namespace Prisma {
     NOT?: ProviderRequestScalarWhereInput | ProviderRequestScalarWhereInput[]
     id?: StringFilter<"ProviderRequest"> | string
     userId?: StringFilter<"ProviderRequest"> | string
+    services?: JsonNullableFilter<"ProviderRequest">
     description?: StringFilter<"ProviderRequest"> | string
     experience?: StringFilter<"ProviderRequest"> | string
     phone?: StringFilter<"ProviderRequest"> | string
+    cep?: StringNullableFilter<"ProviderRequest"> | string | null
     address?: StringFilter<"ProviderRequest"> | string
     documentNumber?: StringFilter<"ProviderRequest"> | string
     portfolioLinks?: StringNullableFilter<"ProviderRequest"> | string | null
+    portfolioLinksJson?: JsonNullableFilter<"ProviderRequest">
     status?: EnumProviderRequestStatusFilter<"ProviderRequest"> | $Enums.ProviderRequestStatus
+    rejectionReason?: StringNullableFilter<"ProviderRequest"> | string | null
     reviewedBy?: StringNullableFilter<"ProviderRequest"> | string | null
     reviewedAt?: DateTimeNullableFilter<"ProviderRequest"> | Date | string | null
     createdAt?: DateTimeFilter<"ProviderRequest"> | Date | string
@@ -12389,13 +12616,17 @@ export namespace Prisma {
 
   export type ProviderRequestCreateManyUserInput = {
     id?: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedBy?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
@@ -12405,13 +12636,17 @@ export namespace Prisma {
   export type ProviderRequestCreateManyReviewedByUserInput = {
     id?: string
     userId: string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description: string
     experience: string
     phone: string
+    cep?: string | null
     address: string
     documentNumber: string
     portfolioLinks?: string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.ProviderRequestStatus
+    rejectionReason?: string | null
     reviewedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12481,13 +12716,17 @@ export namespace Prisma {
 
   export type ProviderRequestUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12496,13 +12735,17 @@ export namespace Prisma {
 
   export type ProviderRequestUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12511,13 +12754,17 @@ export namespace Prisma {
 
   export type ProviderRequestUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12526,13 +12773,17 @@ export namespace Prisma {
 
   export type ProviderRequestUpdateWithoutReviewedByUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12542,13 +12793,17 @@ export namespace Prisma {
   export type ProviderRequestUncheckedUpdateWithoutReviewedByUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12557,13 +12812,17 @@ export namespace Prisma {
   export type ProviderRequestUncheckedUpdateManyWithoutReviewedByUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    services?: NullableJsonNullValueInput | InputJsonValue
     description?: StringFieldUpdateOperationsInput | string
     experience?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
     portfolioLinks?: NullableStringFieldUpdateOperationsInput | string | null
+    portfolioLinksJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumProviderRequestStatusFieldUpdateOperationsInput | $Enums.ProviderRequestStatus
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -1,122 +1,113 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
-import { RequestsFilters } from "./_components/requests-filters";
 import { RequestsTable } from "./_components/requests-table";
-import { useProviderRequests } from "@/lib/queries/provider-requests";
+import { RejectionDialog } from "./_components/rejection-dialog";
+import {
+  useProviderRequests,
+  useUpdateProviderRequest,
+} from "@/lib/queries/provider-requests";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface ProviderRequest {
-  id: string;
-  userId: string;
-  user: User;
-  description: string;
-  experience: string;
-  phone: string;
-  address: string;
-  documentNumber: string;
-  portfolioLinks: string | null;
-  status: string;
-  reviewedBy: string | null;
-  reviewedByUser: User | null;
-  reviewedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export default function SolicitacoesPrestadorPage() {
-  const [filteredRequests, setFilteredRequests] = useState<ProviderRequest[]>(
-    []
-  );
-  const [currentFilter, setCurrentFilter] = useState("ALL");
+function SolicitacoesPrestadorTable() {
   const router = useRouter();
   const { data: requests, isLoading, error, refetch } = useProviderRequests();
+  const updateProviderRequest = useUpdateProviderRequest();
+  const [rejectionDialog, setRejectionDialog] = useState<{
+    isOpen: boolean;
+    requestId: string | null;
+  }>({ isOpen: false, requestId: null });
 
   // Handle 403 redirect
   if (error?.message === "Acesso negado") {
     router.push("/dashboard");
   }
 
-  const filterRequests = (allRequests: ProviderRequest[], filter: string) => {
-    if (filter === "ALL") {
-      setFilteredRequests(allRequests);
-    } else {
-      setFilteredRequests(allRequests.filter((req) => req.status === filter));
-    }
-  };
-
-  // Update filtered requests when requests data changes
-  useEffect(() => {
-    if (requests) {
-      filterRequests(requests, currentFilter);
-    }
-  }, [requests, currentFilter]);
-
-  const handleFilterChange = (filter: string) => {
-    setCurrentFilter(filter);
-    if (requests) {
-      filterRequests(requests, filter);
-    }
-  };
-
   const handleRequestUpdate = () => {
     refetch();
   };
 
-  const getCounts = () => {
-    if (!requests) return { all: 0, pending: 0, approved: 0, rejected: 0 };
-    return {
-      all: requests.length,
-      pending: requests.filter((r) => r.status === "PENDING").length,
-      approved: requests.filter((r) => r.status === "APPROVED").length,
-      rejected: requests.filter((r) => r.status === "REJECTED").length,
-    };
+  const handleApproveRequest = async (requestId: string) => {
+    try {
+      await updateProviderRequest.mutateAsync({
+        id: requestId,
+        action: "approve",
+      });
+    } catch (error) {
+      console.error("Error approving request:", error);
+    }
+  };
+
+  const handleRejectRequest = (requestId: string) => {
+    setRejectionDialog({ isOpen: true, requestId });
+  };
+
+  const handleConfirmRejection = async (reason: string) => {
+    if (rejectionDialog.requestId) {
+      try {
+        await updateProviderRequest.mutateAsync({
+          id: rejectionDialog.requestId,
+          action: "reject",
+          rejectionReason: reason,
+        });
+        setRejectionDialog({ isOpen: false, requestId: null });
+      } catch (error) {
+        console.error("Error rejecting request:", error);
+      }
+    }
+  };
+
+  const handleCloseRejectionDialog = () => {
+    setRejectionDialog({ isOpen: false, requestId: null });
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
+    return <SolicitacoesPrestadorTableSkeleton />;
   }
 
   return (
+    <>
+      <RequestsTable
+        requests={requests || []}
+        onRequestUpdate={handleRequestUpdate}
+        onApproveRequest={handleApproveRequest}
+        onRejectRequest={handleRejectRequest}
+        isUpdating={updateProviderRequest.isPending}
+      />
+      <RejectionDialog
+        isOpen={rejectionDialog.isOpen}
+        onClose={handleCloseRejectionDialog}
+        onConfirm={handleConfirmRejection}
+        isLoading={updateProviderRequest.isPending}
+      />
+    </>
+  );
+}
+
+function SolicitacoesPrestadorTableSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="h-10 w-full bg-muted animate-pulse rounded" />
+      <div className="space-y-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="h-16 w-full bg-muted animate-pulse rounded" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function SolicitacoesPrestadorPage() {
+  return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Solicitações de Prestador</CardTitle>
-          <CardDescription>
-            Gerencie as solicitações de usuários que desejam se tornar
-            prestadores de serviços
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <RequestsFilters
-            currentFilter={currentFilter}
-            onFilterChange={handleFilterChange}
-            counts={getCounts()}
-          />
-          <RequestsTable
-            requests={filteredRequests}
-            onRequestUpdate={handleRequestUpdate}
-          />
-        </CardContent>
-      </Card>
+      <div className="space-y-2">
+        <h1 className="text-2xl font-bold">Solicitações de Prestador</h1>
+        <p className="text-muted-foreground">
+          Gerencie as solicitações de usuários que desejam se tornar prestadores
+          de serviços
+        </p>
+      </div>
+      <SolicitacoesPrestadorTable />
     </div>
   );
 }

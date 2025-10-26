@@ -1,18 +1,16 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import {
   submitProviderRequest,
   getProviderRequests,
+  getUserOwnProviderRequests,
   updateProviderRequest,
-  type ProviderRequestData,
 } from "@/lib/api/provider-requests";
 
 export function useSubmitProviderRequest() {
   const { toast } = useToast();
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -23,8 +21,8 @@ export function useSubmitProviderRequest() {
         description:
           "Solicitação enviada com sucesso! Aguarde a análise do administrador.",
       });
+      queryClient.invalidateQueries({ queryKey: ["user-provider-requests"] });
       queryClient.invalidateQueries({ queryKey: ["provider-requests"] });
-      router.push("/dashboard");
     },
     onError: (error: Error) => {
       toast({
@@ -43,6 +41,13 @@ export function useProviderRequests() {
   });
 }
 
+export function useUserProviderRequests() {
+  return useQuery({
+    queryKey: ["user-provider-requests"],
+    queryFn: getUserOwnProviderRequests,
+  });
+}
+
 export function useUpdateProviderRequest() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -51,10 +56,12 @@ export function useUpdateProviderRequest() {
     mutationFn: ({
       id,
       action,
+      rejectionReason,
     }: {
       id: string;
       action: "approve" | "reject";
-    }) => updateProviderRequest(id, action),
+      rejectionReason?: string;
+    }) => updateProviderRequest(id, action, rejectionReason),
     onSuccess: (data) => {
       toast({
         title: "Sucesso",

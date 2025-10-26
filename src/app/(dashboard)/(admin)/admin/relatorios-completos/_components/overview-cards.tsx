@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, UserCheck, Shield, FileText } from "lucide-react";
+import { KpiCard } from "@/components/ui/kpi-card";
+import { Users, UserCheck, Shield, Clock, CheckCircle } from "lucide-react";
 
 interface OverviewCardsProps {
   data: {
@@ -21,59 +21,61 @@ interface OverviewCardsProps {
 }
 
 export function OverviewCards({ data }: OverviewCardsProps) {
-  const cards = [
-    {
-      title: "Total de Usuários",
-      value: data.users.total,
-      icon: Users,
-      description: "Usuários cadastrados no sistema",
-    },
-    {
-      title: "Clientes",
-      value: data.users.clients,
-      icon: Users,
-      description: "Usuários com role de cliente",
-    },
-    {
-      title: "Prestadores",
-      value: data.users.providers,
-      icon: UserCheck,
-      description: "Usuários com role de prestador",
-    },
-    {
-      title: "Administradores",
-      value: data.users.admins,
-      icon: Shield,
-      description: "Usuários com role de administrador",
-    },
-    {
-      title: "Solicitações Pendentes",
-      value: data.providerRequests.pending,
-      icon: FileText,
-      description: "Aguardando revisão",
-    },
-    {
-      title: "Solicitações Aprovadas",
-      value: data.providerRequests.approved,
-      icon: FileText,
-      description: "Total de aprovações",
-    },
-  ];
-
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {cards.map((card, index) => (
-        <Card key={index}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
-            <card.icon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{card.value}</div>
-            <p className="text-xs text-muted-foreground">{card.description}</p>
-          </CardContent>
-        </Card>
-      ))}
+      <KpiCard
+        label="Total de Usuários"
+        value={data.users.total}
+        icon={<Users className="h-5 w-5" />}
+        caption="Usuários cadastrados no sistema"
+        tone="primary"
+        size="md"
+      />
+
+      <KpiCard
+        label="Clientes"
+        value={data.users.clients}
+        icon={<Users className="h-5 w-5" />}
+        caption="Usuários com role de cliente"
+        tone="default"
+        size="md"
+      />
+
+      <KpiCard
+        label="Prestadores"
+        value={data.users.providers}
+        icon={<UserCheck className="h-5 w-5" />}
+        caption="Usuários com role de prestador"
+        tone="success"
+        size="md"
+      />
+
+      <KpiCard
+        label="Administradores"
+        value={data.users.admins}
+        icon={<Shield className="h-5 w-5" />}
+        caption="Usuários com role de administrador"
+        tone="warning"
+        size="md"
+      />
+
+      <KpiCard
+        label="Solicitações Pendentes"
+        value={data.providerRequests.pending}
+        icon={<Clock className="h-5 w-5" />}
+        caption="Aguardando revisão"
+        tone="warning"
+        size="md"
+      />
+
+      <KpiCard
+        label="Solicitações Aprovadas"
+        value={data.providerRequests.approved}
+        icon={<CheckCircle className="h-5 w-5" />}
+        caption="Total de aprovações"
+        tone="success"
+        size="md"
+      />
     </div>
   );
 }

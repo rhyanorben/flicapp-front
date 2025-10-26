@@ -184,13 +184,17 @@ exports.Prisma.VerificationScalarFieldEnum = {
 exports.Prisma.ProviderRequestScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  services: 'services',
   description: 'description',
   experience: 'experience',
   phone: 'phone',
+  cep: 'cep',
   address: 'address',
   documentNumber: 'documentNumber',
   portfolioLinks: 'portfolioLinks',
+  portfolioLinksJson: 'portfolioLinksJson',
   status: 'status',
+  rejectionReason: 'rejectionReason',
   reviewedBy: 'reviewedBy',
   reviewedAt: 'reviewedAt',
   createdAt: 'createdAt',
@@ -202,6 +206,11 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -210,6 +219,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.UserRole = exports.$Enums.UserRole = {
   ADMINISTRADOR: 'ADMINISTRADOR',

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   ModernTable,
@@ -40,7 +39,7 @@ export interface TableAction {
 }
 
 export interface GenericTableProps {
-  title: string;
+  title?: string;
   icon?: React.ReactNode;
   data: Record<string, unknown>[];
   columns: TableColumn[];
@@ -54,6 +53,7 @@ export interface GenericTableProps {
   onExportCSV?: () => void;
   onExportJSON?: () => void;
   detailModalContent?: (row: Record<string, unknown>) => React.ReactNode;
+  onRowClick?: (row: Record<string, unknown>) => void;
   className?: string;
 }
 
@@ -72,6 +72,7 @@ export function GenericTable({
   onExportCSV,
   onExportJSON,
   detailModalContent,
+  onRowClick,
   className = "",
 }: GenericTableProps) {
   // Ações padrão para todas as tabelas
@@ -154,8 +155,8 @@ export function GenericTable({
     },
   ];
 
-  // Combinar ações padrão com ações customizadas
-  const allActions = [...defaultActions, ...actions];
+  // Usar ações customizadas se fornecidas, caso contrário usar ações padrão
+  const allActions = actions.length > 0 ? actions : defaultActions;
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -278,7 +279,11 @@ export function GenericTable({
   };
 
   const handleViewDetails = (row: Record<string, unknown>) => {
-    setSelectedRowDetail(row);
+    if (onRowClick) {
+      onRowClick(row);
+    } else {
+      setSelectedRowDetail(row);
+    }
   };
 
   const handleExportCSV = () => {
@@ -289,7 +294,7 @@ export function GenericTable({
 
     exportToCSV(
       filteredAndSortedData,
-      title.toLowerCase().replace(/\s+/g, "-"),
+      (title || "dados").toLowerCase().replace(/\s+/g, "-"),
       headers
     );
     onExportCSV?.();
@@ -298,7 +303,7 @@ export function GenericTable({
   const handleExportJSON = () => {
     exportToJSON(
       filteredAndSortedData,
-      title.toLowerCase().replace(/\s+/g, "-")
+      (title || "dados").toLowerCase().replace(/\s+/g, "-")
     );
     onExportJSON?.();
   };
@@ -328,14 +333,16 @@ export function GenericTable({
   };
 
   return (
-    <Card className={cn("min-h-[800px] flex flex-col", className)}>
-      <CardHeader className="flex-shrink-0">
-        <CardTitle className="flex items-center gap-2">
-          {icon}
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col flex-1 min-h-0">
+    <div className={cn("min-h-[800px] flex flex-col", className)}>
+      {title && (
+        <div className="flex-shrink-0 p-6 pb-0">
+          <h2 className="flex items-center gap-2 text-2xl font-semibold">
+            {icon}
+            {title}
+          </h2>
+        </div>
+      )}
+      <div className="flex flex-col flex-1 min-h-0 p-6">
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <TableControls
             searchTerm={searchTerm}
@@ -548,17 +555,17 @@ export function GenericTable({
           itemsPerPage={ITEMS_PER_PAGE}
           onPageChange={setCurrentPage}
         />
-      </CardContent>
+      </div>
 
       {detailModalContent && (
         <DetailModal
           isOpen={!!selectedRowDetail}
           onClose={() => setSelectedRowDetail(null)}
-          title={`Detalhes do ${title.slice(0, -1)}`}
+          title={`Detalhes do ${(title || "item").slice(0, -1)}`}
         >
           {selectedRowDetail && detailModalContent(selectedRowDetail)}
         </DetailModal>
       )}
-    </Card>
+    </div>
   );
 }
