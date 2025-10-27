@@ -54,7 +54,10 @@ export function RoleSelector({
             </Badge>
           </div>
 
-          <Tabs value={selectedRole} onValueChange={onRoleChange}>
+          <Tabs
+            value={selectedRole}
+            onValueChange={(value) => onRoleChange(value as UserRole)}
+          >
             <TabsList className="grid w-full grid-cols-3 sm:w-auto">
               {userRoles.map((role) => {
                 const Icon = ROLE_ICONS[role];

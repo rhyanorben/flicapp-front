@@ -19,7 +19,7 @@ export function formatDateTime(date: string | Date): string {
   return dateObj.toLocaleString("pt-BR");
 }
 
-export function exportToCSV<T extends Record<string, any>>(
+export function exportToCSV<T extends Record<string, unknown>>(
   data: T[],
   filename: string,
   headers?: Record<keyof T, string>

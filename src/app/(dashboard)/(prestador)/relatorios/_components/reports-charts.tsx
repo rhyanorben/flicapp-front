@@ -88,7 +88,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {ganhosData.map((item, index) => (
+                {ganhosData.map((item) => (
                   <div key={item.mes} className="flex items-center gap-4">
                     <div className="w-12 text-sm font-medium text-gray-600">
                       {item.mes}
@@ -124,7 +124,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {servicosData.map((item, index) => (
+                {servicosData.map((item) => (
                   <div key={item.mes} className="flex items-center gap-4">
                     <div className="w-12 text-sm font-medium text-gray-600">
                       {item.mes}
@@ -160,7 +160,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {tiposServicoData.map((item, index) => (
+                {tiposServicoData.map((item) => (
                   <div key={item.tipo} className="flex items-center gap-4">
                     <div className="w-24 text-sm font-medium text-gray-600">
                       {item.tipo}

@@ -552,7 +552,6 @@ export function GenericTable({
           currentPage={currentPage}
           totalPages={totalPages}
           totalItems={totalItems}
-          itemsPerPage={ITEMS_PER_PAGE}
           onPageChange={setCurrentPage}
         />
       </div>

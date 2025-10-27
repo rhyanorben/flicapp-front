@@ -17,13 +17,11 @@ import {
   Users,
   Settings,
   BarChart3,
-  TrendingUp,
   AlertCircle,
   CheckCircle,
   Star,
   Clock,
   DollarSign,
-  UserPlus,
   Activity,
 } from "lucide-react";
 import { KpiCard } from "@/components/ui/kpi-card";
@@ -32,7 +30,6 @@ export const RoleBasedDashboard = () => {
   const {
     rolesDisplayNames,
     isLoading,
-    userRoles,
     session,
     isAdmin,
     isProvider,
@@ -40,7 +37,8 @@ export const RoleBasedDashboard = () => {
   } = useUserRole();
   const [demoRole, setDemoRole] = useState<UserRole>(USER_ROLES.CLIENTE);
 
-  const currentRoles = session?.user ? userRoles : [demoRole];
+  // Remove unused variable
+  // const currentRoles = session?.user ? userRoles : [demoRole];
 
   if (isLoading) {
     return (
@@ -50,13 +48,13 @@ export const RoleBasedDashboard = () => {
     );
   }
 
-  const currentIsAdmin = session?.user
+  const currentIsAdmin = (session as { user?: unknown })?.user
     ? isAdmin
     : demoRole === USER_ROLES.ADMINISTRADOR;
-  const currentIsProvider = session?.user
+  const currentIsProvider = (session as { user?: unknown })?.user
     ? isProvider
     : demoRole === USER_ROLES.PRESTADOR;
-  const currentIsClient = session?.user
+  const currentIsClient = (session as { user?: unknown })?.user
     ? isClient
     : demoRole === USER_ROLES.CLIENTE;
 
@@ -70,7 +68,7 @@ export const RoleBasedDashboard = () => {
             Bem-vindo ao FlicApp! Suas funcionalidades baseadas nas suas roles.
           </p>
         </div>
-        {!session?.user && (
+        {!(session as { user?: unknown })?.user && (
           <div className="flex gap-2">
             <Button
               variant={
@@ -105,7 +103,7 @@ export const RoleBasedDashboard = () => {
       </div>
 
       {/* Cards de roles ativas */}
-      {session?.user && (
+      {(session as { user?: unknown })?.user ? (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -129,7 +127,7 @@ export const RoleBasedDashboard = () => {
             </div>
           </CardContent>
         </Card>
-      )}
+      ) : null}
 
       {/* KPI Cards Section */}
       <div className="space-y-4">

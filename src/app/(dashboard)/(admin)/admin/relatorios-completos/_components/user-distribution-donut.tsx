@@ -26,7 +26,18 @@ export function UserDistributionDonut({ data }: UserDistributionDonutProps) {
     { name: "Administradores", value: data.admins, color: "#f59e0b" },
   ].filter((item) => item.value > 0);
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  interface TooltipProps {
+    active?: boolean;
+    payload?: Array<{
+      name: string;
+      value: number;
+      payload: {
+        color: string;
+      };
+    }>;
+  }
+
+  const CustomTooltip = ({ active, payload }: TooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0];
       const total = chartData.reduce((sum, item) => sum + item.value, 0);

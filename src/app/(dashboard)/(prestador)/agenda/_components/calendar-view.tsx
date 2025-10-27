@@ -82,17 +82,6 @@ export function CalendarView() {
     return <IconComponent className={`h-3 w-3 ${config.color}`} />;
   };
 
-  const getStatusColor = (status: Appointment["status"]) => {
-    const statusConfig = {
-      agendado: "bg-muted text-foreground",
-      confirmado: "bg-accent text-accent-foreground",
-      concluido: "bg-accent text-accent-foreground",
-      cancelado: "bg-destructive/10 text-destructive",
-    };
-
-    return statusConfig[status];
-  };
-
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();

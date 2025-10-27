@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -9,7 +8,6 @@ interface TablePaginationProps {
   currentPage: number;
   totalPages: number;
   totalItems: number;
-  itemsPerPage: number;
   onPageChange: (page: number) => void;
   className?: string;
   enableAnimations?: boolean;
@@ -19,15 +17,11 @@ export function TablePagination({
   currentPage,
   totalPages,
   totalItems,
-  itemsPerPage,
   onPageChange,
   className = "",
   enableAnimations = true,
 }: TablePaginationProps) {
   if (totalPages <= 1) return null;
-
-  const startItem = (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -46,7 +40,7 @@ export function TablePagination({
     ? {
         whileHover: { scale: 1.02 },
         whileTap: { scale: 0.98 },
-        transition: { type: "spring", stiffness: 400, damping: 25 },
+        transition: { type: "spring" as const, stiffness: 400, damping: 25 },
       }
     : {};
 

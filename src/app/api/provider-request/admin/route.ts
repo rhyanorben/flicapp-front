@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const statusFilter = searchParams.get("status");
 
-    const whereClause: any = {};
+    const whereClause: Record<string, string> = {};
     if (statusFilter && statusFilter !== "ALL") {
       whereClause.status = statusFilter;
     }

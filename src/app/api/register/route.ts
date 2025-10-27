@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const userId = (signUpResponse as any)?.user?.id;
+    const userId = (signUpResponse as { user?: { id: string } })?.user?.id;
 
     if (!userId) {
       return NextResponse.json(
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const userRoleAssignment = await prisma.userRoleAssignment.create({
+    await prisma.userRoleAssignment.create({
       data: {
         userId: userId,
         roleId: clienteRole.id,
@@ -72,13 +72,13 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         message: "Usuário registrado com sucesso",
-        user: (signUpResponse as any)?.user,
+        user: (signUpResponse as { user?: unknown })?.user,
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: error?.message || "Erro ao registrar usuário" },
+      { error: (error as Error)?.message || "Erro ao registrar usuário" },
       { status: 500 }
     );
   }
