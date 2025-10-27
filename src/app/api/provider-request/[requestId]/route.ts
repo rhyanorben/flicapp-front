@@ -7,9 +7,11 @@ const prisma = new PrismaClient();
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { requestId: string } }
+  { params }: { params: Promise<{ requestId: string }> }
 ) {
   try {
+    const { requestId } = await params;
+
     const session = await auth.api.getSession({
       headers: request.headers,
     });
@@ -29,7 +31,7 @@ export async function GET(
 
     const providerRequest = await prisma.providerRequest.findUnique({
       where: {
-        id: params.requestId,
+        id: requestId,
       },
       include: {
         user: {
@@ -69,9 +71,11 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { requestId: string } }
+  { params }: { params: Promise<{ requestId: string }> }
 ) {
   try {
+    const { requestId } = await params;
+
     const session = await auth.api.getSession({
       headers: request.headers,
     });
@@ -105,7 +109,7 @@ export async function PATCH(
 
     const providerRequest = await prisma.providerRequest.findUnique({
       where: {
-        id: params.requestId,
+        id: requestId,
       },
       include: {
         user: true,
@@ -128,7 +132,7 @@ export async function PATCH(
 
     const updatedRequest = await prisma.providerRequest.update({
       where: {
-        id: params.requestId,
+        id: requestId,
       },
       data: {
         status: action === "approve" ? "APPROVED" : "REJECTED",
@@ -145,7 +149,7 @@ export async function PATCH(
         console.error("Error assigning role:", error);
         await prisma.providerRequest.update({
           where: {
-            id: params.requestId,
+            id: requestId,
           },
           data: {
             status: "PENDING",

@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    const usersByMonth = usersLastSixMonths.reduce((acc: any, user) => {
+    const usersByMonth = usersLastSixMonths.reduce((acc: Record<string, number>, user) => {
       const month = new Date(user.createdAt).toLocaleDateString("pt-BR", {
         year: "numeric",
         month: "short",
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
     });
 
     const requestsByMonth = requestsLastSixMonths.reduce(
-      (acc: any, request) => {
+      (acc: Record<string, number>, request) => {
         const month = new Date(request.createdAt).toLocaleDateString("pt-BR", {
           year: "numeric",
           month: "short",

@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { registerUser, type RegisterData } from "@/lib/api/auth";
+import { registerUser } from "@/lib/api/auth";
 import { authClient } from "@/lib/auth-client";
 
 export function useRegister() {
@@ -12,7 +12,7 @@ export function useRegister() {
 
   return useMutation({
     mutationFn: registerUser,
-    onSuccess: async (data, variables) => {
+    onSuccess: async (_, variables) => {
       toast({
         title: "Sucesso",
         description: "Cadastro realizado com sucesso!",
@@ -29,7 +29,7 @@ export function useRegister() {
             onSuccess: () => {
               router.replace("/dashboard");
             },
-            onError: (context: { error?: { message?: string } }) => {
+            onError: () => {
               toast({
                 title: "Aviso",
                 description:
@@ -40,7 +40,7 @@ export function useRegister() {
             },
           }
         );
-      } catch (error) {
+      } catch {
         toast({
           title: "Aviso",
           description:

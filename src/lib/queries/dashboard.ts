@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   clientMockData,
   providerMockData,
-  adminMockData,
 } from "@/app/(dashboard)/dashboard/_data/mock-data";
 import { useStatistics } from "./admin";
 

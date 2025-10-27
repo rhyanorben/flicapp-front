@@ -7,6 +7,7 @@ import {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
 } from "react";
 
@@ -19,8 +20,8 @@ interface RolesContextType {
   hasAnyRole: (roles: UserRole[]) => boolean;
   rolesDisplayNames: string[];
   isLoading: boolean;
-  user: any;
-  session: any;
+  user: unknown;
+  session: unknown;
   refreshRoles: () => Promise<void>;
 }
 
@@ -52,7 +53,7 @@ export function RolesProvider({ children }: { children: ReactNode }) {
   });
   const [isLoadingRoles, setIsLoadingRoles] = useState(false);
 
-  const fetchUserRoles = async () => {
+  const fetchUserRoles = useCallback(async () => {
     if (!session?.user?.id) {
       setUserRoles([]);
       if (typeof window !== "undefined") {
@@ -79,11 +80,11 @@ export function RolesProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoadingRoles(false);
     }
-  };
+  }, [session?.user?.id]);
 
   useEffect(() => {
     fetchUserRoles();
-  }, [session?.user?.id]);
+  }, [fetchUserRoles]);
 
   const value: RolesContextType = {
     userRoles,

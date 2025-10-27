@@ -23,14 +23,7 @@ import {
   Tooltip as RechartsTooltip,
   ResponsiveContainer,
 } from "recharts";
-import {
-  ShoppingCart,
-  Clock,
-  Heart,
-  Star,
-  TrendingUp,
-  TrendingDown,
-} from "lucide-react";
+import { ShoppingCart, Clock, Heart, Star } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -42,10 +35,47 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, User } from "lucide-react";
+import { Calendar, User } from "lucide-react";
+
+interface Order {
+  id: string;
+  service: string;
+  provider: string;
+  status: "IN_PROGRESS" | "COMPLETED" | "PENDING";
+  createdAt: string;
+}
+
+interface Provider {
+  name: string;
+  rating: number;
+  services: number;
+}
+
+interface Schedule {
+  id: string;
+  service: string;
+  provider: string;
+  time: string;
+}
+
+interface ClientDashboardData {
+  services: {
+    total: number;
+    inProgress: number;
+    completed: number;
+    favorites: number;
+  };
+  monthlyRequests: Record<string, number>;
+  categoriesDistribution: Record<string, number>;
+  recentOrders: Order[];
+  favoriteProviders: Provider[];
+  upcomingSchedules: Schedule[];
+  pendingReviews: number;
+  tips: string[];
+}
 
 interface ClientDashboardProps {
-  data: any;
+  data: ClientDashboardData;
   isLoading?: boolean;
 }
 
@@ -110,7 +140,7 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
         <div className="relative">
           <KpiCard
             label="Favoritos"
-            value={data.favorites}
+            value={data.services.favorites}
             icon={<Heart className="h-5 w-5" />}
             trend="up"
             delta={5}
@@ -220,7 +250,7 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
                     dataKey="value"
                   >
                     {Object.entries(data.categoriesDistribution).map(
-                      ([name, value], index) => (
+                      ([,], index) => (
                         <Cell
                           key={`cell-${index}`}
                           fill={
@@ -250,7 +280,7 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {data.recentOrders.slice(0, 3).map((order: any) => (
+              {data.recentOrders.slice(0, 3).map((order: Order) => (
                 <div
                   key={order.id}
                   className="flex items-center gap-3 p-3 rounded-lg border"
@@ -291,22 +321,24 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {data.favoriteProviders.map((provider: any, index: number) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
-                    <User className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-medium text-sm">{provider.name}</div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                      <span className="text-xs text-muted-foreground">
-                        {provider.rating} • {provider.services} serviços
-                      </span>
+              {data.favoriteProviders.map(
+                (provider: Provider, index: number) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
+                      <User className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-medium text-sm">{provider.name}</div>
+                      <div className="flex items-center gap-1">
+                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs text-muted-foreground">
+                          {provider.rating} • {provider.services} serviços
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           </CardContent>
         </Card>
@@ -319,7 +351,7 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {data.upcomingSchedules.map((schedule: any) => (
+              {data.upcomingSchedules.map((schedule: Schedule) => (
                 <div
                   key={schedule.id}
                   className="flex items-center gap-3 p-3 rounded-lg border"
@@ -367,7 +399,7 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.recentOrders.map((order: any) => (
+                  {data.recentOrders.map((order: Order) => (
                     <TableRow key={order.id}>
                       <TableCell className="font-medium">
                         {order.service}

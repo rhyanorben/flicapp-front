@@ -86,7 +86,11 @@ export function TableControls({
       )}
     >
       <div className="flex items-center gap-2">
-        {/* Search will be handled by parent components */}
+        <SearchInput
+          value={searchTerm}
+          onChange={onSearchChange}
+          placeholder={searchPlaceholder}
+        />
       </div>
 
       <div className="flex items-center gap-2 flex-wrap">

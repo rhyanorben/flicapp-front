@@ -19,16 +19,13 @@ import { Filter, Calendar, ChevronDown } from "lucide-react";
 interface DashboardFiltersProps {
   onPeriodChange?: (period: string) => void;
   onStatusChange?: (status: string) => void;
-  onDateRangeChange?: (range: { from: Date; to: Date }) => void;
 }
 
 export function DashboardFilters({
   onPeriodChange,
   onStatusChange,
-  onDateRangeChange,
 }: DashboardFiltersProps) {
   const [selectedPeriod, setSelectedPeriod] = useState("30d");
-  const [selectedStatus, setSelectedStatus] = useState("all");
 
   const handlePeriodChange = (period: string) => {
     setSelectedPeriod(period);
@@ -36,7 +33,6 @@ export function DashboardFilters({
   };
 
   const handleStatusChange = (status: string) => {
-    setSelectedStatus(status);
     onStatusChange?.(status);
   };
 

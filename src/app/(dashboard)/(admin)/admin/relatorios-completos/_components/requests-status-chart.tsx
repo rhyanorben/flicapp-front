@@ -46,13 +46,23 @@ export function RequestsStatusChart({
     rejected: statusData?.[month]?.rejected || Math.floor(value * 0.1),
   }));
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  interface TooltipProps {
+    active?: boolean;
+    payload?: Array<{
+      name: string;
+      value: number;
+      color: string;
+    }>;
+    label?: string;
+  }
+
+  const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
     if (active && payload && payload.length) {
       return (
         <div className="rounded-lg border bg-background p-3 shadow-md">
           <p className="font-medium">{label}</p>
           <div className="space-y-1">
-            {payload.map((entry: any, index: number) => (
+            {payload.map((entry, index: number) => (
               <p key={index} className="text-sm" style={{ color: entry.color }}>
                 <span className="font-medium">{entry.name}:</span> {entry.value}
               </p>

@@ -110,7 +110,9 @@ export function AsyncSelect<T>({
         setOriginalOptions(data);
         setOptions(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch options');
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch options"
+        );
       } finally {
         setLoading(false);
       }
@@ -122,20 +124,37 @@ export function AsyncSelect<T>({
       fetchOptions();
     } else if (preload) {
       if (debouncedSearchTerm) {
-        setOptions(originalOptions.filter((option) => filterFn ? filterFn(option, debouncedSearchTerm) : true));
+        setOptions(
+          originalOptions.filter((option) =>
+            filterFn ? filterFn(option, debouncedSearchTerm) : true
+          )
+        );
       } else {
         setOptions(originalOptions);
       }
     }
-  }, [fetcher, debouncedSearchTerm, mounted, preload, filterFn]);
+  }, [
+    fetcher,
+    debouncedSearchTerm,
+    mounted,
+    preload,
+    filterFn,
+    originalOptions,
+  ]);
 
-  const handleSelect = useCallback((currentValue: string) => {
-    const newValue = clearable && currentValue === selectedValue ? "" : currentValue;
-    setSelectedValue(newValue);
-    setSelectedOption(options.find((option) => getOptionValue(option) === newValue) || null);
-    onChange(newValue);
-    setOpen(false);
-  }, [selectedValue, onChange, clearable, options, getOptionValue]);
+  const handleSelect = useCallback(
+    (currentValue: string) => {
+      const newValue =
+        clearable && currentValue === selectedValue ? "" : currentValue;
+      setSelectedValue(newValue);
+      setSelectedOption(
+        options.find((option) => getOptionValue(option) === newValue) || null
+      );
+      onChange(newValue);
+      setOpen(false);
+    },
+    [selectedValue, onChange, clearable, options, getOptionValue]
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -152,11 +171,7 @@ export function AsyncSelect<T>({
           style={{ width: width }}
           disabled={disabled}
         >
-          {selectedOption ? (
-            getDisplayValue(selectedOption)
-          ) : (
-            placeholder
-          )}
+          {selectedOption ? getDisplayValue(selectedOption) : placeholder}
           <ChevronsUpDown className="opacity-50" size={10} />
         </Button>
       </PopoverTrigger>
@@ -178,16 +193,19 @@ export function AsyncSelect<T>({
           </div>
           <CommandList>
             {error && (
-              <div className="p-4 text-destructive text-center">
-                {error}
-              </div>
+              <div className="p-4 text-destructive text-center">{error}</div>
             )}
-            {loading && options.length === 0 && (
-              loadingSkeleton || <DefaultLoadingSkeleton />
-            )}
-            {!loading && !error && options.length === 0 && (
-              notFound || <CommandEmpty>{noResultsMessage ?? `No ${label.toLowerCase()} found.`}</CommandEmpty>
-            )}
+            {loading &&
+              options.length === 0 &&
+              (loadingSkeleton || <DefaultLoadingSkeleton />)}
+            {!loading &&
+              !error &&
+              options.length === 0 &&
+              (notFound || (
+                <CommandEmpty>
+                  {noResultsMessage ?? `No ${label.toLowerCase()} found.`}
+                </CommandEmpty>
+              ))}
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
@@ -199,7 +217,9 @@ export function AsyncSelect<T>({
                   <Check
                     className={cn(
                       "ml-auto h-3 w-3",
-                      selectedValue === getOptionValue(option) ? "opacity-100" : "opacity-0"
+                      selectedValue === getOptionValue(option)
+                        ? "opacity-100"
+                        : "opacity-0"
                     )}
                   />
                 </CommandItem>
