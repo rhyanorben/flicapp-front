@@ -399,7 +399,7 @@ export function RequestsTable({
           title="Data de Revisão"
           icon={<CheckCircle className="h-3 w-3" />}
         >
-          {new Date(request.reviewedAt).toLocaleString("pt-BR")}
+          {new Date(request.reviewedAt)?.toLocaleString("pt-BR")}
         </DetailModalSection>
       )}
 

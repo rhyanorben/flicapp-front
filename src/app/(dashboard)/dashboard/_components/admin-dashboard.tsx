@@ -351,7 +351,7 @@ export function AdminDashboard({ data, isLoading }: AdminDashboardProps) {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-foreground">
-                    {data.users.total.toLocaleString()}
+                    {data.users.total?.toLocaleString()}
                   </div>
                   <div className="text-xs text-muted-foreground">Total</div>
                 </div>

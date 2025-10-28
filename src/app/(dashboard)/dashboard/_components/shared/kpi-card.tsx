@@ -51,7 +51,7 @@ export function KpiCard({
             {label}
           </div>
           <div className="text-2xl font-semibold tracking-tight">
-            {value.toLocaleString()}
+            {value?.toLocaleString()}
           </div>
         </div>
 

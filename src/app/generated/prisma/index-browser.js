@@ -126,6 +126,10 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  role: 'role',
+  phoneE164: 'phoneE164',
+  whatsappId: 'whatsappId',
+  cpf: 'cpf',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -201,6 +205,214 @@ exports.Prisma.ProviderRequestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AddressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  label: 'label',
+  cep: 'cep',
+  street: 'street',
+  number: 'number',
+  complement: 'complement',
+  neighborhood: 'neighborhood',
+  city: 'city',
+  state: 'state',
+  lat: 'lat',
+  lon: 'lon',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ProviderProfileScalarFieldEnum = {
+  userId: 'userId',
+  bio: 'bio',
+  radiusKm: 'radiusKm',
+  avgRating: 'avgRating',
+  totalReviews: 'totalReviews',
+  acceptRate30d: 'acceptRate30d',
+  responseP50S: 'responseP50S',
+  noShow30d: 'noShow30d'
+};
+
+exports.Prisma.ProviderAvailabilityScalarFieldEnum = {
+  id: 'id',
+  providerId: 'providerId',
+  weekday: 'weekday',
+  startTime: 'startTime',
+  endTime: 'endTime'
+};
+
+exports.Prisma.ProviderCategoryScalarFieldEnum = {
+  id: 'id',
+  providerId: 'providerId',
+  categoryId: 'categoryId',
+  minPriceCents: 'minPriceCents',
+  active: 'active',
+  updatedAt: 'updatedAt',
+  levelWeight: 'levelWeight',
+  expWeight: 'expWeight',
+  score: 'score',
+  isAvailable: 'isAvailable'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  active: 'active'
+};
+
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  providerId: 'providerId',
+  addressId: 'addressId',
+  categoryId: 'categoryId',
+  description: 'description',
+  status: 'status',
+  depositMethod: 'depositMethod',
+  depositBaseAvgCents: 'depositBaseAvgCents',
+  depositCents: 'depositCents',
+  slotStart: 'slotStart',
+  slotEnd: 'slotEnd',
+  finalPriceCents: 'finalPriceCents',
+  reviewStatus: 'reviewStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrderSlotScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  label: 'label',
+  startAt: 'startAt',
+  endAt: 'endAt',
+  origin: 'origin',
+  chosen: 'chosen'
+};
+
+exports.Prisma.OrderCategoryScalarFieldEnum = {
+  orderId: 'orderId',
+  categorySlug: 'categorySlug',
+  confidence: 'confidence',
+  rank: 'rank'
+};
+
+exports.Prisma.OrderInvitationScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  providerId: 'providerId',
+  slotId: 'slotId',
+  score: 'score',
+  sentAt: 'sentAt',
+  respondedAt: 'respondedAt',
+  response: 'response',
+  waMessageId: 'waMessageId',
+  waRemoteJid: 'waRemoteJid',
+  categorySlug: 'categorySlug',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  meta: 'meta'
+};
+
+exports.Prisma.OrderStatusHistoryScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  oldStatus: 'oldStatus',
+  newStatus: 'newStatus',
+  at: 'at',
+  byUserId: 'byUserId'
+};
+
+exports.Prisma.OrderReviewScalarFieldEnum = {
+  orderId: 'orderId',
+  clientId: 'clientId',
+  providerId: 'providerId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  kind: 'kind',
+  gateway: 'gateway',
+  gatewayPaymentId: 'gatewayPaymentId',
+  status: 'status',
+  amountCents: 'amountCents',
+  createdAt: 'createdAt',
+  approvedAt: 'approvedAt'
+};
+
+exports.Prisma.PaymentEventScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  orderId: 'orderId',
+  rawPayload: 'rawPayload',
+  receivedAt: 'receivedAt',
+  signatureOk: 'signatureOk'
+};
+
+exports.Prisma.CommissionScalarFieldEnum = {
+  orderId: 'orderId',
+  finalPriceCents: 'finalPriceCents',
+  rateBp: 'rateBp',
+  minCents: 'minCents',
+  maxCents: 'maxCents',
+  computedCents: 'computedCents',
+  computedAt: 'computedAt'
+};
+
+exports.Prisma.ClientCreditScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  orderId: 'orderId',
+  amountCents: 'amountCents',
+  expiresAt: 'expiresAt',
+  usedCents: 'usedCents',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ProviderPayoutScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  providerId: 'providerId',
+  grossCents: 'grossCents',
+  commissionCents: 'commissionCents',
+  netCents: 'netCents',
+  status: 'status',
+  paidAt: 'paidAt'
+};
+
+exports.Prisma.MatchScoreScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  providerId: 'providerId',
+  distanceKm: 'distanceKm',
+  ratingNorm: 'ratingNorm',
+  acceptRate: 'acceptRate',
+  responseFast: 'responseFast',
+  reliability: 'reliability',
+  finalScore: 'finalScore',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.LlmClassificationScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  inputText: 'inputText',
+  categoryId: 'categoryId',
+  confidence: 'confidence',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RefusalRuleScalarFieldEnum = {
+  code: 'code',
+  clientCreditPct: 'clientCreditPct',
+  providerPct: 'providerPct',
+  platformPct: 'platformPct'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -208,6 +420,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -245,7 +461,26 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  ProviderRequest: 'ProviderRequest'
+  ProviderRequest: 'ProviderRequest',
+  Address: 'Address',
+  ProviderProfile: 'ProviderProfile',
+  ProviderAvailability: 'ProviderAvailability',
+  ProviderCategory: 'ProviderCategory',
+  Category: 'Category',
+  Order: 'Order',
+  OrderSlot: 'OrderSlot',
+  OrderCategory: 'OrderCategory',
+  OrderInvitation: 'OrderInvitation',
+  OrderStatusHistory: 'OrderStatusHistory',
+  OrderReview: 'OrderReview',
+  Payment: 'Payment',
+  PaymentEvent: 'PaymentEvent',
+  Commission: 'Commission',
+  ClientCredit: 'ClientCredit',
+  ProviderPayout: 'ProviderPayout',
+  MatchScore: 'MatchScore',
+  LlmClassification: 'LlmClassification',
+  RefusalRule: 'RefusalRule'
 };
 
 /**
