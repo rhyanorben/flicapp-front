@@ -21,91 +21,98 @@ import {
 } from "@/components/ui/generic-table";
 import { DetailModalSection } from "@/components/ui/detail-modal";
 import { formatCurrency, formatDate } from "@/lib/utils/table-utils";
+import { useHistoryOrders } from "@/hooks/use-history";
 
 interface HistoryOrder {
   id: string;
-  tipoServico: string;
-  descricao: string;
-  status: "concluido" | "cancelado";
-  data: string;
-  prestador: string;
-  avaliacao?: number;
-  dataFinalizacao: string;
-  valor?: number;
-  localizacao?: string;
-  comentario?: string;
+  clientId: string;
+  providerId: string | null;
+  addressId: string | null;
+  categoryId: string | null;
+  description: string;
+  status: string;
+  depositMethod: string;
+  depositBaseAvgCents: number | null;
+  depositCents: number;
+  slotStart: string | null;
+  slotEnd: string | null;
+  finalPriceCents: number | null;
+  reviewStatus: string | null;
+  createdAt: string;
+  updatedAt: string;
+  category?: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+  provider?: {
+    id: string;
+    name: string;
+    email: string | null;
+  };
+  address?: {
+    id: string;
+    street: string | null;
+    neighborhood: string | null;
+    city: string | null;
+    state: string | null;
+    number: string | null;
+  };
+  orderReview?: {
+    rating: number | null;
+    comment: string | null;
+  };
 }
+
+// Map database status to display status
+const mapStatus = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    completed: "Concluído",
+    cancelled: "Cancelado",
+  };
+  return statusMap[status] || status;
+};
+
+// Map database status to filter value
+const mapStatusToFilter = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    completed: "concluido",
+    cancelled: "cancelado",
+  };
+  return statusMap[status] || "concluido";
+};
 
 export function HistoryTable() {
   const [periodFilter, setPeriodFilter] = useState("todos");
+  const {
+    data: historyOrders,
+    isLoading,
+    error,
+  } = useHistoryOrders(periodFilter);
 
-  // Dados mockados - em produção viria da API
-  const historyOrders: HistoryOrder[] = useMemo(
-    () => [
-      {
-        id: "PED-001",
-        tipoServico: "Limpeza",
-        descricao: "Limpeza residencial completa",
-        status: "concluido",
-        data: "2024-01-15",
-        prestador: "João Silva",
-        avaliacao: 5,
-        dataFinalizacao: "2024-01-16",
-        valor: 150.0,
-        localizacao: "São Paulo, SP",
-        comentario: "Excelente trabalho, muito pontual e organizado!",
-      },
-      {
-        id: "PED-002",
-        tipoServico: "Manutenção",
-        descricao: "Reparo no ar condicionado",
-        status: "concluido",
-        data: "2024-01-10",
-        prestador: "Maria Santos",
-        avaliacao: 4,
-        dataFinalizacao: "2024-01-12",
-        valor: 200.0,
-        localizacao: "São Paulo, SP",
-        comentario: "Resolveu o problema rapidamente.",
-      },
-      {
-        id: "PED-003",
-        tipoServico: "Instalação",
-        descricao: "Instalação de ventilador",
-        status: "concluido",
-        data: "2024-01-05",
-        prestador: "Pedro Costa",
-        dataFinalizacao: "2024-01-07",
-        valor: 120.0,
-        localizacao: "São Paulo, SP",
-      },
-      {
-        id: "PED-004",
-        tipoServico: "Consultoria",
-        descricao: "Consultoria em organização",
-        status: "cancelado",
-        data: "2024-01-02",
-        prestador: "Ana Oliveira",
-        dataFinalizacao: "2024-01-03",
-        valor: 80.0,
-        localizacao: "São Paulo, SP",
-      },
-      {
-        id: "PED-005",
-        tipoServico: "Reparo",
-        descricao: "Reparo de eletrodoméstico",
-        status: "concluido",
-        data: "2023-12-28",
-        prestador: "Carlos Mendes",
-        avaliacao: 3,
-        dataFinalizacao: "2023-12-30",
-        valor: 90.0,
-        localizacao: "São Paulo, SP",
-        comentario: "Serviço realizado conforme esperado.",
-      },
-    ],
-    []
-  );
+  // Transform orders for display
+  const transformedOrders = useMemo(() => {
+    if (!historyOrders) return [];
+
+    return historyOrders.map((order) => ({
+      id: order.id,
+      tipoServico: order.category?.name || "Não especificado",
+      descricao: order.description,
+      status: mapStatus(order.status),
+      statusFilter: mapStatusToFilter(order.status),
+      data: new Date(order.createdAt).toLocaleDateString("pt-BR"),
+      prestador: order.provider?.name || "Não atribuído",
+      avaliacao: order.orderReview?.rating || null,
+      dataFinalizacao: new Date(order.updatedAt).toLocaleDateString("pt-BR"),
+      valor: order.finalPriceCents ? order.finalPriceCents / 100 : null,
+      localizacao: order.address
+        ? `${order.address.street}, ${order.address.number}, ${order.address.neighborhood}, ${order.address.city} - ${order.address.state}`
+        : "Não informado",
+      comentario: order.orderReview?.comment || null,
+      // Keep original order for actions
+      originalOrder: order,
+    }));
+  }, [historyOrders]);
 
   // Period filter options
   const periodOptions = [
@@ -125,7 +132,8 @@ export function HistoryTable() {
       key: "status",
       label: "Status Final",
       sortable: true,
-      render: (value) => getStatusBadge(value as HistoryOrder["status"]),
+      render: (value, row) =>
+        getStatusBadge((row as any).statusFilter as "concluido" | "cancelado"),
     },
     {
       key: "data",
@@ -184,14 +192,15 @@ export function HistoryTable() {
       onClick: (order) => handleRateOrder(order.id as string),
       variant: "success",
       show: (order) =>
-        Boolean(order.status === "concluido" && !order.avaliacao),
+        Boolean(order.statusFilter === "concluido" && !order.avaliacao),
     },
     {
       id: "view-rating",
       label: "Ver Avaliação",
       icon: ({ className }) => <Star className={className} />,
       onClick: (order) => handleViewRating(order.id as string),
-      show: (order) => Boolean(order.status === "concluido" && order.avaliacao),
+      show: (order) =>
+        Boolean(order.statusFilter === "concluido" && order.avaliacao),
     },
     {
       id: "export-selected",
@@ -218,35 +227,21 @@ export function HistoryTable() {
     },
   ];
 
-  const getStatusBadge = (status: HistoryOrder["status"]) => {
+  const getStatusBadge = (status: "concluido" | "cancelado") => {
     const statusConfig = {
       concluido: { label: "Concluído", variant: "default" as const },
       cancelado: { label: "Cancelado", variant: "destructive" as const },
     };
 
-    const config = statusConfig[status];
+    const config = statusConfig[status] || {
+      label: "Desconhecido",
+      variant: "secondary" as const,
+    };
     return <Badge variant={config.variant}>{config.label}</Badge>;
   };
 
-  const getPeriodFilter = (date: string) => {
-    const orderDate = new Date(date);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - orderDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays <= 7) return "7dias";
-    if (diffDays <= 30) return "30dias";
-    if (diffDays <= 90) return "90dias";
-    return "mais90dias";
-  };
-
-  // Filter data by period
-  const filteredData = useMemo(() => {
-    if (periodFilter === "todos") return historyOrders;
-    return historyOrders.filter(
-      (order) => getPeriodFilter(order.data) === periodFilter
-    );
-  }, [historyOrders, periodFilter]);
+  // Filter data by period (now handled by API)
+  const filteredData = transformedOrders;
 
   const handleRateOrder = (orderId: string) => {
     console.log("Avaliar pedido:", orderId);
@@ -259,89 +254,140 @@ export function HistoryTable() {
   };
 
   // Detail modal content
-  const detailModalContent = (order: HistoryOrder) => (
+  const detailModalContent = (order: any) => (
     <>
-      <DetailModalSection title="ID do Pedido">{order.id}</DetailModalSection>
+      <DetailModalSection title="ID do Pedido">
+        {String(order.id)}
+      </DetailModalSection>
 
       <DetailModalSection
         title="Tipo de Serviço"
         icon={<Wrench className="h-3 w-3" />}
       >
-        {order.tipoServico}
+        {order.tipoServico ||
+          order.originalOrder?.category?.name ||
+          "Não especificado"}
       </DetailModalSection>
 
       <DetailModalSection
         title="Descrição"
         icon={<FileText className="h-3 w-3" />}
       >
-        {order.descricao}
+        {order.descricao || order.originalOrder?.description}
       </DetailModalSection>
 
       <DetailModalSection
         title="Status"
         icon={<BarChart3 className="h-3 w-3" />}
       >
-        {getStatusBadge(order.status)}
+        {getStatusBadge(order.statusFilter as "concluido" | "cancelado")}
       </DetailModalSection>
 
       <DetailModalSection
         title="Data do Pedido"
         icon={<Calendar className="h-3 w-3" />}
       >
-        {formatDate(order.data)}
+        {order.data ||
+          (order.originalOrder?.createdAt
+            ? new Date(order.originalOrder.createdAt).toLocaleDateString(
+                "pt-BR"
+              )
+            : "")}
       </DetailModalSection>
 
       <DetailModalSection
         title="Data de Finalização"
         icon={<Calendar className="h-3 w-3" />}
       >
-        {formatDate(order.dataFinalizacao)}
+        {order.dataFinalizacao ||
+          (order.originalOrder?.updatedAt
+            ? new Date(order.originalOrder.updatedAt).toLocaleDateString(
+                "pt-BR"
+              )
+            : "")}
       </DetailModalSection>
 
       <DetailModalSection title="Prestador" icon={<User className="h-3 w-3" />}>
-        {order.prestador}
+        {order.prestador ||
+          order.originalOrder?.provider?.name ||
+          "Não atribuído"}
       </DetailModalSection>
 
-      {order.valor && (
+      {(order.valor || order.originalOrder?.finalPriceCents) && (
         <DetailModalSection
           title="Valor"
           icon={<DollarSign className="h-3 w-3" />}
         >
-          {formatCurrency(order.valor)}
+          {formatCurrency(
+            order.valor ||
+              (order.originalOrder?.finalPriceCents
+                ? order.originalOrder.finalPriceCents / 100
+                : 0)
+          )}
         </DetailModalSection>
       )}
 
-      {order.localizacao && (
+      {(order.localizacao || order.originalOrder?.address) && (
         <DetailModalSection
           title="Localização"
           icon={<MapPin className="h-3 w-3" />}
         >
-          {order.localizacao}
+          {order.localizacao ||
+            (order.originalOrder?.address
+              ? `${order.originalOrder.address.street}, ${order.originalOrder.address.number}, ${order.originalOrder.address.neighborhood}, ${order.originalOrder.address.city} - ${order.originalOrder.address.state}`
+              : "Não informado")}
         </DetailModalSection>
       )}
 
-      {order.avaliacao && (
+      {(order.avaliacao || order.originalOrder?.orderReview?.rating) && (
         <DetailModalSection
           title="Avaliação"
           icon={<Star className="h-3 w-3" />}
         >
           <div className="flex items-center gap-1">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span>{order.avaliacao}/5</span>
+            <span>
+              {order.avaliacao || order.originalOrder?.orderReview?.rating}/5
+            </span>
           </div>
         </DetailModalSection>
       )}
 
-      {order.comentario && (
+      {(order.comentario || order.originalOrder?.orderReview?.comment) && (
         <DetailModalSection
           title="Comentário"
           icon={<MessageCircle className="h-3 w-3" />}
         >
-          {order.comentario}
+          {order.comentario || order.originalOrder?.orderReview?.comment}
         </DetailModalSection>
       )}
     </>
   );
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <label className="text-sm font-medium">Filtrar por período:</label>
+          <div className="h-10 w-48 bg-muted rounded animate-pulse" />
+        </div>
+        <div className="space-y-2">
+          <div className="h-8 bg-muted rounded animate-pulse w-48" />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-16 bg-muted rounded animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        Erro ao carregar histórico de pedidos. Tente novamente.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -382,9 +428,7 @@ export function HistoryTable() {
           { value: "concluido", label: "Concluído" },
           { value: "cancelado", label: "Cancelado" },
         ]}
-        detailModalContent={(row) =>
-          detailModalContent(row as unknown as HistoryOrder)
-        }
+        detailModalContent={(row) => detailModalContent(row)}
       />
     </div>
   );

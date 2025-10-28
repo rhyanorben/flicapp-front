@@ -23,7 +23,7 @@ interface RequestsStatusChartProps {
   data: {
     [month: string]: number;
   };
-  statusData?: {
+  statusData: {
     [month: string]: {
       pending: number;
       approved: number;
@@ -40,10 +40,9 @@ export function RequestsStatusChart({
   const chartData = Object.entries(data).map(([month, value]) => ({
     month,
     total: value,
-    // Mock status distribution if not provided
-    pending: statusData?.[month]?.pending || Math.floor(value * 0.4),
-    approved: statusData?.[month]?.approved || Math.floor(value * 0.5),
-    rejected: statusData?.[month]?.rejected || Math.floor(value * 0.1),
+    pending: statusData[month]?.pending || 0,
+    approved: statusData[month]?.approved || 0,
+    rejected: statusData[month]?.rejected || 0,
   }));
 
   interface TooltipProps {

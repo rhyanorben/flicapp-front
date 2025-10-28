@@ -18,7 +18,9 @@ npm run db:seed
 - **PRESTADOR**: Prestadores de serviços
 - **CLIENTE**: Clientes que solicitam serviços
 
-### Usuário Administrador
+### Usuários de Exemplo
+
+#### Administrador
 
 - **Email**: `admin@flicapp.com`
 - **Senha**: `Admin@FlicApp2024!`
@@ -66,6 +68,7 @@ npm run db:seed
 #### Prestador
 
 - **Email**: `joao.prestador@flicapp.com`
+- **Senha**: `JoaoPrestador2024!`
 - **Nome**: João Silva - Prestador
 - **Especialidades**: Limpeza, Pintura, Jardinagem
 - **Disponibilidade**: Segunda a sexta, 8h às 18h
@@ -74,6 +77,7 @@ npm run db:seed
 #### Cliente
 
 - **Email**: `maria.cliente@flicapp.com`
+- **Senha**: `MariaCliente2024!`
 - **Nome**: Maria Santos - Cliente
 - **Endereço**: Rua das Flores, 123 - Centro, São Paulo/SP
 

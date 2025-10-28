@@ -17,67 +17,101 @@ import {
   TableAction,
 } from "@/components/ui/generic-table";
 import { DetailModalSection } from "@/components/ui/detail-modal";
+import { useOrders } from "@/hooks/use-orders";
 
 interface Order {
   id: string;
-  tipoServico: string;
-  descricao: string;
-  status: "aguardando" | "em-andamento" | "concluido" | "cancelado";
-  data: string;
-  prestador: string;
-  avaliacao?: number;
-  valor?: number;
-  localizacao?: string;
+  clientId: string;
+  providerId: string | null;
+  addressId: string | null;
+  categoryId: string | null;
+  description: string;
+  status: string;
+  depositMethod: string;
+  depositBaseAvgCents: number | null;
+  depositCents: number;
+  slotStart: string | null;
+  slotEnd: string | null;
+  finalPriceCents: number | null;
+  reviewStatus: string | null;
+  createdAt: string;
+  updatedAt: string;
+  category?: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+  provider?: {
+    id: string;
+    name: string;
+    email: string | null;
+  };
+  address?: {
+    id: string;
+    street: string | null;
+    neighborhood: string | null;
+    city: string | null;
+    state: string | null;
+    number: string | null;
+  };
+  orderReview?: {
+    rating: number | null;
+    comment: string | null;
+  };
 }
 
+// Map database status to display status
+const mapStatus = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    matching: "Aguardando",
+    await_cpf: "Aguardando",
+    await_provider: "Aguardando",
+    accepted: "Em Andamento",
+    in_progress: "Em Andamento",
+    completed: "Concluído",
+    cancelled: "Cancelado",
+  };
+  return statusMap[status] || status;
+};
+
+// Map database status to filter value
+const mapStatusToFilter = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    matching: "aguardando",
+    await_cpf: "aguardando",
+    await_provider: "aguardando",
+    accepted: "em-andamento",
+    in_progress: "em-andamento",
+    completed: "concluido",
+    cancelled: "cancelado",
+  };
+  return statusMap[status] || "aguardando";
+};
+
 export function OrdersTable() {
-  // Dados mockados - em produção viria da API
-  const orders: Order[] = useMemo(
-    () => [
-      {
-        id: "PED-001",
-        tipoServico: "Limpeza",
-        descricao: "Limpeza residencial completa",
-        status: "aguardando",
-        data: "2024-01-15",
-        prestador: "João Silva",
-        valor: 150.0,
-        localizacao: "São Paulo, SP",
-      },
-      {
-        id: "PED-002",
-        tipoServico: "Manutenção",
-        descricao: "Reparo no ar condicionado",
-        status: "em-andamento",
-        data: "2024-01-14",
-        prestador: "Maria Santos",
-        valor: 200.0,
-        localizacao: "São Paulo, SP",
-      },
-      {
-        id: "PED-003",
-        tipoServico: "Instalação",
-        descricao: "Instalação de ventilador",
-        status: "concluido",
-        data: "2024-01-10",
-        prestador: "Pedro Costa",
-        avaliacao: 5,
-        valor: 120.0,
-        localizacao: "São Paulo, SP",
-      },
-      {
-        id: "PED-004",
-        tipoServico: "Consultoria",
-        descricao: "Consultoria em organização",
-        status: "cancelado",
-        data: "2024-01-08",
-        prestador: "Ana Oliveira",
-        valor: 80.0,
-        localizacao: "São Paulo, SP",
-      },
-    ],
-    []
-  );
+  const { data: orders, isLoading, error } = useOrders();
+
+  // Transform orders for display
+  const transformedOrders = useMemo(() => {
+    if (!orders) return [];
+
+    return orders.map((order) => ({
+      id: order.id,
+      tipoServico: order.category?.name || "Não especificado",
+      descricao: order.description,
+      status: mapStatus(order.status),
+      statusFilter: mapStatusToFilter(order.status),
+      data: new Date(order.createdAt).toLocaleDateString("pt-BR"),
+      prestador: order.provider?.name || "Não atribuído",
+      avaliacao: order.orderReview?.rating || null,
+      valor: order.finalPriceCents ? order.finalPriceCents / 100 : null,
+      localizacao: order.address
+        ? `${order.address.street}, ${order.address.number}, ${order.address.neighborhood}, ${order.address.city} - ${order.address.state}`
+        : "Não informado",
+      // Keep original order for actions
+      originalOrder: order,
+    }));
+  }, [orders]);
 
   // Configuração das colunas
   const columns: TableColumn[] = [
@@ -113,7 +147,7 @@ export function OrdersTable() {
       ),
       onClick: (order) => console.log("Cancelar pedido:", order.id),
       variant: "destructive",
-      show: (order) => order.status === "aguardando",
+      show: (order) => order.statusFilter === "aguardando",
     },
     {
       id: "rate",
@@ -135,12 +169,14 @@ export function OrdersTable() {
       ),
       onClick: (order) => console.log("Avaliar pedido:", order.id),
       variant: "success",
-      show: (order) => order.status === "concluido" && !order.avaliacao,
+      show: (order) =>
+        order.statusFilter === "concluido" &&
+        !(order.avaliacao || (order as any).orderReview?.rating),
     },
   ];
 
   // Conteúdo do modal de detalhes
-  const detailModalContent = (order: Order) => (
+  const detailModalContent = (order: any) => (
     <>
       <DetailModalSection title="ID do Pedido">{order.id}</DetailModalSection>
       <DetailModalSection
@@ -197,11 +233,32 @@ export function OrdersTable() {
     </>
   );
 
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="h-8 bg-muted rounded animate-pulse w-48" />
+        <div className="space-y-2">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-16 bg-muted rounded animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        Erro ao carregar pedidos. Tente novamente.
+      </div>
+    );
+  }
+
   return (
     <GenericTable
       title="Pedidos Recentes"
       icon={<Calendar className="h-5 w-5" />}
-      data={orders as unknown as Record<string, unknown>[]}
+      data={transformedOrders as unknown as Record<string, unknown>[]}
       columns={columns}
       actions={customActions}
       searchPlaceholder="Buscar por ID, descrição ou prestador..."
@@ -218,7 +275,9 @@ export function OrdersTable() {
         { value: "concluido", label: "Concluído" },
         { value: "cancelado", label: "Cancelado" },
       ]}
-      detailModalContent={(row) => detailModalContent(row as unknown as Order)}
+      detailModalContent={(row) =>
+        detailModalContent((row as any).originalOrder || row)
+      }
     />
   );
 }

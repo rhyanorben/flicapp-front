@@ -34,61 +34,10 @@ interface ActivityItem {
 }
 
 interface ActivityFeedProps {
-  activities?: ActivityItem[];
+  activities: ActivityItem[];
 }
 
 export function ActivityFeed({ activities }: ActivityFeedProps) {
-  // Mock activities if none provided
-  const mockActivities: ActivityItem[] = activities || [
-    {
-      id: "1",
-      type: "user_registered",
-      title: "Novo usuário cadastrado",
-      description: "João Silva se cadastrou como cliente",
-      timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-      user: "João Silva",
-    },
-    {
-      id: "2",
-      type: "request_approved",
-      title: "Solicitação aprovada",
-      description: "Maria Santos foi aprovada como prestadora",
-      timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-      user: "Maria Santos",
-    },
-    {
-      id: "3",
-      type: "request_pending",
-      title: "Nova solicitação",
-      description: "Pedro Costa solicitou tornar-se prestador",
-      timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-      user: "Pedro Costa",
-    },
-    {
-      id: "4",
-      type: "user_registered",
-      title: "Novo usuário cadastrado",
-      description: "Ana Oliveira se cadastrou como cliente",
-      timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
-      user: "Ana Oliveira",
-    },
-    {
-      id: "5",
-      type: "request_rejected",
-      title: "Solicitação rejeitada",
-      description: "Carlos Lima teve sua solicitação rejeitada",
-      timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
-      user: "Carlos Lima",
-    },
-    {
-      id: "6",
-      type: "system_alert",
-      title: "Alerta do sistema",
-      description: "Alto volume de solicitações pendentes",
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    },
-  ];
-
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "user_registered":
@@ -182,39 +131,46 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
       <CardContent>
         <ScrollArea className="h-80">
           <div className="space-y-4">
-            {mockActivities.map((activity, index) => (
-              <div key={activity.id}>
-                <div className="flex items-start gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted">
-                    {getActivityIcon(activity.type)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="text-sm font-medium truncate">
-                        {activity.title}
-                      </h4>
-                      {getActivityBadge(activity.type)}
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      {activity.description}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-muted-foreground">
-                        {getTimeAgo(activity.timestamp)}
-                      </span>
-                      {activity.user && (
-                        <span className="text-xs text-muted-foreground">
-                          {activity.user}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {index < mockActivities.length - 1 && (
-                  <Separator className="mt-4" />
-                )}
+            {activities.length === 0 ? (
+              <div className="text-center py-10 text-muted-foreground">
+                <Activity className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p>Nenhuma atividade recente</p>
               </div>
-            ))}
+            ) : (
+              activities.map((activity, index) => (
+                <div key={activity.id}>
+                  <div className="flex items-start gap-3">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted">
+                      {getActivityIcon(activity.type)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="text-sm font-medium truncate">
+                          {activity.title}
+                        </h4>
+                        {getActivityBadge(activity.type)}
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        {activity.description}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">
+                          {getTimeAgo(activity.timestamp)}
+                        </span>
+                        {activity.user && (
+                          <span className="text-xs text-muted-foreground">
+                            {activity.user}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {index < activities.length - 1 && (
+                    <Separator className="mt-4" />
+                  )}
+                </div>
+              ))
+            )}
           </div>
         </ScrollArea>
       </CardContent>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,70 +10,81 @@ import {
   Clock,
   CheckCircle,
   XCircle,
+  AlertCircle,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useAppointments } from "@/hooks/use-appointments";
 
-interface Appointment {
+interface TransformedAppointment {
   id: string;
   date: string;
   time: string;
   client: string;
   service: string;
-  status: "agendado" | "confirmado" | "concluido" | "cancelado";
+  status:
+    | "agendado"
+    | "confirmado"
+    | "em_andamento"
+    | "concluido"
+    | "cancelado";
+  originalAppointment: Record<string, unknown>;
 }
+
+// Map database status to display status
+const mapStatus = (
+  status: string
+): "agendado" | "confirmado" | "em_andamento" | "concluido" | "cancelado" => {
+  const statusMap: Record<
+    string,
+    "agendado" | "confirmado" | "em_andamento" | "concluido" | "cancelado"
+  > = {
+    matching: "agendado",
+    await_cpf: "agendado",
+    await_provider: "agendado",
+    accepted: "confirmado",
+    in_progress: "em_andamento",
+    completed: "concluido",
+    cancelled: "cancelado",
+  };
+  return statusMap[status] || "agendado";
+};
 
 export function CalendarView() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const {
+    data: appointments,
+    isLoading,
+    error,
+  } = useAppointments("todos", "todos");
 
-  // Dados mockados - em produção viria da API
-  const appointments: Appointment[] = [
-    {
-      id: "APT-001",
-      date: "2024-01-15",
-      time: "09:00",
-      client: "Ana Silva",
-      service: "Limpeza Residencial",
-      status: "confirmado",
-    },
-    {
-      id: "APT-002",
-      date: "2024-01-15",
-      time: "14:00",
-      client: "João Santos",
-      service: "Manutenção AC",
-      status: "agendado",
-    },
-    {
-      id: "APT-003",
-      date: "2024-01-16",
-      time: "10:30",
-      client: "Maria Costa",
-      service: "Instalação Ventilador",
-      status: "concluido",
-    },
-    {
-      id: "APT-004",
-      date: "2024-01-18",
-      time: "16:00",
-      client: "Pedro Oliveira",
-      service: "Consultoria Organização",
-      status: "cancelado",
-    },
-    {
-      id: "APT-005",
-      date: "2024-01-20",
-      time: "08:00",
-      client: "Carla Mendes",
-      service: "Reparo Eletrodoméstico",
-      status: "agendado",
-    },
-  ];
+  // Transform appointments for display
+  const transformedAppointments = useMemo(() => {
+    if (!appointments) return [];
 
-  const getStatusIcon = (status: Appointment["status"]) => {
+    return appointments.map((appointment, index) => ({
+      id: appointment.id || `appointment-${index}-${Date.now()}`, // Generate unique ID if missing
+      date: appointment.slotStart
+        ? new Date(appointment.slotStart).toISOString().split("T")[0]
+        : new Date(appointment.createdAt).toISOString().split("T")[0],
+      time: appointment.slotStart
+        ? new Date(appointment.slotStart).toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "Não agendado",
+      client: appointment.client?.name || "Não informado",
+      service: appointment.category?.name || "Não especificado",
+      status: mapStatus(appointment.status),
+      originalAppointment: appointment,
+    }));
+  }, [appointments]);
+
+  const getStatusIcon = (status: TransformedAppointment["status"]) => {
     const statusConfig = {
       agendado: { icon: Clock, color: "text-primary" },
       confirmado: { icon: CheckCircle, color: "text-accent" },
-      concluido: { icon: CheckCircle, color: "text-accent" },
+      em_andamento: { icon: AlertCircle, color: "text-blue-500" },
+      concluido: { icon: CheckCircle, color: "text-green-500" },
       cancelado: { icon: XCircle, color: "text-destructive" },
     };
 
@@ -107,7 +118,7 @@ export function CalendarView() {
 
   const getAppointmentsForDate = (date: Date) => {
     const dateStr = date.toISOString().split("T")[0];
-    return appointments.filter((apt) => apt.date === dateStr);
+    return transformedAppointments.filter((apt) => apt.date === dateStr);
   };
 
   const navigateMonth = (direction: "prev" | "next") => {
@@ -140,6 +151,64 @@ export function CalendarView() {
   const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
   const days = getDaysInMonth(currentDate);
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Calendar className="h-5 w-5" />
+              Calendário de Agendamentos
+            </CardTitle>
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 bg-muted rounded animate-pulse" />
+              <div className="h-6 w-32 bg-muted rounded animate-pulse" />
+              <div className="h-8 w-8 bg-muted rounded animate-pulse" />
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-7 gap-1 mb-4">
+            {dayNames.map((day) => (
+              <div
+                key={day}
+                className="text-center text-sm font-medium text-muted-foreground p-2"
+              >
+                {day}
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-7 gap-1">
+            {Array.from({ length: 35 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-24 border border-border bg-muted animate-pulse"
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Calendar className="h-5 w-5" />
+            Calendário de Agendamentos
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-muted-foreground">
+            Erro ao carregar agendamentos. Tente novamente.
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -216,6 +285,7 @@ export function CalendarView() {
                         appointment.status === "agendado"
                           ? "secondary"
                           : appointment.status === "confirmado" ||
+                            appointment.status === "em_andamento" ||
                             appointment.status === "concluido"
                           ? "default"
                           : "destructive"
@@ -251,7 +321,11 @@ export function CalendarView() {
             <span>Confirmado</span>
           </div>
           <div className="flex items-center gap-2">
-            <CheckCircle className="h-4 w-4 text-accent" />
+            <AlertCircle className="h-4 w-4 text-blue-500" />
+            <span>Em Andamento</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-green-500" />
             <span>Concluído</span>
           </div>
           <div className="flex items-center gap-2">

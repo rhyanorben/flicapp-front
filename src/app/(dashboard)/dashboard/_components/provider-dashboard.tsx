@@ -38,64 +38,20 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, User } from "lucide-react";
+import { useProviderDashboard } from "@/hooks/use-dashboard-data";
 
 interface ProviderDashboardProps {
-  data: {
-    requests: {
-      total: number;
-      pending: number;
-      accepted: number;
-      completed: number;
-      rejected: number;
-    };
-    rating: number;
-    totalReviews: number;
-    acceptanceRate: number;
-    monthlyTrend: { [month: string]: number };
-    statusDistribution: {
-      pending: number;
-      accepted: number;
-      completed: number;
-      cancelled: number;
-    };
-    upcomingSchedules: Array<{
-      id: string;
-      client: string;
-      service: string;
-      date: string;
-      time: string;
-      address: string;
-    }>;
-    recentRequests: Array<{
-      id: string;
-      client: { name: string; email: string };
-      service: string;
-      status: string;
-      createdAt: string;
-      description: string;
-    }>;
-    recentReviews: Array<{
-      id: string;
-      client: string;
-      rating: number;
-      comment: string;
-      date: string;
-    }>;
-    monthlyGoals: {
-      services: { target: number; current: number; percentage: number };
-      rating: { target: number; current: number; percentage: number };
-      completion: { target: number; current: number; percentage: number };
-    };
-  } | null;
-  isLoading?: boolean;
+  // Props are now handled by the hook
 }
 
-export function ProviderDashboard({ data, isLoading }: ProviderDashboardProps) {
+export function ProviderDashboard() {
+  const { data, isLoading, error } = useProviderDashboard();
+
   if (isLoading) {
     return <ProviderDashboardSkeleton />;
   }
 
-  if (!data) {
+  if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <p className="text-muted-foreground">

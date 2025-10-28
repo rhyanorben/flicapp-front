@@ -8,25 +8,10 @@ import {
   AlertTriangle,
   TrendingUp,
 } from "lucide-react";
+import { useProviderRequestStats } from "@/hooks/use-provider-requests";
 
 export function RequestsOverviewCards() {
-  // Dados mockados - em produção viria da API
-  const stats = {
-    pendentes: 8,
-    aceitas: 24,
-    recusadas: 3,
-    expiradas: 1,
-    totalGanhos: 2840.0,
-  };
-
-  // Dados de variação percentual (vs mês anterior)
-  const deltas = {
-    pendentes: 8.5, // +8.5% vs mês anterior
-    aceitas: 15.3, // +15.3% vs mês anterior
-    recusadas: -12.7, // -12.7% vs mês anterior
-    expiradas: -18.2, // -18.2% vs mês anterior
-    totalGanhos: 7.2, // +7.2% vs mês anterior
-  };
+  const { data, isLoading, error } = useProviderRequestStats();
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -34,6 +19,42 @@ export function RequestsOverviewCards() {
       currency: "BRL",
     }).format(value);
   };
+
+  if (isLoading) {
+    return (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className="p-6 rounded-lg border bg-background animate-pulse"
+          >
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="h-4 bg-muted rounded w-20" />
+                <div className="h-8 bg-muted rounded w-12" />
+              </div>
+              <div className="h-8 w-8 bg-muted rounded" />
+            </div>
+            <div className="mt-4 h-3 bg-muted rounded w-24" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        Erro ao carregar estatísticas das solicitações.
+      </div>
+    );
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  const { stats, deltas } = data;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">

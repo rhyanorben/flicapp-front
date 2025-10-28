@@ -2,16 +2,51 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star, BarChart3 } from "lucide-react";
+import { useRatingStats } from "@/hooks/use-ratings";
 
 export function RatingsChart() {
-  // Dados mockados - em produção viria da API
-  const distributionData = [
-    { stars: 5, count: 52, percentage: 58 },
-    { stars: 4, count: 28, percentage: 31 },
-    { stars: 3, count: 7, percentage: 8 },
-    { stars: 2, count: 2, percentage: 2 },
-    { stars: 1, count: 0, percentage: 0 },
-  ];
+  const { data: ratingStats, isLoading, error } = useRatingStats();
+
+  // Transform stats data for display
+  const distributionData = ratingStats
+    ? [
+        {
+          stars: 5,
+          count: ratingStats.distribuicao[5],
+          percentage: Math.round(
+            (ratingStats.distribuicao[5] / ratingStats.totalAvaliacoes) * 100
+          ),
+        },
+        {
+          stars: 4,
+          count: ratingStats.distribuicao[4],
+          percentage: Math.round(
+            (ratingStats.distribuicao[4] / ratingStats.totalAvaliacoes) * 100
+          ),
+        },
+        {
+          stars: 3,
+          count: ratingStats.distribuicao[3],
+          percentage: Math.round(
+            (ratingStats.distribuicao[3] / ratingStats.totalAvaliacoes) * 100
+          ),
+        },
+        {
+          stars: 2,
+          count: ratingStats.distribuicao[2],
+          percentage: Math.round(
+            (ratingStats.distribuicao[2] / ratingStats.totalAvaliacoes) * 100
+          ),
+        },
+        {
+          stars: 1,
+          count: ratingStats.distribuicao[1],
+          percentage: Math.round(
+            (ratingStats.distribuicao[1] / ratingStats.totalAvaliacoes) * 100
+          ),
+        },
+      ]
+    : [];
 
   const maxCount = Math.max(...distributionData.map((d) => d.count));
 
@@ -24,6 +59,66 @@ export function RatingsChart() {
     }
     return stars;
   };
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5" />
+            Distribuição das Avaliações
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <div className="h-4 w-20 bg-muted rounded animate-pulse" />
+                <div className="flex-1 h-4 bg-muted rounded animate-pulse" />
+                <div className="h-4 w-12 bg-muted rounded animate-pulse" />
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5" />
+            Distribuição das Avaliações
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-muted-foreground">
+            Erro ao carregar dados de avaliações.
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!ratingStats || ratingStats.totalAvaliacoes === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5" />
+            Distribuição das Avaliações
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-muted-foreground">
+            Nenhuma avaliação encontrada.
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -99,9 +194,7 @@ export function RatingsChart() {
             <div>
               <span className="text-gray-600">Taxa de satisfação:</span>
               <span className="font-medium text-green-600 ml-1">
-                {distributionData[0].percentage +
-                  distributionData[1].percentage}
-                %
+                {ratingStats.taxaSatisfacao}%
               </span>
             </div>
           </div>

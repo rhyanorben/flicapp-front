@@ -51,19 +51,38 @@ export function UserDetailsDialog({
     );
   };
 
-  const handleSave = () => {
-    updateUserRoles.mutate(
-      {
-        userId: user.id,
-        data: { roles: selectedRoles },
-      },
-      {
-        onSuccess: () => {
-          onUpdate();
-          onClose();
-        },
+  const handleSave = async () => {
+    try {
+      // Compare current roles with selected roles to determine what changes to make
+      const currentRoles = user.roles;
+      const rolesToAdd = selectedRoles.filter(
+        (role) => !currentRoles.includes(role)
+      );
+      const rolesToRemove = currentRoles.filter(
+        (role) => !selectedRoles.includes(role)
+      );
+
+      // Add new roles
+      for (const role of rolesToAdd) {
+        await updateUserRoles.mutateAsync({
+          userId: user.id,
+          data: { roleName: role, action: "assign" },
+        });
       }
-    );
+
+      // Remove roles
+      for (const role of rolesToRemove) {
+        await updateUserRoles.mutateAsync({
+          userId: user.id,
+          data: { roleName: role, action: "remove" },
+        });
+      }
+
+      onUpdate();
+      onClose();
+    } catch (error) {
+      console.error("Erro ao atualizar roles:", error);
+    }
   };
 
   return (

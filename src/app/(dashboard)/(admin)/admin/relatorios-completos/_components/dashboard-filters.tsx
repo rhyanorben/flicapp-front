@@ -18,7 +18,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Filter, ChevronDown } from "lucide-react";
 
-export function DashboardFilters() {
+interface DashboardFiltersProps {
+  onPeriodChange?: (period: string) => void;
+  onStatusChange?: (status: string) => void;
+  onDateRangeChange?: (dateRange: {
+    from: Date | undefined;
+    to: Date | undefined;
+  }) => void;
+}
+
+export function DashboardFilters({
+  onPeriodChange,
+  onStatusChange,
+  onDateRangeChange,
+}: DashboardFiltersProps) {
   const [selectedPeriod, setSelectedPeriod] = useState("30d");
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [dateRange, setDateRange] = useState<{
@@ -28,6 +41,24 @@ export function DashboardFilters() {
     from: undefined,
     to: undefined,
   });
+
+  const handlePeriodChange = (period: string) => {
+    setSelectedPeriod(period);
+    onPeriodChange?.(period);
+  };
+
+  const handleStatusChange = (status: string) => {
+    setSelectedStatus(status);
+    onStatusChange?.(status);
+  };
+
+  const handleDateRangeChange = (newDateRange: {
+    from: Date | undefined;
+    to: Date | undefined;
+  }) => {
+    setDateRange(newDateRange);
+    onDateRangeChange?.(newDateRange);
+  };
 
   const statusOptions = [
     { value: "all", label: "Todos os Status" },
@@ -48,7 +79,7 @@ export function DashboardFilters() {
       <CardContent className="p-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           {/* Time Period Tabs */}
-          <Tabs value={selectedPeriod} onValueChange={setSelectedPeriod}>
+          <Tabs value={selectedPeriod} onValueChange={handlePeriodChange}>
             <TabsList className="grid w-full grid-cols-3 sm:w-auto">
               <TabsTrigger value="7d">7 dias</TabsTrigger>
               <TabsTrigger value="30d">30 dias</TabsTrigger>
@@ -71,7 +102,7 @@ export function DashboardFilters() {
                 {statusOptions.map((option) => (
                   <DropdownMenuItem
                     key={option.value}
-                    onClick={() => setSelectedStatus(option.value)}
+                    onClick={() => handleStatusChange(option.value)}
                     className={
                       selectedStatus === option.value ? "bg-accent" : ""
                     }
@@ -106,7 +137,8 @@ export function DashboardFilters() {
                         const weekAgo = new Date(
                           today.getTime() - 7 * 24 * 60 * 60 * 1000
                         );
-                        setDateRange({ from: weekAgo, to: today });
+                        const newDateRange = { from: weekAgo, to: today };
+                        handleDateRangeChange(newDateRange);
                         setSelectedPeriod("custom");
                       }}
                     >
@@ -121,7 +153,8 @@ export function DashboardFilters() {
                         const monthAgo = new Date(
                           today.getTime() - 30 * 24 * 60 * 60 * 1000
                         );
-                        setDateRange({ from: monthAgo, to: today });
+                        const newDateRange = { from: monthAgo, to: today };
+                        handleDateRangeChange(newDateRange);
                         setSelectedPeriod("custom");
                       }}
                     >
@@ -136,7 +169,8 @@ export function DashboardFilters() {
                         const quarterAgo = new Date(
                           today.getTime() - 90 * 24 * 60 * 60 * 1000
                         );
-                        setDateRange({ from: quarterAgo, to: today });
+                        const newDateRange = { from: quarterAgo, to: today };
+                        handleDateRangeChange(newDateRange);
                         setSelectedPeriod("custom");
                       }}
                     >

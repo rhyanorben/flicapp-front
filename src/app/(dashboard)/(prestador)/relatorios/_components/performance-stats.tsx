@@ -2,27 +2,57 @@
 
 import { KpiCard } from "@/components/ui/kpi-card";
 import { Star, Clock, CheckCircle, Users, Award, Zap } from "lucide-react";
+import { usePerformanceData } from "@/hooks/use-reports";
 
 export function PerformanceStats() {
-  // Dados mockados - em produção viria da API
-  const performanceData = {
-    avaliacaoMedia: 4.7,
-    totalAvaliacoes: 89,
-    taxaConclusao: 94.2,
-    tempoMedioResposta: 2.5,
-    clientesRecorrentes: 23,
-    servicosCancelados: 3,
-  };
+  const { data: performanceData, isLoading, error } = usePerformanceData();
 
-  // Dados de variação percentual (vs mês anterior)
-  const deltas = {
-    avaliacaoMedia: 1.2, // +1.2% vs mês anterior
-    taxaConclusao: 0.8, // +0.8% vs mês anterior
-    tempoMedioResposta: -8.3, // -8.3% vs mês anterior (melhoria)
-    clientesRecorrentes: 6.7, // +6.7% vs mês anterior
-    eficiencia: 2.1, // +2.1% vs mês anterior
-    servicosCancelados: -12.5, // -12.5% vs mês anterior (melhoria)
-  };
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Estatísticas de Desempenho</h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="p-6 rounded-lg border bg-background animate-pulse"
+            >
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <div className="h-4 bg-muted rounded w-20" />
+                  <div className="h-8 bg-muted rounded w-12" />
+                </div>
+                <div className="h-8 w-8 bg-muted rounded" />
+              </div>
+              <div className="mt-4 h-3 bg-muted rounded w-24" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Estatísticas de Desempenho</h2>
+        <div className="text-center py-8 text-muted-foreground">
+          Erro ao carregar dados de desempenho.
+        </div>
+      </div>
+    );
+  }
+
+  if (!performanceData) {
+    return (
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Estatísticas de Desempenho</h2>
+        <div className="text-center py-8 text-muted-foreground">
+          Nenhum dado de desempenho disponível.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -32,7 +62,7 @@ export function PerformanceStats() {
         <KpiCard
           label="Avaliação Média"
           value={performanceData.avaliacaoMedia.toFixed(1)}
-          delta={deltas.avaliacaoMedia}
+          delta={performanceData.deltas.avaliacaoMedia}
           trend="up"
           tone="warning"
           icon={<Star className="h-4 w-4 text-amber-600 dark:text-amber-300" />}
@@ -41,7 +71,7 @@ export function PerformanceStats() {
         <KpiCard
           label="Taxa de Conclusão"
           value={`${performanceData.taxaConclusao}%`}
-          delta={deltas.taxaConclusao}
+          delta={performanceData.deltas.taxaConclusao}
           trend="up"
           tone="success"
           icon={
@@ -52,7 +82,7 @@ export function PerformanceStats() {
         <KpiCard
           label="Tempo Médio de Resposta"
           value={`${performanceData.tempoMedioResposta}h`}
-          delta={deltas.tempoMedioResposta}
+          delta={performanceData.deltas.tempoMedioResposta}
           trend="down"
           tone="primary"
           icon={<Clock className="h-4 w-4 text-primary" />}
@@ -61,7 +91,7 @@ export function PerformanceStats() {
         <KpiCard
           label="Clientes Recorrentes"
           value={performanceData.clientesRecorrentes}
-          delta={deltas.clientesRecorrentes}
+          delta={performanceData.deltas.clientesRecorrentes}
           trend="up"
           tone="primary"
           icon={<Users className="h-4 w-4 text-primary" />}
@@ -69,8 +99,8 @@ export function PerformanceStats() {
         />
         <KpiCard
           label="Eficiência"
-          value="92%"
-          delta={deltas.eficiencia}
+          value={`${performanceData.eficiencia}%`}
+          delta={performanceData.deltas.eficiencia}
           trend="up"
           tone="warning"
           icon={<Zap className="h-4 w-4 text-amber-600 dark:text-amber-300" />}
@@ -79,7 +109,7 @@ export function PerformanceStats() {
         <KpiCard
           label="Cancelamentos"
           value={performanceData.servicosCancelados}
-          delta={deltas.servicosCancelados}
+          delta={performanceData.deltas.servicosCancelados}
           trend="down"
           tone="danger"
           icon={<Award className="h-4 w-4 text-destructive" />}

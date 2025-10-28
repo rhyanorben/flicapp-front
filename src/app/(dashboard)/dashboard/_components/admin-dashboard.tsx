@@ -48,44 +48,20 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { User, Mail, Eye } from "lucide-react";
+import { useAdminDashboard } from "@/hooks/use-dashboard-data";
 
 interface AdminDashboardProps {
-  data: {
-    users: {
-      total: number;
-      admins: number;
-      providers: number;
-      clients: number;
-      byMonth: { [month: string]: number };
-    };
-    providerRequests: {
-      total: number;
-      pending: number;
-      approved: number;
-      rejected: number;
-      byMonth: { [month: string]: number };
-      recent: Array<{
-        id: string;
-        userId: string;
-        user: {
-          id: string;
-          name: string;
-          email: string;
-        };
-        status: string;
-        createdAt: string;
-      }>;
-    };
-  } | null;
-  isLoading?: boolean;
+  // Props are now handled by the hook
 }
 
-export function AdminDashboard({ data, isLoading }: AdminDashboardProps) {
+export function AdminDashboard() {
+  const { data, isLoading, error } = useAdminDashboard();
+
   if (isLoading) {
     return <AdminDashboardSkeleton />;
   }
 
-  if (!data) {
+  if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <p className="text-muted-foreground">
