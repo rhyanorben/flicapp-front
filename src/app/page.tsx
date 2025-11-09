@@ -1,19 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import { Hero } from "./(marketing)/landing-v2/components/Hero";
-import { PinnedPanels } from "./(marketing)/landing-v2/components/PinnedPanels";
-import { ValueProps } from "./(marketing)/landing-v2/components/ValueProps";
-import { StickyStepper } from "./(marketing)/landing-v2/components/StickyStepper";
-import { Trust } from "./(marketing)/landing-v2/components/Trust";
-import { Testimonials } from "./(marketing)/landing-v2/components/Testimonials";
-import { Pricing } from "./(marketing)/landing-v2/components/Pricing";
-import { CTAFinal } from "./(marketing)/landing-v2/components/CTAFinal";
-import { FAQ } from "./(marketing)/landing-v2/components/FAQ";
-import { ProgressBar } from "./(marketing)/landing-v2/components/ProgressBar";
-import { WhatsAppFloat } from "./(marketing)/landing-v2/components/WhatsAppFloat";
+import { Hero } from "../components/landing/v2/components/Hero";
+import { PinnedPanels } from "../components/landing/v2/components/PinnedPanels";
+import { ValueProps } from "../components/landing/v2/components/ValueProps";
+import { StickyStepper } from "../components/landing/v2/components/StickyStepper";
+import { Trust } from "../components/landing/v2/components/Trust";
+import { Testimonials } from "../components/landing/v2/components/Testimonials";
+import { Pricing } from "../components/landing/v2/components/Pricing";
+import { CTAFinal } from "../components/landing/v2/components/CTAFinal";
+import { FAQ } from "../components/landing/v2/components/FAQ";
+import { ProgressBar } from "../components/landing/v2/components/ProgressBar";
+import { WhatsAppFloat } from "../components/landing/v2/components/WhatsAppFloat";
 import { trackPageView } from "@/lib/analytics";
-import { Footer } from "./(marketing)/landing-v2/components/Footer";
+import { Footer } from "../components/landing/v2/components/Footer";
+import { ToggleTheme } from "@/components/ui/toggle-theme";
 
 export default function Home() {
   useEffect(() => {
@@ -28,6 +29,9 @@ export default function Home() {
       >
         Pular para conteúdo principal
       </a>
+      <div className="fixed top-4 right-4 z-50">
+        <ToggleTheme />
+      </div>
       <ProgressBar />
       <div
         id="main-content"
