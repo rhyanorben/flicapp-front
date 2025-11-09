@@ -10,13 +10,12 @@ import {
   Wrench,
   Hammer,
   Plug,
-  Lightbulb,
   MoreHorizontal,
   Home,
   Car,
   Camera,
   Scissors,
-  Wrench as WrenchIcon,
+  Wrench as PipeWrench,
   Paintbrush,
   Dumbbell,
   Palette,
@@ -24,7 +23,6 @@ import {
   WashingMachine,
   Bug,
   TreePine,
-  Wrench as PipeWrench,
   PartyPopper,
   Utensils,
   Music,
@@ -32,7 +30,6 @@ import {
   GraduationCap,
   AirVent,
   User,
-  BookOpen,
   Search,
   Star,
 } from "lucide-react";
@@ -143,13 +140,19 @@ interface ServiceTypeCardsProps {
   onSelect: (type: string) => void;
 }
 
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  active: boolean;
+}
+
 export function ServiceTypeCards({
   selectedType,
   onSelect,
 }: ServiceTypeCardsProps) {
   const { data: categories, isLoading, error } = useCategories();
   const [searchTerm, setSearchTerm] = useState("");
-  const [showGroup, setShowGroup] = useState<string | null>(null);
 
   // Filter and organize categories
   const { popularCategories, groupedCategories, filteredCategories } =
@@ -219,7 +222,7 @@ export function ServiceTypeCards({
     );
   }
 
-  const renderCategoryCard = (category: any, isPopular = false) => {
+  const renderCategoryCard = (category: Category, isPopular = false) => {
     const Icon = getCategoryIcon(category.slug);
     const isSelected = selectedType === category.slug;
 
@@ -319,7 +322,8 @@ export function ServiceTypeCards({
           <div className="flex items-center gap-2">
             <Search className="h-4 w-4 text-muted-foreground" />
             <h3 className="font-medium text-sm">
-              Resultados para "{searchTerm}" ({filteredCategories.length})
+              Resultados para &quot;{searchTerm}&quot; (
+              {filteredCategories.length})
             </h3>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -327,7 +331,7 @@ export function ServiceTypeCards({
           </div>
           {filteredCategories.length === 0 && (
             <div className="text-center py-8 text-muted-foreground">
-              Nenhuma categoria encontrada para "{searchTerm}"
+              Nenhuma categoria encontrada para &quot;{searchTerm}&quot;
             </div>
           )}
         </div>

@@ -59,9 +59,6 @@ export async function GET(request: NextRequest) {
     const completedOrders = orders.filter(
       (order) => order.status === "completed"
     ).length;
-    const cancelledOrders = orders.filter(
-      (order) => order.status === "cancelled"
-    ).length;
 
     // Calculate pending reviews (completed orders without reviews)
     const pendingReviews = orders.filter(

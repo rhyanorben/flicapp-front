@@ -40,10 +40,6 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, User } from "lucide-react";
 import { useProviderDashboard } from "@/hooks/use-dashboard-data";
 
-interface ProviderDashboardProps {
-  // Props are now handled by the hook
-}
-
 export function ProviderDashboard() {
   const { data, isLoading, error } = useProviderDashboard();
 

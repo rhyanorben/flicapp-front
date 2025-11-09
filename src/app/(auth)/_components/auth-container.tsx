@@ -3,13 +3,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { LoginForm } from "../login/_components/login-form";
 import { RegisterForm } from "../register/_components/register-form";
 import { ToggleTheme } from "@/components/ui/toggle-theme";
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 
 interface AuthContainerProps {
@@ -17,11 +17,10 @@ interface AuthContainerProps {
 }
 
 export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<"login" | "register">(defaultTab);
   const shouldReduceMotion = useReducedMotion();
-  
+
   // Refs para animações GSAP
   const logoRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -43,7 +42,9 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
   useEffect(() => {
     if (shouldReduceMotion) return;
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     if (prefersReducedMotion) return;
 
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -61,7 +62,11 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
 
     // Card de autenticação
     if (cardRef.current) {
-      gsap.set(cardRef.current, { opacity: 0, scale: 0.95, filter: "blur(10px)" });
+      gsap.set(cardRef.current, {
+        opacity: 0,
+        scale: 0.95,
+        filter: "blur(10px)",
+      });
       tl.to(
         cardRef.current,
         {
@@ -99,11 +104,19 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
   useEffect(() => {
     if (shouldReduceMotion) return;
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     if (prefersReducedMotion) return;
 
-    const currentContent = activeTab === "login" ? loginContentRef.current : registerContentRef.current;
-    const previousContent = activeTab === "login" ? registerContentRef.current : loginContentRef.current;
+    const currentContent =
+      activeTab === "login"
+        ? loginContentRef.current
+        : registerContentRef.current;
+    const previousContent =
+      activeTab === "login"
+        ? registerContentRef.current
+        : loginContentRef.current;
 
     if (!currentContent) return;
 
@@ -119,7 +132,10 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
     }
 
     // Fade in do conteúdo atual
-    gsap.set(currentContent, { opacity: 0, x: activeTab === "login" ? -20 : 20 });
+    gsap.set(currentContent, {
+      opacity: 0,
+      x: activeTab === "login" ? -20 : 20,
+    });
     tl.to(
       currentContent,
       {
@@ -138,7 +154,7 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
   const handleTabChange = (value: string) => {
     const newTab = value as "login" | "register";
     setActiveTab(newTab);
-    
+
     // Atualizar a URL sem recarregar a página
     const newPath = newTab === "login" ? "/login" : "/register";
     if (pathname !== newPath && typeof window !== "undefined") {
@@ -153,7 +169,7 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 p-4"
     >
@@ -164,7 +180,10 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
       <div className="w-full max-w-md space-y-6">
         {/* Logo and Branding */}
         <div ref={logoRef} className="flex flex-col items-center space-y-3">
-          <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
+          <Link
+            href="/"
+            className="flex items-center gap-2 transition-opacity hover:opacity-80"
+          >
             <Image
               src="/logo-flicapp-horizontal.png"
               alt="FlicApp Logo"
@@ -182,7 +201,11 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
         {/* Auth Card */}
         <Card ref={cardRef} className="shadow-xl border-2">
           <CardContent className="pt-6">
-            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+            <Tabs
+              value={activeTab}
+              onValueChange={handleTabChange}
+              className="w-full"
+            >
               <div ref={tabsRef}>
                 <TabsList className="grid w-full grid-cols-2 mb-6">
                   <TabsTrigger value="login">Entrar</TabsTrigger>
@@ -191,8 +214,8 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
               </div>
 
               <div className="relative min-h-[580px]">
-                <TabsContent 
-                  value="login" 
+                <TabsContent
+                  value="login"
                   className="mt-0 data-[state=inactive]:hidden"
                 >
                   <div ref={loginContentRef} className="space-y-6">
@@ -206,8 +229,8 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
                   </div>
                 </TabsContent>
 
-                <TabsContent 
-                  value="register" 
+                <TabsContent
+                  value="register"
                   className="mt-0 data-[state=inactive]:hidden"
                 >
                   <div ref={registerContentRef} className="space-y-6">
@@ -248,4 +271,3 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
     </div>
   );
 }
-

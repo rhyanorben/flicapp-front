@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const period = searchParams.get("period") || "mes"; // mes, trimestre, ano
 
     let startDate: Date;
-    let endDate: Date = new Date();
+    const endDate: Date = new Date();
     let previousStartDate: Date;
     let previousEndDate: Date;
 

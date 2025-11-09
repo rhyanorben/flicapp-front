@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getStatistics } from "@/lib/api/admin";
 
 interface StatisticsFilters {
   period?: string;
@@ -12,7 +11,61 @@ interface StatisticsFilters {
   };
 }
 
-async function fetchAdminStatistics(filters?: StatisticsFilters): Promise<any> {
+interface AdminStatistics {
+  users: {
+    total: number;
+    admins: number;
+    providers: number;
+    clients: number;
+    byMonth: {
+      [month: string]: number;
+    };
+  };
+  providerRequests: {
+    total: number;
+    pending: number;
+    approved: number;
+    rejected: number;
+    byMonth: {
+      [month: string]: number;
+    };
+    byStatusAndMonth: {
+      [month: string]: {
+        pending: number;
+        approved: number;
+        rejected: number;
+      };
+    };
+    recent: Array<{
+      id: string;
+      userId: string;
+      user: {
+        id: string;
+        name: string;
+        email: string;
+      };
+      status: string;
+      createdAt: string;
+    }>;
+  };
+  activities?: Array<{
+    id: string;
+    type:
+      | "user_registered"
+      | "request_approved"
+      | "request_rejected"
+      | "request_pending"
+      | "system_alert";
+    title: string;
+    description: string;
+    timestamp: string;
+    user: string;
+  }>;
+}
+
+async function fetchAdminStatistics(
+  filters?: StatisticsFilters
+): Promise<AdminStatistics> {
   const params = new URLSearchParams();
 
   if (filters?.period && filters.period !== "30d") {

@@ -49,7 +49,18 @@ const loadingAnimationData = {
       sr: 1,
       ks: {
         o: { a: 0, k: 100 },
-        r: { a: 1, k: [{ i: { x: [0.833], y: [0.833] }, o: { x: [0.167], y: [0.167] }, t: 0, s: [0] }, { t: 60, s: [360] }] },
+        r: {
+          a: 1,
+          k: [
+            {
+              i: { x: [0.833], y: [0.833] },
+              o: { x: [0.167], y: [0.167] },
+              t: 0,
+              s: [0],
+            },
+            { t: 60, s: [360] },
+          ],
+        },
         p: { a: 0, k: [50, 50, 0] },
         a: { a: 0, k: [0, 0, 0] },
         s: { a: 0, k: [100, 100, 100] },
@@ -77,7 +88,17 @@ const loadingAnimationData = {
               bm: 0,
               nm: "Stroke 1",
             },
-            { ty: "tr", p: { a: 0, k: [0, 0] }, a: { a: 0, k: [0, 0] }, s: { a: 0, k: [100, 100] }, r: { a: 0, k: 0 }, o: { a: 0, k: 100 }, sk: { a: 0, k: 0 }, sa: { a: 0, k: 0 }, nm: "Transform" },
+            {
+              ty: "tr",
+              p: { a: 0, k: [0, 0] },
+              a: { a: 0, k: [0, 0] },
+              s: { a: 0, k: [100, 100] },
+              r: { a: 0, k: 0 },
+              o: { a: 0, k: 100 },
+              sk: { a: 0, k: 0 },
+              sa: { a: 0, k: 0 },
+              nm: "Transform",
+            },
           ],
           nm: "Ellipse 1",
           mn: "ADBE Vector Group",
@@ -112,11 +133,13 @@ export function LoginForm() {
   // GSAP stagger animation para campos
   useEffect(() => {
     if (shouldReduceMotion) return;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     if (prefersReducedMotion) return;
 
     if (formRef.current) {
-      const fields = formRef.current.querySelectorAll('[data-field]');
+      const fields = formRef.current.querySelectorAll("[data-field]");
       gsap.set(fields, { opacity: 0, y: 20 });
       gsap.to(fields, {
         opacity: 1,
@@ -153,7 +176,11 @@ export function LoginForm() {
 
   return (
     <Form {...form}>
-      <form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        ref={formRef}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6"
+      >
         <FormField
           control={form.control}
           name="email"
@@ -171,7 +198,11 @@ export function LoginForm() {
                   <FormControl>
                     <motion.div
                       whileFocus={{ scale: 1.01 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 30,
+                      }}
                     >
                       <Input
                         placeholder="seu@email.com"
@@ -207,7 +238,11 @@ export function LoginForm() {
                     <motion.div
                       className="relative"
                       whileFocus={{ scale: 1.01 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 30,
+                      }}
                     >
                       <Input
                         placeholder="••••••••"
@@ -253,10 +288,7 @@ export function LoginForm() {
         />
 
         <motion.div data-field>
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
               type="submit"
               className="w-full"
@@ -297,10 +329,7 @@ export function LoginForm() {
         </motion.div>
 
         <motion.div data-field>
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
               type="button"
               variant="secondary"

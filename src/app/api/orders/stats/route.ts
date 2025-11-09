@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
     Object.entries(currentStatsMap).forEach(([status, count]) => {
       const mappedStatus = statusMap[status] || "aguardando";
       if (mappedStatus in stats) {
-        (stats as any)[mappedStatus] = count;
+        (stats as Record<string, number>)[mappedStatus] = count;
       }
     });
 
@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
     Object.entries(previousStatsMap).forEach(([status, count]) => {
       const mappedStatus = statusMap[status] || "aguardando";
       if (mappedStatus in previousStatsObj) {
-        (previousStatsObj as any)[mappedStatus] = count;
+        (previousStatsObj as Record<string, number>)[mappedStatus] = count;
       }
     });
 

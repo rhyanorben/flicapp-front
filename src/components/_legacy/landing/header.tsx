@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ToggleTheme } from "../ui/toggle-theme";
+import { ToggleTheme } from "@/components/ui/toggle-theme";
 
 export default function Header() {
   return (

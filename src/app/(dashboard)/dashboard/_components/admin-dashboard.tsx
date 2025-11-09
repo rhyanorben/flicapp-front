@@ -50,10 +50,6 @@ import { Button } from "@/components/ui/button";
 import { User, Mail, Eye } from "lucide-react";
 import { useAdminDashboard } from "@/hooks/use-dashboard-data";
 
-interface AdminDashboardProps {
-  // Props are now handled by the hook
-}
-
 export function AdminDashboard() {
   const { data, isLoading, error } = useAdminDashboard();
 

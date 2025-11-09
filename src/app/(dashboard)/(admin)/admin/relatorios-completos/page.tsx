@@ -101,7 +101,7 @@ function RelatoriosCompletosData() {
         <UsersTrendChart data={statistics.users.byMonth} />
         <RequestsStatusChart
           data={statistics.providerRequests.byMonth}
-          statusData={statistics.providerRequests.byStatusAndMonth}
+          statusData={statistics.providerRequests.byStatusAndMonth || {}}
         />
       </div>
 
@@ -119,7 +119,7 @@ function RelatoriosCompletosData() {
       {/* Row 4: Details and Activity */}
       <div className="grid gap-4 xl:grid-cols-12">
         <RecentRequestsTable requests={statistics.providerRequests.recent} />
-        <ActivityFeed activities={statistics.activities} />
+        <ActivityFeed activities={statistics.activities || []} />
       </div>
     </div>
   );

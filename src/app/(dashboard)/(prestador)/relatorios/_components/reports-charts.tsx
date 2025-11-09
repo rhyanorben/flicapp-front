@@ -6,6 +6,22 @@ import { Button } from "@/components/ui/button";
 import { BarChart3, TrendingUp, Calendar, DollarSign } from "lucide-react";
 import { useChartData } from "@/hooks/use-reports";
 
+interface GanhosDataItem {
+  mes: string;
+  valor: number;
+}
+
+interface ServicosDataItem {
+  mes: string;
+  quantidade: number;
+}
+
+interface TiposDataItem {
+  tipo: string;
+  quantidade: number;
+  porcentagem: number;
+}
+
 export function ReportsCharts() {
   const [activeChart, setActiveChart] = useState("ganhos");
   const { data: ganhosData, isLoading: ganhosLoading } = useChartData("ganhos");
@@ -21,18 +37,18 @@ export function ReportsCharts() {
   };
 
   const isLoading = ganhosLoading || servicosLoading || tiposLoading;
-  const currentData =
-    activeChart === "ganhos"
-      ? ganhosData?.data
-      : activeChart === "servicos"
-      ? servicosData?.data
-      : tiposData?.data;
 
   const maxGanhos = ganhosData?.data
-    ? Math.max(...ganhosData.data.map((d: any) => d.valor || 0))
+    ? Math.max(
+        ...(ganhosData.data as GanhosDataItem[]).map((d) => d.valor || 0)
+      )
     : 0;
   const maxServicos = servicosData?.data
-    ? Math.max(...servicosData.data.map((d: any) => d.quantidade || 0))
+    ? Math.max(
+        ...(servicosData.data as ServicosDataItem[]).map(
+          (d) => d.quantidade || 0
+        )
+      )
     : 0;
 
   return (
@@ -97,7 +113,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {ganhosData.data.map((item: any) => (
+                {(ganhosData.data as GanhosDataItem[]).map((item) => (
                   <div key={item.mes} className="flex items-center gap-4">
                     <div className="w-12 text-sm font-medium text-gray-600">
                       {item.mes}
@@ -131,7 +147,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {servicosData.data.map((item: any) => (
+                {(servicosData.data as ServicosDataItem[]).map((item) => (
                   <div key={item.mes} className="flex items-center gap-4">
                     <div className="w-12 text-sm font-medium text-gray-600">
                       {item.mes}
@@ -165,7 +181,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {tiposData.data.map((item: any) => (
+                {(tiposData.data as TiposDataItem[]).map((item) => (
                   <div key={item.tipo} className="flex items-center gap-4">
                     <div className="w-24 text-sm font-medium text-gray-600">
                       {item.tipo}

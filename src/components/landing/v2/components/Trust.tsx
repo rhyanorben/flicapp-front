@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +38,10 @@ const copyData: { trust: TrustCopy } = {
       "Contrate com segurança: verificação, avaliações reais e pagamento protegido.",
     averageRating: Number(rawCopy?.trust?.averageRating ?? 4.8),
     totalReviews: Number(
-      rawCopy?.trust?.totalReviews ?? rawCopy?.trust?.totalOrders ?? 12000
+      (rawCopy?.trust as { totalReviews?: number; totalOrders?: number })
+        ?.totalReviews ??
+        rawCopy?.trust?.totalOrders ??
+        12000
     ),
     features: (rawCopy?.trust?.features as TrustFeature[])?.filter(Boolean) ?? [
       {
@@ -224,14 +227,6 @@ function FeatureCard({ f, i }: { f: TrustFeature; i: number }) {
 
 /** ====== Seção principal ====== */
 export function Trust() {
-  // respeita usuários sensíveis a animação
-  const prefersReduced = useMemo(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches,
-    []
-  );
-
   return (
     <section
       id="confianca"

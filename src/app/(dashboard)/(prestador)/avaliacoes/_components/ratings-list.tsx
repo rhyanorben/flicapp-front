@@ -109,7 +109,10 @@ export function RatingsList() {
       render: (value, row) => (
         <div className="flex items-center gap-2">
           <Avatar className="h-6 w-6">
-            <AvatarImage src={(row as any).foto} alt={String(value)} />
+            <AvatarImage
+              src={(row as unknown as TransformedRating).foto}
+              alt={String(value)}
+            />
             <AvatarFallback>{getInitials(String(value))}</AvatarFallback>
           </Avatar>
           <span>{String(value)}</span>
@@ -179,7 +182,7 @@ export function RatingsList() {
       icon: ({ className }) => <MessageSquare className={className} />,
       onClick: (rating) => handleReplyRating(rating.id as string),
       variant: "default",
-      show: (rating) => !(rating as any).resposta,
+      show: (rating) => !(rating as unknown as TransformedRating).resposta,
     },
     {
       id: "view-reply",
@@ -187,14 +190,20 @@ export function RatingsList() {
       icon: ({ className }) => <MessageSquare className={className} />,
       onClick: (rating) => handleViewReply(rating.id as string),
       variant: "success",
-      show: (rating) => !!(rating as any).resposta,
+      show: (rating) => !!(rating as unknown as TransformedRating).resposta,
     },
   ];
 
   // Conteúdo do modal de detalhes
   const detailModalContent = (rating: TransformedRating) => {
-    const originalRating = rating.originalRating as any;
-    const order = originalRating?.order;
+    const originalRating = rating.originalRating as Record<string, unknown>;
+    const order = originalRating?.order as
+      | {
+          client?: { name?: string; image?: string | null };
+          category?: { name?: string };
+          description?: string;
+        }
+      | undefined;
 
     return (
       <>

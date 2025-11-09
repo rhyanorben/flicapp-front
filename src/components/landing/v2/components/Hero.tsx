@@ -11,7 +11,6 @@ import copyData from "../data/copy.json";
 export function Hero() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 50]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   const handleCTAClick = (type: "primary" | "secondary") => {
     trackCTAClick("hero", type);

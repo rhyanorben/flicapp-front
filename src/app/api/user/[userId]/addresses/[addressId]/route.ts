@@ -9,7 +9,10 @@ const updateAddressSchema = z.object({
     .min(1, "Label é obrigatório")
     .max(50, "Label deve ter no máximo 50 caracteres")
     .optional(),
-  cep: z.string().regex(/^\d{5}-?\d{3}$/, "CEP deve ter 8 dígitos").optional(),
+  cep: z
+    .string()
+    .regex(/^\d{5}-?\d{3}$/, "CEP deve ter 8 dígitos")
+    .optional(),
   street: z
     .string()
     .min(1, "Rua é obrigatória")
@@ -111,7 +114,7 @@ export async function PATCH(
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: "Dados inválidos", details: error.errors },
+        { error: "Dados inválidos", details: error.issues },
         { status: 400 }
       );
     }

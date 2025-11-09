@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/app/generated/prisma";
 
 export async function GET(request: NextRequest) {
   try {
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
     const sortOrder = searchParams.get("sortOrder") || "desc";
 
     // Build where clause - orders that are assigned to this provider or available for matching
-    const where: any = {
+    const where: Prisma.OrderWhereInput = {
       OR: [
         // Orders assigned to this provider
         { providerId: session.user.id },

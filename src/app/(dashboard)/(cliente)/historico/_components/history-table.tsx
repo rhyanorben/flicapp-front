@@ -64,6 +64,22 @@ interface HistoryOrder {
   };
 }
 
+interface TransformedOrder {
+  id: string;
+  tipoServico: string;
+  descricao: string;
+  status: string;
+  statusFilter: "concluido" | "cancelado";
+  data: string;
+  prestador: string;
+  avaliacao: number | null;
+  dataFinalizacao: string;
+  valor: number | null;
+  localizacao: string;
+  comentario: string | null;
+  originalOrder: HistoryOrder;
+}
+
 // Map database status to display status
 const mapStatus = (status: string): string => {
   const statusMap: Record<string, string> = {
@@ -133,7 +149,7 @@ export function HistoryTable() {
       label: "Status Final",
       sortable: true,
       render: (value, row) =>
-        getStatusBadge((row as any).statusFilter as "concluido" | "cancelado"),
+        getStatusBadge((row as unknown as TransformedOrder).statusFilter),
     },
     {
       key: "data",
@@ -254,7 +270,7 @@ export function HistoryTable() {
   };
 
   // Detail modal content
-  const detailModalContent = (order: any) => (
+  const detailModalContent = (order: TransformedOrder) => (
     <>
       <DetailModalSection title="ID do Pedido">
         {String(order.id)}
@@ -428,7 +444,9 @@ export function HistoryTable() {
           { value: "concluido", label: "Concluído" },
           { value: "cancelado", label: "Cancelado" },
         ]}
-        detailModalContent={(row) => detailModalContent(row)}
+        detailModalContent={(row) =>
+          detailModalContent(row as unknown as TransformedOrder)
+        }
       />
     </div>
   );

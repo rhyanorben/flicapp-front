@@ -60,6 +60,20 @@ interface Order {
   };
 }
 
+interface TransformedOrder {
+  id: string;
+  tipoServico: string;
+  descricao: string;
+  status: string;
+  statusFilter: "aguardando" | "em-andamento" | "concluido" | "cancelado";
+  data: string;
+  prestador: string;
+  avaliacao: number | null;
+  valor: number | null;
+  localizacao: string;
+  originalOrder: Order;
+}
+
 // Map database status to display status
 const mapStatus = (status: string): string => {
   const statusMap: Record<string, string> = {
@@ -171,12 +185,15 @@ export function OrdersTable() {
       variant: "success",
       show: (order) =>
         order.statusFilter === "concluido" &&
-        !(order.avaliacao || (order as any).orderReview?.rating),
+        !(
+          order.avaliacao ||
+          (order as unknown as TransformedOrder).originalOrder?.orderReview?.rating
+        ),
     },
   ];
 
   // Conteúdo do modal de detalhes
-  const detailModalContent = (order: any) => (
+  const detailModalContent = (order: TransformedOrder) => (
     <>
       <DetailModalSection title="ID do Pedido">{order.id}</DetailModalSection>
       <DetailModalSection
@@ -276,7 +293,7 @@ export function OrdersTable() {
         { value: "cancelado", label: "Cancelado" },
       ]}
       detailModalContent={(row) =>
-        detailModalContent((row as any).originalOrder || row)
+        detailModalContent(row as unknown as TransformedOrder)
       }
     />
   );

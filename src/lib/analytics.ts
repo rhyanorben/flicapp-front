@@ -3,6 +3,10 @@
  * Compatible with Google Tag Manager dataLayer
  */
 
+interface WindowWithDataLayer extends Window {
+  dataLayer?: Array<Record<string, unknown>>;
+}
+
 type EventCategory =
   | "cta"
   | "navigation"
@@ -11,13 +15,7 @@ type EventCategory =
   | "faq"
   | "whatsapp";
 
-type EventAction =
-  | "click"
-  | "view"
-  | "scroll"
-  | "toggle"
-  | "expand"
-  | "submit";
+type EventAction = "click" | "view" | "scroll" | "toggle" | "expand" | "submit";
 
 interface TrackEventParams {
   action: EventAction;
@@ -38,8 +36,11 @@ export function trackEvent({
   section,
 }: TrackEventParams) {
   // Push to dataLayer for GTM
-  if (typeof window !== "undefined" && (window as any).dataLayer) {
-    (window as any).dataLayer.push({
+  if (
+    typeof window !== "undefined" &&
+    (window as WindowWithDataLayer).dataLayer
+  ) {
+    (window as WindowWithDataLayer).dataLayer!.push({
       event: "custom_event",
       eventCategory: category,
       eventAction: action,
@@ -58,7 +59,10 @@ export function trackEvent({
 /**
  * Track CTA clicks
  */
-export function trackCTAClick(location: "hero" | "final", ctaType: "primary" | "secondary") {
+export function trackCTAClick(
+  location: "hero" | "final",
+  ctaType: "primary" | "secondary"
+) {
   trackEvent({
     action: "click",
     category: "cta",
@@ -127,4 +131,3 @@ export function trackPageView() {
     });
   }
 }
-

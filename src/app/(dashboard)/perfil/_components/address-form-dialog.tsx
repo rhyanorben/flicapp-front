@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -34,7 +33,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useProfileMutations } from "@/hooks/use-profile";
 import { formatCEP, validateCEP } from "@/lib/utils/viacep";
 import { fetchAddressByCEP } from "@/lib/utils/viacep";
-import type { AddressData, AddressFormData } from "@/types/profile";
+import type { AddressData } from "@/types/profile";
 
 const addressFormSchema = z.object({
   label: z
@@ -254,10 +253,7 @@ export function AddressFormDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Label</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione um label" />
@@ -397,10 +393,7 @@ export function AddressFormDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Estado</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o estado" />

@@ -28,14 +28,6 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // Get orders from last 30 days for comparison
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-    const recentOrders = orders.filter(
-      (order) => order.createdAt >= thirtyDaysAgo
-    );
-
     // Calculate rating statistics
     const ratings = orders
       .filter((order) => order.orderReview?.rating)
