@@ -17,16 +17,14 @@ const registerSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validar dados com Zod
     const validationResult = registerSchema.safeParse(body);
-    
+
     if (!validationResult.success) {
-      const errorMessage = validationResult.error.errors[0]?.message || "Dados inválidos";
-      return NextResponse.json(
-        { error: errorMessage },
-        { status: 400 }
-      );
+      const errorMessage =
+        validationResult.error.issues[0]?.message || "Dados inválidos";
+      return NextResponse.json({ error: errorMessage }, { status: 400 });
     }
 
     const { name, email, password } = validationResult.data;
