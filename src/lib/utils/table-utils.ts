@@ -9,14 +9,40 @@ export function formatCurrency(value: number): string {
   }).format(value);
 }
 
-export function formatDate(date: string | Date): string {
-  const dateObj = typeof date === "string" ? new Date(date) : date;
-  return dateObj.toLocaleDateString("pt-BR");
+export function formatDate(date: string | Date | null | undefined): string {
+  if (!date) return "Não informado";
+
+  try {
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) {
+      return "Data inválida";
+    }
+
+    return dateObj.toLocaleDateString("pt-BR");
+  } catch (error) {
+    console.warn("Error formatting date:", date, error);
+    return "Data inválida";
+  }
 }
 
-export function formatDateTime(date: string | Date): string {
-  const dateObj = typeof date === "string" ? new Date(date) : date;
-  return dateObj.toLocaleString("pt-BR");
+export function formatDateTime(date: string | Date | null | undefined): string {
+  if (!date) return "Não informado";
+
+  try {
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) {
+      return "Data inválida";
+    }
+
+    return dateObj.toLocaleString("pt-BR");
+  } catch (error) {
+    console.warn("Error formatting datetime:", date, error);
+    return "Data inválida";
+  }
 }
 
 export function exportToCSV<T extends Record<string, unknown>>(

@@ -4,36 +4,30 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart3, TrendingUp, Calendar, DollarSign } from "lucide-react";
+import { useChartData } from "@/hooks/use-reports";
+
+interface GanhosDataItem {
+  mes: string;
+  valor: number;
+}
+
+interface ServicosDataItem {
+  mes: string;
+  quantidade: number;
+}
+
+interface TiposDataItem {
+  tipo: string;
+  quantidade: number;
+  porcentagem: number;
+}
 
 export function ReportsCharts() {
   const [activeChart, setActiveChart] = useState("ganhos");
-
-  // Dados mockados para os gráficos
-  const ganhosData = [
-    { mes: "Jan", valor: 2100 },
-    { mes: "Fev", valor: 2400 },
-    { mes: "Mar", valor: 2200 },
-    { mes: "Abr", valor: 2800 },
-    { mes: "Mai", valor: 2600 },
-    { mes: "Jun", valor: 2840 },
-  ];
-
-  const servicosData = [
-    { mes: "Jan", quantidade: 12 },
-    { mes: "Fev", quantidade: 15 },
-    { mes: "Mar", quantidade: 13 },
-    { mes: "Abr", quantidade: 18 },
-    { mes: "Mai", quantidade: 16 },
-    { mes: "Jun", quantidade: 18 },
-  ];
-
-  const tiposServicoData = [
-    { tipo: "Limpeza", quantidade: 45, porcentagem: 35 },
-    { tipo: "Manutenção", quantidade: 32, porcentagem: 25 },
-    { tipo: "Instalação", quantidade: 28, porcentagem: 22 },
-    { tipo: "Consultoria", quantidade: 15, porcentagem: 12 },
-    { tipo: "Reparo", quantidade: 8, porcentagem: 6 },
-  ];
+  const { data: ganhosData, isLoading: ganhosLoading } = useChartData("ganhos");
+  const { data: servicosData, isLoading: servicosLoading } =
+    useChartData("servicos");
+  const { data: tiposData, isLoading: tiposLoading } = useChartData("tipos");
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -42,8 +36,20 @@ export function ReportsCharts() {
     }).format(value);
   };
 
-  const maxGanhos = Math.max(...ganhosData.map((d) => d.valor));
-  const maxServicos = Math.max(...servicosData.map((d) => d.quantidade));
+  const isLoading = ganhosLoading || servicosLoading || tiposLoading;
+
+  const maxGanhos = ganhosData?.data
+    ? Math.max(
+        ...(ganhosData.data as GanhosDataItem[]).map((d) => d.valor || 0)
+      )
+    : 0;
+  const maxServicos = servicosData?.data
+    ? Math.max(
+        ...(servicosData.data as ServicosDataItem[]).map(
+          (d) => d.quantidade || 0
+        )
+      )
+    : 0;
 
   return (
     <div className="space-y-4">
@@ -78,7 +84,26 @@ export function ReportsCharts() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {activeChart === "ganhos" && (
+        {isLoading ? (
+          <Card className="col-span-2">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                Carregando dados...
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-4">
+                    <div className="w-12 h-4 bg-muted rounded animate-pulse" />
+                    <div className="flex-1 h-6 bg-muted rounded animate-pulse" />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ) : activeChart === "ganhos" && ganhosData?.data ? (
           <Card className="col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -88,7 +113,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {ganhosData.map((item) => (
+                {(ganhosData.data as GanhosDataItem[]).map((item) => (
                   <div key={item.mes} className="flex items-center gap-4">
                     <div className="w-12 text-sm font-medium text-gray-600">
                       {item.mes}
@@ -112,9 +137,7 @@ export function ReportsCharts() {
               </div>
             </CardContent>
           </Card>
-        )}
-
-        {activeChart === "servicos" && (
+        ) : activeChart === "servicos" && servicosData?.data ? (
           <Card className="col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -124,7 +147,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {servicosData.map((item) => (
+                {(servicosData.data as ServicosDataItem[]).map((item) => (
                   <div key={item.mes} className="flex items-center gap-4">
                     <div className="w-12 text-sm font-medium text-gray-600">
                       {item.mes}
@@ -148,9 +171,7 @@ export function ReportsCharts() {
               </div>
             </CardContent>
           </Card>
-        )}
-
-        {activeChart === "tipos" && (
+        ) : activeChart === "tipos" && tiposData?.data ? (
           <Card className="col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -160,7 +181,7 @@ export function ReportsCharts() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {tiposServicoData.map((item) => (
+                {(tiposData.data as TiposDataItem[]).map((item) => (
                   <div key={item.tipo} className="flex items-center gap-4">
                     <div className="w-24 text-sm font-medium text-gray-600">
                       {item.tipo}
@@ -181,6 +202,14 @@ export function ReportsCharts() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="col-span-2">
+            <CardContent>
+              <div className="text-center py-8 text-muted-foreground">
+                Nenhum dado disponível para o gráfico selecionado.
               </div>
             </CardContent>
           </Card>

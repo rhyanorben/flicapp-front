@@ -4,25 +4,56 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
+// =============================================================================
+// AUTH MODELS
+// =============================================================================
+
 model User {
-  id               String               @id
+  id               String               @id @default(dbgenerated("gen_random_uuid()"))
   name             String
-  email            String               @unique
+  email            String?              @unique
   emailVerified    Boolean              @default(false)
   image            String?
+  
+  // PostgreSQL users table fields
+  role             String?              // ADMINISTRADOR, PRESTADOR, CLIENTE
+  phoneE164        String?              @unique
+  whatsappId       String?
+  cpf              String?              @unique
+  
   createdAt        DateTime             @default(now())
   updatedAt        DateTime             @default(now()) @updatedAt
+  
+  // Auth relations
   accounts         Account[]
-  providerRequests ProviderRequest[]    @relation("UserProviderRequests")
-  reviewedRequests ProviderRequest[]    @relation("ReviewedProviderRequests")
   sessions         Session[]
   userRoles        UserRoleAssignment[]
+  
+  // PostgreSQL relations
+  addresses        Address[]
+  providerRequests ProviderRequest[]    @relation("UserProviderRequests")
+  reviewedRequests ProviderRequest[]    @relation("ReviewedProviderRequests")
+  providerProfile  ProviderProfile?
+  providerAvailability ProviderAvailability[]
+  providerCategories ProviderCategory[]
+  providerPayouts  ProviderPayout[]
+  clientCredits    ClientCredit[]
+  
+  // Order relations
+  ordersAsClient   Order[]              @relation("OrderClient")
+  ordersAsProvider Order[]              @relation("OrderProvider")
+  orderInvitations OrderInvitation[]
+  orderReviewsAsClient OrderReview[]    @relation("OrderReviewClient")
+  orderReviewsAsProvider OrderReview[] @relation("OrderReviewProvider")
+  orderStatusHistory OrderStatusHistory[]
+  matchScores      MatchScore[]
 
-  @@map("user")
+  @@map("users")
 }
 
 model Role {
@@ -49,11 +80,11 @@ model UserRoleAssignment {
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
   expiresAt DateTime
   token     String   @unique
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
   ipAddress String?
   userAgent String?
   userId    String
@@ -63,7 +94,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(dbgenerated("gen_random_uuid()"))
   accountId             String
   providerId            String
   userId                String
@@ -82,7 +113,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
   identifier String
   value      String
   expiresAt  DateTime
@@ -116,6 +147,380 @@ model ProviderRequest {
   @@map("provider_request")
 }
 
+// =============================================================================
+// USER & PROVIDER DOMAIN
+// =============================================================================
+
+model Address {
+  id           String   @id @default(dbgenerated("gen_random_uuid()"))
+  userId       String?
+  label        String?
+  cep          String?
+  street       String?
+  number       String?
+  complement   String?
+  neighborhood String?
+  city         String?
+  state        String?
+  lat          Float?
+  lon          Float?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  
+  user         User?    @relation(fields: [userId], references: [id])
+  orders       Order[]
+
+  @@index([lon, lat])
+  @@map("addresses")
+}
+
+model ProviderProfile {
+  userId           String   @id @default(dbgenerated("gen_random_uuid()"))
+  bio              String?
+  radiusKm         Decimal  @default(10)
+  avgRating        Decimal  @default(0)
+  totalReviews     Int      @default(0)
+  acceptRate30d    Decimal  @default(0)
+  responseP50S     Int      @default(0)
+  noShow30d        Int      @default(0)
+  
+  user             User     @relation(fields: [userId], references: [id])
+
+  @@map("provider_profiles")
+}
+
+model ProviderAvailability {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  providerId String
+  weekday    Int      // 0-6 (Sunday-Saturday)
+  startTime  String   // Time format
+  endTime    String   // Time format
+  
+  provider   User     @relation(fields: [providerId], references: [id])
+
+  @@unique([providerId, weekday, startTime, endTime])
+  @@map("provider_availability")
+}
+
+model ProviderCategory {
+  id            String   @id @default(dbgenerated("gen_random_uuid()"))
+  providerId    String
+  categoryId    String
+  minPriceCents Int
+  active        Boolean  @default(true)
+  updatedAt     DateTime @default(now())
+  levelWeight   Int?     @default(1)
+  expWeight     Int?     @default(1)
+  score         Decimal?
+  isAvailable   Boolean? @default(true)
+  
+  provider      User     @relation(fields: [providerId], references: [id])
+  category      Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([providerId, categoryId])
+  @@index([categoryId, isAvailable])
+  @@index([categoryId, score(sort: Desc)])
+  @@index([categoryId, active])
+  @@map("provider_categories")
+}
+
+// =============================================================================
+// CATEGORIES DOMAIN
+// =============================================================================
+
+model Category {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  name      String
+  slug      String?  @unique
+  active    Boolean  @default(true)
+  
+  orders    Order[]
+  providerCategories ProviderCategory[]
+  llmClassifications LlmClassification[]
+
+  @@map("categories")
+}
+
+// =============================================================================
+// ORDERS DOMAIN
+// =============================================================================
+
+model Order {
+  id                   String   @id @default(dbgenerated("gen_random_uuid()"))
+  clientId             String
+  providerId           String?
+  addressId            String?
+  categoryId           String?
+  description          String?
+  status               String
+  depositMethod        String   @default("avg_min_20")
+  depositBaseAvgCents  Int?
+  depositCents         Int      @default(0)
+  slotStart            DateTime?
+  slotEnd              DateTime?
+  finalPriceCents      Int?
+  reviewStatus         String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now()) @updatedAt
+  
+  // Relations
+  client               User     @relation("OrderClient", fields: [clientId], references: [id])
+  provider             User?    @relation("OrderProvider", fields: [providerId], references: [id])
+  address              Address? @relation(fields: [addressId], references: [id])
+  category             Category? @relation(fields: [categoryId], references: [id])
+  
+  // Order sub-models
+  orderSlots           OrderSlot[]
+  orderCategories      OrderCategory[]
+  orderInvitations     OrderInvitation[]
+  orderStatusHistory   OrderStatusHistory[]
+  orderReview          OrderReview?
+  
+  // Payment relations
+  payments             Payment[]
+  paymentEvents        PaymentEvent[]
+  commission           Commission?
+  clientCredits        ClientCredit[]
+  providerPayout       ProviderPayout?
+  
+  // Matching relations
+  matchScores          MatchScore[]
+  llmClassifications   LlmClassification[]
+
+  @@index([status, createdAt(sort: Desc)])
+  @@map("orders")
+}
+
+model OrderSlot {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  orderId   String
+  label     String?
+  startAt   DateTime
+  endAt     DateTime
+  origin    String
+  chosen    Boolean  @default(false)
+  
+  order     Order    @relation(fields: [orderId], references: [id])
+  invitations OrderInvitation[]
+
+  @@map("order_slots")
+}
+
+model OrderCategory {
+  orderId       String
+  categorySlug  String
+  confidence    Decimal
+  rank          Int
+  
+  order         Order    @relation(fields: [orderId], references: [id])
+
+  @@id([orderId, categorySlug])
+  @@index([orderId, rank])
+  @@map("order_categories")
+}
+
+model OrderInvitation {
+  id              String    @id @default(dbgenerated("gen_random_uuid()"))
+  orderId         String
+  providerId      String
+  slotId          String?
+  score           Decimal?
+  sentAt          DateTime  @default(now())
+  respondedAt     DateTime?
+  response        String?
+  waMessageId     String?   @unique
+  waRemoteJid     String?
+  categorySlug    String?
+  status          String?
+  expiresAt       DateTime?
+  meta            Json?
+  
+  order           Order     @relation(fields: [orderId], references: [id])
+  provider        User      @relation(fields: [providerId], references: [id])
+  slot            OrderSlot? @relation(fields: [slotId], references: [id])
+
+  @@unique([orderId, providerId])
+  @@index([categorySlug, slotId])
+  @@index([orderId, categorySlug, slotId])
+  @@index([orderId, expiresAt], map: "idx_order_invitations_order_expires")
+  @@index([orderId, providerId])
+  @@index([orderId, status])
+  @@index([providerId, status])
+  @@index([waMessageId])
+  @@index([orderId, sentAt])
+  @@map("order_invitations")
+}
+
+model OrderStatusHistory {
+  id          String    @id @default(dbgenerated("gen_random_uuid()"))
+  orderId     String
+  oldStatus   String?
+  newStatus   String
+  at          DateTime  @default(now())
+  byUserId    String?
+  
+  order       Order     @relation(fields: [orderId], references: [id])
+  byUser      User?     @relation(fields: [byUserId], references: [id])
+
+  @@map("order_status_history")
+}
+
+model OrderReview {
+  orderId     String    @id
+  clientId    String
+  providerId  String
+  rating      Int?
+  comment     String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now()) @updatedAt
+  
+  order       Order     @relation(fields: [orderId], references: [id])
+  client      User      @relation("OrderReviewClient", fields: [clientId], references: [id])
+  provider    User      @relation("OrderReviewProvider", fields: [providerId], references: [id])
+
+  @@map("order_reviews")
+}
+
+// =============================================================================
+// PAYMENTS DOMAIN
+// =============================================================================
+
+model Payment {
+  id               String    @id @default(dbgenerated("gen_random_uuid()"))
+  orderId          String
+  kind             String
+  gateway          String    @default("mercadopago")
+  gatewayPaymentId String?   @unique
+  status           String
+  amountCents      Int
+  createdAt        DateTime  @default(now())
+  approvedAt       DateTime?
+  
+  order            Order     @relation(fields: [orderId], references: [id])
+  paymentEvents    PaymentEvent[]
+
+  @@unique([gateway, gatewayPaymentId])
+  @@index([orderId, status])
+  @@map("payments")
+}
+
+model PaymentEvent {
+  id           String    @id @default(dbgenerated("gen_random_uuid()"))
+  paymentId    String?
+  orderId      String
+  rawPayload   Json
+  receivedAt   DateTime  @default(now())
+  signatureOk  Boolean?
+  
+  payment      Payment?  @relation(fields: [paymentId], references: [id])
+  order        Order     @relation(fields: [orderId], references: [id])
+
+  @@map("payment_events")
+}
+
+model Commission {
+  orderId         String   @id
+  finalPriceCents Int
+  rateBp          Int      @default(1200)
+  minCents        Int      @default(1000)
+  maxCents        Int      @default(4000)
+  computedCents   Int
+  computedAt      DateTime @default(now())
+  
+  order           Order    @relation(fields: [orderId], references: [id])
+
+  @@map("commissions")
+}
+
+model ClientCredit {
+  id           String    @id @default(dbgenerated("gen_random_uuid()"))
+  userId       String
+  orderId      String
+  amountCents  Int
+  expiresAt    DateTime
+  usedCents    Int       @default(0)
+  createdAt    DateTime  @default(now())
+  
+  user         User      @relation(fields: [userId], references: [id])
+  order        Order     @relation(fields: [orderId], references: [id])
+
+  @@index([userId, expiresAt])
+  @@map("client_credits")
+}
+
+// =============================================================================
+// PROVIDER PAYOUTS DOMAIN
+// =============================================================================
+
+model ProviderPayout {
+  id              String    @id @default(dbgenerated("gen_random_uuid()"))
+  orderId         String?   @unique
+  providerId      String
+  grossCents      Int
+  commissionCents Int
+  netCents        Int
+  status          String
+  paidAt          DateTime?
+  
+  order           Order?    @relation(fields: [orderId], references: [id])
+  provider        User      @relation(fields: [providerId], references: [id])
+
+  @@map("provider_payouts")
+}
+
+// =============================================================================
+// MATCHING & CLASSIFICATION DOMAIN
+// =============================================================================
+
+model MatchScore {
+  id            String   @id @default(dbgenerated("gen_random_uuid()"))
+  orderId       String
+  providerId    String
+  distanceKm    Decimal?
+  ratingNorm    Decimal?
+  acceptRate    Decimal?
+  responseFast  Decimal?
+  reliability   Decimal?
+  finalScore    Decimal?
+  createdAt     DateTime @default(now())
+  
+  order         Order    @relation(fields: [orderId], references: [id])
+  provider      User     @relation(fields: [providerId], references: [id])
+
+  @@map("match_scores")
+}
+
+model LlmClassification {
+  id           String   @id @default(dbgenerated("gen_random_uuid()"))
+  orderId      String
+  inputText    String?
+  categoryId   String?
+  confidence   Decimal?
+  createdAt    DateTime @default(now())
+  
+  order        Order    @relation(fields: [orderId], references: [id])
+  category     Category? @relation(fields: [categoryId], references: [id])
+
+  @@map("llm_classifications")
+}
+
+// =============================================================================
+// BUSINESS RULES DOMAIN
+// =============================================================================
+
+model RefusalRule {
+  code            String @id
+  clientCreditPct Int
+  providerPct     Int
+  platformPct     Int
+
+  @@map("refusal_rules")
+}
+
+// =============================================================================
+// ENUMS
+// =============================================================================
+
 enum UserRole {
   ADMINISTRADOR
   PRESTADOR
@@ -127,3 +532,18 @@ enum ProviderRequestStatus {
   APPROVED
   REJECTED
 }
+
+// =============================================================================
+// POSTGRESQL EXTENSIONS & TRIGGERS
+// =============================================================================
+
+// Note: The following PostgreSQL extensions are available but not modeled in Prisma:
+// - pgcrypto: Cryptographic functions (armor, crypt, digest, hmac, etc.)
+// - cube: Geometric data type for multi-dimensional cubes
+// - earthdistance: Geographic distance calculations
+// - unaccent: Text search without accents
+
+// Trigger: trg_orders_status_history
+// Function: log_order_status_change()
+// Description: Automatically logs order status changes to order_status_history table
+// This trigger is handled at the database level and doesn't need Prisma modeling

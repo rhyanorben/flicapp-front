@@ -10,7 +10,8 @@ export interface User {
 }
 
 export interface UpdateUserRolesData {
-  roles: UserRole[];
+  roleName: UserRole;
+  action: "assign" | "remove";
 }
 
 export async function getUsers(): Promise<User[]> {
@@ -32,7 +33,7 @@ export async function updateUserRoles(
   data: UpdateUserRolesData
 ): Promise<{ message: string }> {
   const response = await fetch(`/api/user/${userId}/roles/manage`, {
-    method: "PATCH",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },

@@ -20,92 +20,100 @@ import {
 } from "@/components/ui/generic-table";
 import { DetailModalSection } from "@/components/ui/detail-modal";
 import { formatCurrency, formatDate } from "@/lib/utils/table-utils";
+import { useProviderServices } from "@/hooks/use-provider-services";
 
-interface ServiceHistory {
+// Types for service data
+interface ServiceClient {
+  name: string;
+}
+
+interface ServiceCategory {
+  name: string;
+}
+
+interface ServiceOrderReview {
+  rating: number;
+  comment: string;
+}
+
+interface ServiceAddress {
+  street: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+}
+
+interface OriginalService {
+  client?: ServiceClient;
+  category?: ServiceCategory;
+  orderReview?: ServiceOrderReview;
+  address?: ServiceAddress;
+  description?: string;
+  slotStart?: string | Date;
+  updatedAt?: string | Date;
+  finalPriceCents?: number;
+}
+
+interface TransformedService {
   id: string;
   cliente: string;
   tipoServico: string;
   descricao: string;
+  status: string;
+  statusFilter: string;
   dataRealizacao: string;
   valor: number;
-  status: "concluido" | "cancelado";
-  avaliacao?: number;
-  comentario?: string;
+  avaliacao: number | null;
+  comentario: string | null;
+  originalService?: OriginalService;
 }
+
+// Map database status to display status
+const mapStatus = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    completed: "Concluído",
+    cancelled: "Cancelado",
+  };
+  return statusMap[status] || status;
+};
+
+// Map database status to filter value
+const mapStatusToFilter = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    completed: "concluido",
+    cancelled: "cancelado",
+  };
+  return statusMap[status] || "concluido";
+};
 
 export function ServicesHistoryTable() {
   const [periodFilter, setPeriodFilter] = useState("todos");
+  const {
+    data: providerServices,
+    isLoading,
+    error,
+  } = useProviderServices(periodFilter);
 
-  // Dados mockados - em produção viria da API
-  const servicesHistory: ServiceHistory[] = useMemo(
-    () => [
-      {
-        id: "SERV-001",
-        cliente: "Ana Silva",
-        tipoServico: "Limpeza",
-        descricao: "Limpeza residencial completa",
-        dataRealizacao: "2024-01-15",
-        valor: 150.0,
-        status: "concluido",
-        avaliacao: 5,
-        comentario: "Excelente trabalho, muito pontual e organizado!",
-      },
-      {
-        id: "SERV-002",
-        cliente: "João Santos",
-        tipoServico: "Manutenção",
-        descricao: "Reparo no ar condicionado",
-        dataRealizacao: "2024-01-14",
-        valor: 200.0,
-        status: "concluido",
-        avaliacao: 4,
-        comentario: "Resolveu o problema rapidamente.",
-      },
-      {
-        id: "SERV-003",
-        cliente: "Maria Costa",
-        tipoServico: "Instalação",
-        descricao: "Instalação de ventilador",
-        dataRealizacao: "2024-01-12",
-        valor: 120.0,
-        status: "concluido",
-        avaliacao: 5,
-        comentario: "Instalação perfeita, muito profissional!",
-      },
-      {
-        id: "SERV-004",
-        cliente: "Pedro Oliveira",
-        tipoServico: "Consultoria",
-        descricao: "Consultoria em organização",
-        dataRealizacao: "2024-01-10",
-        valor: 80.0,
-        status: "concluido",
-        avaliacao: 4,
-        comentario: "Ótimas dicas para organização.",
-      },
-      {
-        id: "SERV-005",
-        cliente: "Carla Mendes",
-        tipoServico: "Reparo",
-        descricao: "Reparo de eletrodoméstico",
-        dataRealizacao: "2024-01-08",
-        valor: 90.0,
-        status: "concluido",
-        avaliacao: 3,
-        comentario: "Serviço realizado conforme esperado.",
-      },
-      {
-        id: "SERV-006",
-        cliente: "Roberto Lima",
-        tipoServico: "Limpeza",
-        descricao: "Limpeza pós-obra",
-        dataRealizacao: "2024-01-05",
-        valor: 300.0,
-        status: "cancelado",
-      },
-    ],
-    []
-  );
+  // Transform services for display
+  const transformedServices = useMemo(() => {
+    if (!providerServices) return [];
+
+    return providerServices.map((service, index) => ({
+      id: service.id || `service-${index}-${Date.now()}`, // Generate unique ID if missing
+      cliente: service.client?.name || "Não informado",
+      tipoServico: service.category?.name || "Não especificado",
+      descricao: service.description,
+      status: mapStatus(service.status),
+      statusFilter: mapStatusToFilter(service.status),
+      dataRealizacao: formatDate(service.slotStart || service.updatedAt),
+      valor: service.finalPriceCents ? service.finalPriceCents / 100 : 0,
+      avaliacao: service.orderReview?.rating || null,
+      comentario: service.orderReview?.comment || null,
+      // Keep original service for actions
+      originalService: service,
+    }));
+  }, [providerServices]);
 
   // Period filter options
   const periodOptions = [
@@ -158,7 +166,7 @@ export function ServicesHistoryTable() {
       key: "status",
       label: "Status",
       sortable: true,
-      render: (value) => getStatusBadge(value as ServiceHistory["status"]),
+      render: (value) => getStatusBadge(value as string),
     },
     {
       key: "avaliacao",
@@ -183,7 +191,7 @@ export function ServicesHistoryTable() {
       icon: ({ className }) => <Star className={className} />,
       onClick: (service) => handleViewRating(service.id as string),
       show: (service) =>
-        Boolean(service.status === "concluido" && service.avaliacao),
+        Boolean(service.statusFilter === "concluido" && service.avaliacao),
     },
     {
       id: "export-selected",
@@ -210,108 +218,135 @@ export function ServicesHistoryTable() {
     },
   ];
 
-  const getStatusBadge = (status: ServiceHistory["status"]) => {
+  const getStatusBadge = (status: string) => {
     const statusConfig = {
       concluido: { label: "Concluído", variant: "default" as const },
       cancelado: { label: "Cancelado", variant: "destructive" as const },
     };
 
-    const config = statusConfig[status];
+    const config =
+      statusConfig[status as keyof typeof statusConfig] ||
+      statusConfig.concluido;
     return <Badge variant={config.variant}>{config.label}</Badge>;
   };
 
-  const getPeriodFilter = (date: string) => {
-    const serviceDate = new Date(date);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - serviceDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays <= 7) return "7dias";
-    if (diffDays <= 30) return "30dias";
-    if (diffDays <= 90) return "90dias";
-    return "mais90dias";
-  };
-
-  // Filter data by period
-  const filteredData = useMemo(() => {
-    if (periodFilter === "todos") return servicesHistory;
-    return servicesHistory.filter(
-      (service) => getPeriodFilter(service.dataRealizacao) === periodFilter
-    );
-  }, [servicesHistory, periodFilter]);
+  // Filter data by period (now handled by API)
+  const filteredData = transformedServices;
 
   const handleViewRating = (serviceId: string) => {
     console.log("Ver avaliação do serviço:", serviceId);
   };
 
   // Detail modal content
-  const detailModalContent = (service: ServiceHistory) => (
+  const detailModalContent = (service: TransformedService) => (
     <>
       <DetailModalSection title="ID" icon={<span className="text-xs">#</span>}>
         {service.id}
       </DetailModalSection>
 
       <DetailModalSection title="Cliente" icon={<User className="h-3 w-3" />}>
-        {service.cliente}
+        {service.cliente ||
+          service.originalService?.client?.name ||
+          "Não informado"}
       </DetailModalSection>
 
       <DetailModalSection
         title="Tipo de Serviço"
         icon={<Wrench className="h-3 w-3" />}
       >
-        {service.tipoServico}
+        {service.tipoServico ||
+          service.originalService?.category?.name ||
+          "Não especificado"}
       </DetailModalSection>
 
       <DetailModalSection
         title="Descrição"
         icon={<FileText className="h-3 w-3" />}
       >
-        {service.descricao}
+        {service.descricao || service.originalService?.description}
       </DetailModalSection>
 
       <DetailModalSection
         title="Data Realização"
         icon={<Calendar className="h-3 w-3" />}
       >
-        {formatDate(service.dataRealizacao)}
+        {service.dataRealizacao ||
+          formatDate(
+            service.originalService?.slotStart ||
+              service.originalService?.updatedAt
+          )}
       </DetailModalSection>
 
       <DetailModalSection
         title="Valor"
         icon={<DollarSign className="h-3 w-3" />}
       >
-        {formatCurrency(service.valor)}
+        {formatCurrency(
+          service.valor ||
+            (service.originalService?.finalPriceCents
+              ? service.originalService.finalPriceCents / 100
+              : 0)
+        )}
       </DetailModalSection>
 
       <DetailModalSection
         title="Status"
         icon={<BarChart3 className="h-3 w-3" />}
       >
-        {getStatusBadge(service.status)}
+        {getStatusBadge(service.statusFilter as string)}
       </DetailModalSection>
 
-      {service.avaliacao && (
+      {(service.avaliacao || service.originalService?.orderReview?.rating) && (
         <DetailModalSection
           title="Avaliação"
           icon={<Star className="h-3 w-3" />}
         >
           <div className="flex items-center gap-1">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-medium">{service.avaliacao}</span>
+            <span className="text-sm font-medium">
+              {service.avaliacao ||
+                service.originalService?.orderReview?.rating}
+            </span>
           </div>
         </DetailModalSection>
       )}
 
-      {service.comentario && (
+      {(service.comentario ||
+        service.originalService?.orderReview?.comment) && (
         <DetailModalSection
           title="Comentário"
           icon={<MessageCircle className="h-3 w-3" />}
         >
-          {service.comentario}
+          {service.comentario || service.originalService?.orderReview?.comment}
         </DetailModalSection>
       )}
     </>
   );
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <label className="text-sm font-medium">Filtrar por período:</label>
+          <div className="h-10 w-48 bg-muted rounded animate-pulse" />
+        </div>
+        <div className="space-y-2">
+          <div className="h-8 bg-muted rounded animate-pulse w-48" />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-16 bg-muted rounded animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        Erro ao carregar histórico de serviços. Tente novamente.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -354,7 +389,7 @@ export function ServicesHistoryTable() {
           { value: "cancelado", label: "Cancelado" },
         ]}
         detailModalContent={(row) =>
-          detailModalContent(row as unknown as ServiceHistory)
+          detailModalContent(row as unknown as TransformedService)
         }
       />
     </div>

@@ -2,41 +2,46 @@
 
 import { KpiCard } from "@/components/ui/kpi-card";
 import { Clock, CheckCircle, AlertCircle, XCircle } from "lucide-react";
-
-interface OrderStats {
-  total: number;
-  aguardando: number;
-  emAndamento: number;
-  concluidos: number;
-  cancelados: number;
-}
-
-interface OrderDeltas {
-  total: number;
-  aguardando: number;
-  emAndamento: number;
-  concluidos: number;
-  cancelados: number;
-}
+import { useOrderStats } from "@/hooks/use-orders";
 
 export function OrdersOverviewCards() {
-  // Dados mockados - em produção viria da API
-  const stats: OrderStats = {
-    total: 12,
-    aguardando: 3,
-    emAndamento: 2,
-    concluidos: 6,
-    cancelados: 1,
-  };
+  const { data, isLoading, error } = useOrderStats();
 
-  // Dados de variação percentual (vs mês anterior)
-  const deltas: OrderDeltas = {
-    total: 12.5, // +12.5% vs mês anterior
-    aguardando: -15.2, // -15.2% vs mês anterior
-    emAndamento: 8.3, // +8.3% vs mês anterior
-    concluidos: 18.7, // +18.7% vs mês anterior
-    cancelados: -22.1, // -22.1% vs mês anterior
-  };
+  if (isLoading) {
+    return (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className="p-6 rounded-lg border bg-background animate-pulse"
+          >
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="h-4 bg-muted rounded w-20" />
+                <div className="h-8 bg-muted rounded w-12" />
+              </div>
+              <div className="h-8 w-8 bg-muted rounded" />
+            </div>
+            <div className="mt-4 h-3 bg-muted rounded w-24" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        Erro ao carregar estatísticas dos pedidos.
+      </div>
+    );
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  const { stats, deltas } = data;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">

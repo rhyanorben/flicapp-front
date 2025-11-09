@@ -48,44 +48,16 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { User, Mail, Eye } from "lucide-react";
+import { useAdminDashboard } from "@/hooks/use-dashboard-data";
 
-interface AdminDashboardProps {
-  data: {
-    users: {
-      total: number;
-      admins: number;
-      providers: number;
-      clients: number;
-      byMonth: { [month: string]: number };
-    };
-    providerRequests: {
-      total: number;
-      pending: number;
-      approved: number;
-      rejected: number;
-      byMonth: { [month: string]: number };
-      recent: Array<{
-        id: string;
-        userId: string;
-        user: {
-          id: string;
-          name: string;
-          email: string;
-        };
-        status: string;
-        createdAt: string;
-      }>;
-    };
-  } | null;
-  isLoading?: boolean;
-}
+export function AdminDashboard() {
+  const { data, isLoading, error } = useAdminDashboard();
 
-export function AdminDashboard({ data, isLoading }: AdminDashboardProps) {
   if (isLoading) {
     return <AdminDashboardSkeleton />;
   }
 
-  if (!data) {
+  if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <p className="text-muted-foreground">
@@ -351,7 +323,7 @@ export function AdminDashboard({ data, isLoading }: AdminDashboardProps) {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-foreground">
-                    {data.users.total.toLocaleString()}
+                    {data.users.total?.toLocaleString()}
                   </div>
                   <div className="text-xs text-muted-foreground">Total</div>
                 </div>

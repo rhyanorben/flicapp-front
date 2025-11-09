@@ -3,15 +3,10 @@
 import { useState, useEffect } from "react";
 import { useUserRole } from "@/hooks/use-user-role";
 import { UserRole } from "@/types/user";
-import { useRoleDashboard } from "@/lib/queries/dashboard";
 import { RoleSelector } from "./_components/role-selector";
 import { AdminDashboard } from "./_components/admin-dashboard";
 import { ClientDashboard } from "./_components/client-dashboard";
 import { ProviderDashboard } from "./_components/provider-dashboard";
-
-// Tipo para aceitar todos os tipos de dados dos dashboards
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type DashboardData = any;
 
 const ROLE_DASHBOARD_TITLES = {
   CLIENTE: "Meu Dashboard",
@@ -43,10 +38,7 @@ export default function Page() {
     }
   }, [userRoles, selectedRole]);
 
-  // Buscar dados baseado na role selecionada
-  const { data, isLoading, error } = useRoleDashboard(
-    selectedRole || "CLIENTE"
-  );
+  // Os dados agora são buscados diretamente nos componentes
 
   // Loading state geral
   if (isLoadingRoles) {
@@ -104,31 +96,13 @@ export default function Page() {
       )}
 
       {/* Dashboard específico baseado na role */}
-      {selectedRole === "ADMINISTRADOR" && (
-        <AdminDashboard data={data as DashboardData} isLoading={isLoading} />
-      )}
+      {selectedRole === "ADMINISTRADOR" && <AdminDashboard />}
 
-      {selectedRole === "PRESTADOR" && (
-        <ProviderDashboard data={data as DashboardData} isLoading={isLoading} />
-      )}
+      {selectedRole === "PRESTADOR" && <ProviderDashboard />}
 
-      {selectedRole === "CLIENTE" && (
-        <ClientDashboard data={data as DashboardData} isLoading={isLoading} />
-      )}
+      {selectedRole === "CLIENTE" && <ClientDashboard />}
 
-      {/* Error state */}
-      {error && (
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <p className="text-muted-foreground mb-2">
-              Erro ao carregar dados do dashboard
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Tente recarregar a página
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Error states são tratados individualmente nos componentes */}
     </div>
   );
 }

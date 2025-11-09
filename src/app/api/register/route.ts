@@ -1,20 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@/app/generated/prisma";
 import { auth } from "@/lib/auth";
+import { z } from "zod";
 
 const prisma = new PrismaClient();
+
+const registerSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório"),
+  email: z.string().email("Email inválido"),
+  password: z
+    .string()
+    .min(6, "A senha deve ter pelo menos 6 caracteres")
+    .max(20, "A senha deve ter no máximo 20 caracteres"),
+});
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, password } = body;
-
-    if (!name || !email || !password) {
+    
+    // Validar dados com Zod
+    const validationResult = registerSchema.safeParse(body);
+    
+    if (!validationResult.success) {
+      const errorMessage = validationResult.error.errors[0]?.message || "Dados inválidos";
       return NextResponse.json(
-        { error: "Nome, email e senha são obrigatórios" },
+        { error: errorMessage },
         { status: 400 }
       );
     }
+
+    const { name, email, password } = validationResult.data;
 
     const existingUser = await prisma.user.findUnique({
       where: { email },

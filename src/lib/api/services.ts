@@ -9,6 +9,15 @@ export interface ServiceRequestData {
   contactPhone: string;
   contactEmail: string;
   additionalNotes: string;
+  addressData?: {
+    cep: string;
+    street: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+    number: string;
+    complement: string;
+  };
 }
 
 export interface ServiceRequestResponse {
@@ -25,18 +34,18 @@ export interface ServiceRequestResponse {
 export async function submitServiceRequest(
   data: ServiceRequestData
 ): Promise<ServiceRequestResponse> {
-  // TODO: Implement when API endpoint is created
-  // For now, simulate the API call
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  return {
-    message: "Solicitação enviada com sucesso!",
-    request: {
-      id: "temp-id",
-      serviceType: data.serviceType,
-      description: data.description,
-      status: "PENDING",
-      createdAt: new Date().toISOString(),
+  const response = await fetch("/api/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  };
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to submit service request");
+  }
+
+  return response.json();
 }

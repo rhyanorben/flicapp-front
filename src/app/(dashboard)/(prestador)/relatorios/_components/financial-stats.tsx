@@ -4,39 +4,11 @@ import { useState } from "react";
 import { KpiCard } from "@/components/ui/kpi-card";
 import { Button } from "@/components/ui/button";
 import { DollarSign, TrendingUp, Target } from "lucide-react";
+import { useFinancialData } from "@/hooks/use-reports";
 
 export function FinancialStats() {
   const [period, setPeriod] = useState("mes");
-
-  // Dados mockados - em produção viria da API
-  const financialData = {
-    mes: {
-      totalGanhos: 2840.0,
-      ganhosAnterior: 2650.0,
-      servicosRealizados: 18,
-      servicosAnterior: 15,
-      ticketMedio: 157.78,
-      ticketAnterior: 176.67,
-    },
-    trimestre: {
-      totalGanhos: 8520.0,
-      ganhosAnterior: 7950.0,
-      servicosRealizados: 54,
-      servicosAnterior: 48,
-      ticketMedio: 157.78,
-      ticketAnterior: 165.63,
-    },
-    ano: {
-      totalGanhos: 34160.0,
-      ganhosAnterior: 31800.0,
-      servicosRealizados: 216,
-      servicosAnterior: 192,
-      ticketMedio: 158.15,
-      ticketAnterior: 165.63,
-    },
-  };
-
-  const currentData = financialData[period as keyof typeof financialData];
+  const { data: financialData, isLoading, error } = useFinancialData(period);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -45,34 +17,76 @@ export function FinancialStats() {
     }).format(value);
   };
 
-  const getPercentageChange = (current: number, previous: number) => {
-    const change = ((current - previous) / previous) * 100;
-    // Limitar a 2 casas decimais para valores mais legíveis
-    return Math.round(change * 100) / 100;
-  };
-
   const getTrend = (change: number): "up" | "down" | "flat" => {
     if (change > 0) return "up";
     if (change < 0) return "down";
     return "flat";
   };
 
-  const totalGanhosChange = getPercentageChange(
-    currentData.totalGanhos,
-    currentData.ganhosAnterior
-  );
-  const servicosChange = getPercentageChange(
-    currentData.servicosRealizados,
-    currentData.servicosAnterior
-  );
-  const ticketChange = getPercentageChange(
-    currentData.ticketMedio,
-    currentData.ticketAnterior
-  );
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Estatísticas Financeiras</h2>
+          <div className="flex gap-2">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-8 w-24 bg-muted rounded animate-pulse"
+              />
+            ))}
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="p-6 rounded-lg border bg-background animate-pulse"
+            >
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <div className="h-4 bg-muted rounded w-20" />
+                  <div className="h-8 bg-muted rounded w-16" />
+                </div>
+                <div className="h-8 w-8 bg-muted rounded" />
+              </div>
+              <div className="mt-4 h-3 bg-muted rounded w-24" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-  const totalGanhosTrend = getTrend(totalGanhosChange);
-  const servicosTrend = getTrend(servicosChange);
-  const ticketTrend = getTrend(ticketChange);
+  if (error) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Estatísticas Financeiras</h2>
+        </div>
+        <div className="text-center py-8 text-muted-foreground">
+          Erro ao carregar dados financeiros.
+        </div>
+      </div>
+    );
+  }
+
+  if (!financialData) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Estatísticas Financeiras</h2>
+        </div>
+        <div className="text-center py-8 text-muted-foreground">
+          Nenhum dado financeiro disponível.
+        </div>
+      </div>
+    );
+  }
+
+  const totalGanhosTrend = getTrend(financialData.totalGanhosChange);
+  const servicosTrend = getTrend(financialData.servicosChange);
+  const ticketTrend = getTrend(financialData.ticketChange);
 
   return (
     <div className="space-y-4">
@@ -106,8 +120,8 @@ export function FinancialStats() {
       <div className="grid gap-4 md:grid-cols-3">
         <KpiCard
           label="Total de Ganhos"
-          value={formatCurrency(currentData.totalGanhos)}
-          delta={totalGanhosChange}
+          value={formatCurrency(financialData.totalGanhos)}
+          delta={financialData.totalGanhosChange}
           trend={totalGanhosTrend}
           tone="success"
           icon={
@@ -117,8 +131,8 @@ export function FinancialStats() {
         />
         <KpiCard
           label="Serviços Realizados"
-          value={currentData.servicosRealizados}
-          delta={servicosChange}
+          value={financialData.servicosRealizados}
+          delta={financialData.servicosChange}
           trend={servicosTrend}
           tone="primary"
           icon={<Target className="h-4 w-4 text-primary" />}
@@ -126,8 +140,8 @@ export function FinancialStats() {
         />
         <KpiCard
           label="Ticket Médio"
-          value={formatCurrency(currentData.ticketMedio)}
-          delta={ticketChange}
+          value={formatCurrency(financialData.ticketMedio)}
+          delta={financialData.ticketChange}
           trend={ticketTrend}
           tone="primary"
           icon={<TrendingUp className="h-4 w-4 text-primary" />}

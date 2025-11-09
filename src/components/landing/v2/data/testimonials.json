@@ -1,0 +1,29 @@
+[
+  {
+    "id": "cliente-1",
+    "name": "Maria Silva",
+    "role": "Cliente",
+    "location": "São Paulo, SP",
+    "rating": 5,
+    "quote": "Precisava de um encanador urgente e em 30 minutos já tinha 3 propostas. Contratei, o serviço foi perfeito e paguei tudo pelo app. Muito prático!",
+    "avatar": "/landing-v2/images/testimonials/cliente-1.jpg"
+  },
+  {
+    "id": "prestador-1",
+    "name": "João Santos",
+    "role": "Prestador de Serviços",
+    "location": "Rio de Janeiro, RJ",
+    "rating": 5,
+    "quote": "Desde que comecei na FlicAPP, minha agenda está sempre cheia. Os clientes são sérios e o pagamento é garantido. Recomendo para qualquer profissional.",
+    "avatar": "/landing-v2/images/testimonials/prestador-1.jpg"
+  },
+  {
+    "id": "cliente-2",
+    "name": "Ana Costa",
+    "role": "Cliente",
+    "location": "Belo Horizonte, MG",
+    "rating": 5,
+    "quote": "A melhor parte é poder conversar pelo WhatsApp e ver as avaliações antes de contratar. Já usei várias vezes e sempre deu certo.",
+    "avatar": "/landing-v2/images/testimonials/cliente-2.jpg"
+  }
+]

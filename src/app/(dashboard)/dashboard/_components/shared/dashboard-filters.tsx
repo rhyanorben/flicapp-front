@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   DropdownMenu,
@@ -19,16 +18,17 @@ import { Filter, Calendar, ChevronDown } from "lucide-react";
 interface DashboardFiltersProps {
   onPeriodChange?: (period: string) => void;
   onStatusChange?: (status: string) => void;
+  selectedPeriod?: string;
+  selectedStatus?: string;
 }
 
 export function DashboardFilters({
   onPeriodChange,
   onStatusChange,
+  selectedPeriod = "30d",
+  selectedStatus = "all",
 }: DashboardFiltersProps) {
-  const [selectedPeriod, setSelectedPeriod] = useState("30d");
-
   const handlePeriodChange = (period: string) => {
-    setSelectedPeriod(period);
     onPeriodChange?.(period);
   };
 
@@ -51,7 +51,13 @@ export function DashboardFilters({
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="h-9">
               <Filter className="h-4 w-4 mr-2" />
-              Todos os Status
+              {selectedStatus === "all"
+                ? "Todos os Status"
+                : selectedStatus === "pending"
+                ? "Pendentes"
+                : selectedStatus === "approved"
+                ? "Aprovadas"
+                : "Rejeitadas"}
               <ChevronDown className="h-4 w-4 ml-2" />
             </Button>
           </DropdownMenuTrigger>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -18,11 +19,51 @@ import { MetricsProgress } from "./_components/metrics-progress";
 import { RecentRequestsTable } from "./_components/recent-requests-table";
 import { ActivityFeed } from "./_components/activity-feed";
 import { Separator } from "@/components/ui/separator";
-import { useStatistics } from "@/lib/queries/admin";
+import { useAdminStatistics } from "@/hooks/use-admin-statistics";
 
 function RelatoriosCompletosData() {
   const router = useRouter();
-  const { data: statistics, isLoading, error } = useStatistics();
+
+  // Filter states
+  const [selectedPeriod, setSelectedPeriod] = useState("30d");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined;
+    to: Date | undefined;
+  }>({
+    from: undefined,
+    to: undefined,
+  });
+
+  // Build filters object
+  const filters = {
+    period: selectedPeriod,
+    status: selectedStatus,
+    dateRange: dateRange.from && dateRange.to ? dateRange : undefined,
+  };
+
+  // Use the new hook with filters
+  const { data: statistics, isLoading, error } = useAdminStatistics(filters);
+
+  // Filter handlers
+  const handlePeriodChange = (period: string) => {
+    setSelectedPeriod(period);
+    // Reset date range when changing period
+    if (period !== "custom") {
+      setDateRange({ from: undefined, to: undefined });
+    }
+  };
+
+  const handleStatusChange = (status: string) => {
+    setSelectedStatus(status);
+  };
+
+  const handleDateRangeChange = (newDateRange: {
+    from: Date | undefined;
+    to: Date | undefined;
+  }) => {
+    setDateRange(newDateRange);
+  };
 
   // Handle 403 redirect
   if (error?.message === "Acesso negado") {
@@ -44,7 +85,11 @@ function RelatoriosCompletosData() {
   return (
     <div className="space-y-6">
       {/* Filter Bar */}
-      <DashboardFilters />
+      <DashboardFilters
+        onPeriodChange={handlePeriodChange}
+        onStatusChange={handleStatusChange}
+        onDateRangeChange={handleDateRangeChange}
+      />
 
       {/* Row 1: KPI Cards with Sparklines */}
       <OverviewCards data={statistics} />
@@ -54,7 +99,10 @@ function RelatoriosCompletosData() {
       {/* Row 2: Main Charts */}
       <div className="grid gap-4 xl:grid-cols-12">
         <UsersTrendChart data={statistics.users.byMonth} />
-        <RequestsStatusChart data={statistics.providerRequests.byMonth} />
+        <RequestsStatusChart
+          data={statistics.providerRequests.byMonth}
+          statusData={statistics.providerRequests.byStatusAndMonth || {}}
+        />
       </div>
 
       <Separator />
@@ -71,7 +119,7 @@ function RelatoriosCompletosData() {
       {/* Row 4: Details and Activity */}
       <div className="grid gap-4 xl:grid-cols-12">
         <RecentRequestsTable requests={statistics.providerRequests.recent} />
-        <ActivityFeed />
+        <ActivityFeed activities={statistics.activities || []} />
       </div>
     </div>
   );

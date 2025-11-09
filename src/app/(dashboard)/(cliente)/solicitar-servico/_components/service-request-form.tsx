@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, User, MessageSquare, AlertCircle } from "lucide-react";
 import { useSubmitServiceRequest } from "@/lib/queries/services";
-import { authClient } from "@/lib/auth-client";
+import { useUserData } from "@/hooks/use-user-data";
 import { ServiceTypeCards } from "./service-type-cards";
 import { UrgencyBadges } from "./urgency-badges";
 import { SuccessDialog } from "./success-dialog";
@@ -49,7 +49,7 @@ interface AddressData {
 }
 
 export function ServiceRequestForm() {
-  const { data: session } = authClient.useSession();
+  const { userData } = useUserData();
   const submitServiceRequest = useSubmitServiceRequest();
 
   const [formData, setFormData] = useState<ServiceRequestData>({
@@ -91,16 +91,39 @@ export function ServiceRequestForm() {
   const [isLoadingCEP, setIsLoadingCEP] = useState(false);
   const [showComplement, setShowComplement] = useState(false);
 
+  // Helper function to format phone from E164 format
+  const formatPhoneFromE164 = (phoneE164: string | null): string => {
+    if (!phoneE164) return "";
+
+    // Remove country code (+55) from phoneE164
+    let phoneWithoutCountryCode = phoneE164.replace(/^\+55/, "");
+
+    // Add 9 for mobile numbers if missing (Brazil mobile format)
+    // Check if it's a 10-digit number (missing the 9 for mobile)
+    if (phoneWithoutCountryCode.length === 10) {
+      const ddd = phoneWithoutCountryCode.substring(0, 2);
+      const rest = phoneWithoutCountryCode.substring(2);
+
+      // If DDD is valid (11-99) and the rest starts with 4, 5, 6, 7, 8, or 9 (mobile prefixes), add 9
+      if (parseInt(ddd) >= 11 && parseInt(ddd) <= 99 && /^[4-9]/.test(rest)) {
+        phoneWithoutCountryCode = ddd + "9" + rest;
+      }
+    }
+
+    return formatPhoneNumber(phoneWithoutCountryCode);
+  };
+
   // Pre-fill user data
   useEffect(() => {
-    if (session?.user) {
+    if (userData) {
       setFormData((prev) => ({
         ...prev,
-        contactName: session.user.name || "",
-        contactEmail: session.user.email || "",
+        contactName: userData.name || "",
+        contactEmail: userData.email || "",
+        contactPhone: formatPhoneFromE164(userData.phoneE164),
       }));
     }
-  }, [session]);
+  }, [userData]);
 
   // Get today's date for min date
   const today = new Date().toISOString().split("T")[0];
@@ -199,6 +222,7 @@ export function ServiceRequestForm() {
     const submitData = {
       ...formData,
       location: finalLocation,
+      addressData: addressData.cep ? addressData : undefined,
     };
 
     submitServiceRequest.mutate(submitData, {
@@ -227,9 +251,9 @@ export function ServiceRequestForm() {
       preferredDate: "",
       preferredTime: "",
       urgency: "normal",
-      contactName: session?.user?.name || "",
-      contactPhone: "",
-      contactEmail: session?.user?.email || "",
+      contactName: userData?.name || "",
+      contactPhone: formatPhoneFromE164(userData?.phoneE164 || null),
+      contactEmail: userData?.email || "",
       additionalNotes: "",
     });
     setAddressData({
@@ -344,6 +368,56 @@ export function ServiceRequestForm() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            {/* Existing addresses selector */}
+            {userData?.addresses && userData.addresses.length > 0 && (
+              <div className="space-y-3">
+                <Label className="text-base font-medium">
+                  Endereços Salvos
+                </Label>
+                <div className="space-y-2">
+                  {userData.addresses.map((address) => (
+                    <button
+                      key={address.id}
+                      type="button"
+                      onClick={() => {
+                        setAddressData({
+                          cep: address.cep || "",
+                          street: address.street || "",
+                          neighborhood: address.neighborhood || "",
+                          city: address.city || "",
+                          state: address.state || "",
+                          number: address.number || "",
+                          complement: address.complement || "",
+                        });
+                        const fullAddress = `${address.street}, ${address.number}, ${address.neighborhood}, ${address.city} - ${address.state}`;
+                        handleInputChange("location", fullAddress);
+                      }}
+                      className="w-full p-3 text-left border rounded-lg hover:bg-accent/50 transition-colors"
+                    >
+                      <div className="font-medium">
+                        {address.label || "Endereço sem nome"}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {address.street}, {address.number}
+                        {address.complement && `, ${address.complement}`}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {address.neighborhood}, {address.city} - {address.state}
+                      </div>
+                      {address.cep && (
+                        <div className="text-sm text-muted-foreground">
+                          CEP: {address.cep}
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Ou preencha um novo endereço abaixo:
+                </div>
+              </div>
+            )}
+
             <div className="space-y-4">
               <div className="space-y-3">
                 <Label htmlFor="cep" className="text-base font-medium">

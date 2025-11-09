@@ -13,5 +13,10 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false,
   },
+  advanced: {
+    database: {
+      generateId: false, // Desabilita geração automática de IDs - deixa o banco gerar UUIDs
+    },
+  },
   plugins: [],
 });

@@ -36,55 +36,20 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Calendar, User } from "lucide-react";
+import { useClientDashboard } from "@/hooks/use-dashboard-data";
 
-interface Order {
-  id: string;
-  service: string;
-  provider: string;
-  status: "IN_PROGRESS" | "COMPLETED" | "PENDING";
-  createdAt: string;
-}
+// interface ClientDashboardProps {
+//   // Props are now handled by the hook
+// }
 
-interface Provider {
-  name: string;
-  rating: number;
-  services: number;
-}
+export function ClientDashboard() {
+  const { data, isLoading, error } = useClientDashboard();
 
-interface Schedule {
-  id: string;
-  service: string;
-  provider: string;
-  time: string;
-}
-
-interface ClientDashboardData {
-  services: {
-    total: number;
-    inProgress: number;
-    completed: number;
-    favorites: number;
-  };
-  monthlyRequests: Record<string, number>;
-  categoriesDistribution: Record<string, number>;
-  recentOrders: Order[];
-  favoriteProviders: Provider[];
-  upcomingSchedules: Schedule[];
-  pendingReviews: number;
-  tips: string[];
-}
-
-interface ClientDashboardProps {
-  data: ClientDashboardData;
-  isLoading?: boolean;
-}
-
-export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
   if (isLoading) {
     return <ClientDashboardSkeleton />;
   }
 
-  if (!data) {
+  if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <p className="text-muted-foreground">
@@ -280,7 +245,7 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {data.recentOrders.slice(0, 3).map((order: Order) => (
+              {data.recentOrders.slice(0, 3).map((order) => (
                 <div
                   key={order.id}
                   className="flex items-center gap-3 p-3 rounded-lg border"
@@ -321,24 +286,22 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {data.favoriteProviders.map(
-                (provider: Provider, index: number) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
-                      <User className="h-4 w-4 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-sm">{provider.name}</div>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs text-muted-foreground">
-                          {provider.rating} • {provider.services} serviços
-                        </span>
-                      </div>
+              {data.favoriteProviders.map((provider, index: number) => (
+                <div key={index} className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
+                    <User className="h-4 w-4 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-medium text-sm">{provider.name}</div>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                      <span className="text-xs text-muted-foreground">
+                        {provider.rating} • {provider.services} serviços
+                      </span>
                     </div>
                   </div>
-                )
-              )}
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -351,7 +314,7 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {data.upcomingSchedules.map((schedule: Schedule) => (
+              {data.upcomingSchedules.map((schedule) => (
                 <div
                   key={schedule.id}
                   className="flex items-center gap-3 p-3 rounded-lg border"
@@ -399,7 +362,7 @@ export function ClientDashboard({ data, isLoading }: ClientDashboardProps) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.recentOrders.map((order: Order) => (
+                  {data.recentOrders.map((order) => (
                     <TableRow key={order.id}>
                       <TableCell className="font-medium">
                         {order.service}

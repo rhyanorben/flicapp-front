@@ -1,0 +1,115 @@
+{
+  "hero": {
+    "h1": "Resolva problemas do dia a dia com apenas um clique.",
+    "subheadline": "Conectamos você aos melhores prestadores de serviço da sua região de forma rápida, segura e com a ajuda de Inteligência Artificial.",
+    "ctaPrimary": "Começar agora",
+    "ctaSecondary": "Como funciona"
+  },
+  "valueProps": [
+    {
+      "title": "Matching inteligente",
+      "description": "Nossa IA prioriza prestadores ideais pelo seu contexto: localização, avaliações e histórico.",
+      "icon": "matching"
+    },
+    {
+      "title": "Chat + WhatsApp",
+      "description": "Converse no app ou pelo WhatsApp. Respostas rápidas, alinhamento claro.",
+      "icon": "chat"
+    },
+    {
+      "title": "Pagamento seguro",
+      "description": "Pague com proteção e acompanhe tudo. O valor só é liberado no final.",
+      "icon": "payment"
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "title": "Faça seu pedido",
+      "description": "Descreva o serviço, prazo e local. Quanto mais detalhes, melhor o matching.",
+      "mockup": "/landing-v2/images/mockups/step-1-request.png"
+    },
+    {
+      "number": 2,
+      "title": "Receba propostas",
+      "description": "Prestadores verificados enviam preço, prazo e avaliações. Compare e escolha.",
+      "mockup": "/landing-v2/images/mockups/step-2-proposals.png"
+    },
+    {
+      "number": 3,
+      "title": "Converse e combine",
+      "description": "Alinhe tudo pelo chat integrado ou WhatsApp antes de começar.",
+      "mockup": "/landing-v2/images/mockups/step-3-chat.png"
+    },
+    {
+      "number": 4,
+      "title": "Pague com segurança",
+      "description": "Pagamento protegido até a conclusão. Libere quando estiver satisfeito.",
+      "mockup": "/landing-v2/images/mockups/step-4-payment.png"
+    }
+  ],
+  "trust": {
+    "title": "Confiança e segurança",
+    "subtitle": "Verificação, avaliações reais e pagamento protegido em um só lugar.",
+    "averageRating": 4.8,
+    "totalOrders": 5000,
+    "features": [
+      {
+        "title": "Verificação de prestadores",
+        "description": "Identidade e documentos checados para mais segurança na contratação."
+      },
+      {
+        "title": "Avaliações reais",
+        "description": "Histórico transparente de notas e comentários de clientes."
+      },
+      {
+        "title": "Garantia de pagamento",
+        "description": "Seu dinheiro fica em custódia e só é liberado após a entrega."
+      },
+      {
+        "title": "Política clara",
+        "description": "Regras objetivas de cancelamento, reembolso e suporte."
+      }
+    ]
+  },
+  "pricing": {
+    "cliente": {
+      "title": "Para Clientes",
+      "price": "Grátis",
+      "period": "para sempre",
+      "description": "Sem taxas nem mensalidades. Você só paga pelo serviço contratado.",
+      "features": [
+        "Acesso completo à plataforma",
+        "Matching inteligente gratuito",
+        "Chat e suporte inclusos",
+        "Pagamento seguro integrado",
+        "Avaliações e histórico"
+      ]
+    },
+    "prestador": {
+      "title": "Para Prestadores",
+      "price": "Grátis",
+      "period": "atualmente",
+      "description": "Cadastre-se e comece a receber pedidos hoje, sem custos iniciais.",
+      "futureNote": "Em breve: taxa ~10% apenas sobre pedidos concluídos.",
+      "features": [
+        "Perfil profissional gratuito",
+        "Receba pedidos na sua região",
+        "Chat e WhatsApp integrados",
+        "Gestão de agenda e serviços",
+        "Relatórios e análises"
+      ]
+    }
+  },
+  "ctaFinal": {
+    "headline": "Pronto para resolver hoje?",
+    "subheadline": "Junte-se a quem já encontra os melhores prestadores pela FlicAPP.",
+    "ctaPrimary": "Criar conta grátis",
+    "ctaSecondary": "Falar no WhatsApp"
+  },
+  "metrics": {
+    "totalOrders": 5000,
+    "averageRating": 4.8,
+    "activeProviders": 850
+  }
+}

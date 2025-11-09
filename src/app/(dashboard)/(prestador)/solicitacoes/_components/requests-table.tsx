@@ -22,99 +22,98 @@ import {
 } from "@/components/ui/generic-table";
 import { DetailModalSection } from "@/components/ui/detail-modal";
 import { formatCurrency, formatDate } from "@/lib/utils/table-utils";
+import { useProviderRequests } from "@/hooks/use-provider-requests";
 
-interface Request {
-  id: string;
-  cliente: string;
-  tipoServico: string;
-  descricao: string;
-  dataSolicitacao: string;
-  dataPreferencial: string;
-  localizacao: string;
-  valor: number;
-  status: "pendente" | "aceita" | "recusada" | "expirada";
-  prazoResposta: string;
-}
+// Removed unused interface
+
+// Map database status to display status
+const mapStatus = (
+  status: string,
+  providerId: string | null,
+  currentUserId: string
+): string => {
+  if (providerId === currentUserId) {
+    switch (status) {
+      case "accepted":
+      case "in_progress":
+      case "completed":
+        return "aceita";
+      case "cancelled":
+        return "recusada";
+      default:
+        return "pendente";
+    }
+  } else {
+    // Orders available for matching
+    if (status === "matching") {
+      return "pendente";
+    }
+    return "expirada";
+  }
+};
+
+// Map database status to filter value
+const mapStatusToFilter = (
+  status: string,
+  providerId: string | null,
+  currentUserId: string
+): string => {
+  if (providerId === currentUserId) {
+    switch (status) {
+      case "accepted":
+      case "in_progress":
+      case "completed":
+        return "aceita";
+      case "cancelled":
+        return "recusada";
+      default:
+        return "pendente";
+    }
+  } else {
+    if (status === "matching") {
+      return "pendente";
+    }
+    return "expirada";
+  }
+};
 
 export function RequestsTable() {
-  // Dados mockados - em produção viria da API
-  const requests: Request[] = useMemo(
-    () => [
-      {
-        id: "REQ-001",
-        cliente: "Ana Silva",
-        tipoServico: "Limpeza",
-        descricao: "Limpeza residencial completa",
-        dataSolicitacao: "2024-01-15",
-        dataPreferencial: "2024-01-20",
-        localizacao: "São Paulo, SP",
-        valor: 150.0,
-        status: "pendente",
-        prazoResposta: "2024-01-16",
-      },
-      {
-        id: "REQ-002",
-        cliente: "João Santos",
-        tipoServico: "Manutenção",
-        descricao: "Reparo no ar condicionado",
-        dataSolicitacao: "2024-01-14",
-        dataPreferencial: "2024-01-18",
-        localizacao: "São Paulo, SP",
-        valor: 200.0,
-        status: "pendente",
-        prazoResposta: "2024-01-15",
-      },
-      {
-        id: "REQ-003",
-        cliente: "Maria Costa",
-        tipoServico: "Instalação",
-        descricao: "Instalação de ventilador",
-        dataSolicitacao: "2024-01-13",
-        dataPreferencial: "2024-01-17",
-        localizacao: "São Paulo, SP",
-        valor: 120.0,
-        status: "aceita",
-        prazoResposta: "2024-01-14",
-      },
-      {
-        id: "REQ-004",
-        cliente: "Pedro Oliveira",
-        tipoServico: "Consultoria",
-        descricao: "Consultoria em organização",
-        dataSolicitacao: "2024-01-12",
-        dataPreferencial: "2024-01-16",
-        localizacao: "São Paulo, SP",
-        valor: 80.0,
-        status: "aceita",
-        prazoResposta: "2024-01-13",
-      },
-      {
-        id: "REQ-005",
-        cliente: "Carla Mendes",
-        tipoServico: "Reparo",
-        descricao: "Reparo de eletrodoméstico",
-        dataSolicitacao: "2024-01-11",
-        dataPreferencial: "2024-01-15",
-        localizacao: "São Paulo, SP",
-        valor: 90.0,
-        status: "recusada",
-        prazoResposta: "2024-01-12",
-      },
-      {
-        id: "REQ-006",
-        cliente: "Roberto Lima",
-        tipoServico: "Limpeza",
-        descricao: "Limpeza pós-obra",
-        dataSolicitacao: "2024-01-10",
-        dataPreferencial: "2024-01-14",
-        localizacao: "São Paulo, SP",
-        valor: 300.0,
-        status: "expirada",
-        prazoResposta: "2024-01-11",
-      },
-    ],
-    []
-  );
+  const { data: providerRequests, isLoading, error } = useProviderRequests();
+
+  // Transform requests for display
+  const transformedRequests = useMemo(() => {
+    if (!providerRequests) return [];
+
+    return providerRequests.map((request, index) => ({
+      id: request.id || `request-${index}-${Date.now()}`, // Generate unique ID if missing
+      cliente: request.client?.name || "Não informado",
+      tipoServico: request.category?.name || "Não especificado",
+      descricao: request.description,
+      status: mapStatus(request.status, request.providerId, "current-user-id"), // This should be the actual user ID
+      statusFilter: mapStatusToFilter(
+        request.status,
+        request.providerId,
+        "current-user-id"
+      ),
+      dataSolicitacao: formatDate(request.createdAt),
+      dataPreferencial: formatDate(request.slotStart) || "Não agendado",
+      localizacao: request.address
+        ? `${request.address.street}, ${request.address.number}, ${request.address.neighborhood}, ${request.address.city} - ${request.address.state}`
+        : "Não informado",
+      valor: request.finalPriceCents
+        ? request.finalPriceCents / 100
+        : request.depositCents / 100,
+      prazoResposta: request.createdAt
+        ? formatDate(
+            new Date(
+              new Date(request.createdAt).getTime() + 24 * 60 * 60 * 1000
+            )
+          )
+        : "Não informado", // 24h after creation
+      // Keep original request for actions
+      originalRequest: request,
+    }));
+  }, [providerRequests]);
 
   // Column definitions
   const columns: TableColumn[] = [
@@ -179,7 +178,10 @@ export function RequestsTable() {
       key: "status",
       label: "Status",
       sortable: true,
-      render: (value) => getStatusBadge(value as Request["status"]),
+      render: (value) =>
+        getStatusBadge(
+          value as "pendente" | "aceita" | "recusada" | "expirada"
+        ),
     },
   ];
 
@@ -191,7 +193,7 @@ export function RequestsTable() {
       icon: ({ className }) => <CheckCircle className={className} />,
       onClick: (request) => handleAcceptRequest(request.id as string),
       variant: "success",
-      show: (request) => Boolean(request.status === "pendente"),
+      show: (request) => Boolean(request.statusFilter === "pendente"),
     },
     {
       id: "reject",
@@ -199,14 +201,14 @@ export function RequestsTable() {
       icon: ({ className }) => <XCircle className={className} />,
       onClick: (request) => handleRejectRequest(request.id as string),
       variant: "destructive",
-      show: (request) => Boolean(request.status === "pendente"),
+      show: (request) => Boolean(request.statusFilter === "pendente"),
     },
     {
       id: "contact",
       label: "Contatar Cliente",
       icon: ({ className }) => <MessageCircle className={className} />,
       onClick: (request) => handleContactClient(request.id as string),
-      show: (request) => Boolean(request.status === "aceita"),
+      show: (request) => Boolean(request.statusFilter === "aceita"),
     },
     {
       id: "export-selected",
@@ -233,7 +235,9 @@ export function RequestsTable() {
     },
   ];
 
-  const getStatusBadge = (status: Request["status"]) => {
+  const getStatusBadge = (
+    status: "pendente" | "aceita" | "recusada" | "expirada"
+  ) => {
     const statusConfig = {
       pendente: { label: "Pendente", variant: "secondary" as const },
       aceita: { label: "Aceita", variant: "default" as const },
@@ -261,79 +265,110 @@ export function RequestsTable() {
   };
 
   // Detail modal content
-  const detailModalContent = (request: Request) => (
+  const detailModalContent = (request: Record<string, unknown>) => (
     <>
       <DetailModalSection title="ID" icon={<span className="text-xs">#</span>}>
-        {request.id}
+        {String(request.id)}
       </DetailModalSection>
 
       <DetailModalSection title="Cliente" icon={<User className="h-3 w-3" />}>
-        {request.cliente}
+        {String(request.cliente)}
       </DetailModalSection>
 
       <DetailModalSection
         title="Tipo de Serviço"
         icon={<Wrench className="h-3 w-3" />}
       >
-        {request.tipoServico}
+        {String(request.tipoServico)}
       </DetailModalSection>
 
       <DetailModalSection
         title="Descrição"
         icon={<FileText className="h-3 w-3" />}
       >
-        {request.descricao}
+        {String(request.descricao)}
       </DetailModalSection>
 
       <DetailModalSection
         title="Data Solicitação"
         icon={<Calendar className="h-3 w-3" />}
       >
-        {formatDate(request.dataSolicitacao)}
+        {formatDate(String(request.dataSolicitacao))}
       </DetailModalSection>
 
       <DetailModalSection
         title="Data Preferencial"
         icon={<Calendar className="h-3 w-3" />}
       >
-        {formatDate(request.dataPreferencial)}
+        {formatDate(String(request.dataPreferencial))}
       </DetailModalSection>
 
       <DetailModalSection
         title="Localização"
         icon={<MapPin className="h-3 w-3" />}
       >
-        {request.localizacao}
+        {String(request.localizacao)}
       </DetailModalSection>
 
       <DetailModalSection
         title="Valor"
         icon={<DollarSign className="h-3 w-3" />}
       >
-        {formatCurrency(request.valor)}
+        {formatCurrency(Number(request.valor))}
       </DetailModalSection>
 
       <DetailModalSection
         title="Status"
         icon={<BarChart3 className="h-3 w-3" />}
       >
-        {getStatusBadge(request.status)}
+        {getStatusBadge(
+          request.status as "pendente" | "aceita" | "recusada" | "expirada"
+        )}
       </DetailModalSection>
 
       <DetailModalSection
         title="Prazo Resposta"
         icon={<Calendar className="h-3 w-3" />}
       >
-        {formatDate(request.prazoResposta)}
+        {formatDate(String(request.prazoResposta))}
       </DetailModalSection>
     </>
   );
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="h-8 bg-muted rounded animate-pulse w-48" />
+        <div className="border rounded-md">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center p-4 border-b last:border-b-0 animate-pulse"
+            >
+              <div className="h-4 bg-muted rounded w-1/4 mr-4" />
+              <div className="h-4 bg-muted rounded w-1/3 mr-4" />
+              <div className="h-4 bg-muted rounded w-1/6 mr-4" />
+              <div className="h-4 bg-muted rounded w-1/6" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        Erro ao carregar solicitações. Tente novamente.
+      </div>
+    );
+  }
 
   return (
     <GenericTable
       title="Todas as Solicitações"
       icon={<MessageSquare className="h-5 w-5" />}
-      data={requests as unknown as Record<string, unknown>[]}
+      data={transformedRequests as unknown as Record<string, unknown>[]}
       columns={columns}
       actions={customActions}
       searchPlaceholder="Buscar por ID, cliente, descrição ou tipo de serviço..."
@@ -352,9 +387,7 @@ export function RequestsTable() {
         { value: "recusada", label: "Recusada" },
         { value: "expirada", label: "Expirada" },
       ]}
-      detailModalContent={(row) =>
-        detailModalContent(row as unknown as Request)
-      }
+      detailModalContent={(row) => detailModalContent(row)}
     />
   );
 }

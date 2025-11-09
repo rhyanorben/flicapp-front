@@ -1,23 +1,13 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  clientMockData,
-  providerMockData,
-} from "@/app/(dashboard)/dashboard/_data/mock-data";
+import { providerMockData } from "@/app/(dashboard)/dashboard/_data/mock-data";
 import { useStatistics } from "./admin";
+import { useClientDashboard as useClientDashboardReal } from "@/hooks/use-client-dashboard";
 
-// Client Dashboard Query
+// Client Dashboard Query - now uses real data
 export function useClientDashboard() {
-  return useQuery({
-    queryKey: ["client-dashboard"],
-    queryFn: async () => {
-      // Simular delay de API
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      return clientMockData;
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
+  return useClientDashboardReal();
 }
 
 // Provider Dashboard Query

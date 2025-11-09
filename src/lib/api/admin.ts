@@ -16,6 +16,13 @@ export interface StatisticsData {
     byMonth: {
       [month: string]: number;
     };
+    byStatusAndMonth: {
+      [month: string]: {
+        pending: number;
+        approved: number;
+        rejected: number;
+      };
+    };
     recent: Array<{
       id: string;
       userId: string;
@@ -28,6 +35,19 @@ export interface StatisticsData {
       createdAt: string;
     }>;
   };
+  activities: Array<{
+    id: string;
+    type:
+      | "user_registered"
+      | "request_approved"
+      | "request_rejected"
+      | "request_pending"
+      | "system_alert";
+    title: string;
+    description: string;
+    timestamp: string;
+    user?: string;
+  }>;
 }
 
 export async function getStatistics(): Promise<StatisticsData> {
