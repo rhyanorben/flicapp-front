@@ -29,10 +29,16 @@ const registerSchema = z
     email: z.email({ message: "Email inválido" }),
     password: z
       .string()
-      .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
-    confirmPassword: z.string().min(6, {
-      message: "A confirmação de senha deve ter pelo menos 6 caracteres",
-    }),
+      .min(6, { message: "A senha deve ter pelo menos 6 caracteres" })
+      .max(20, { message: "A senha deve ter no máximo 20 caracteres" }),
+    confirmPassword: z
+      .string()
+      .min(6, {
+        message: "A confirmação de senha deve ter pelo menos 6 caracteres",
+      })
+      .max(20, {
+        message: "A confirmação de senha deve ter no máximo 20 caracteres",
+      }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não coincidem",
@@ -297,6 +303,7 @@ export function RegisterForm() {
                         placeholder="••••••••"
                         type={showPassword ? "text" : "password"}
                         {...field}
+                        maxLength={20}
                         disabled={registerMutation.isPending}
                         className={hasError ? "border-destructive" : ""}
                       />
@@ -363,6 +370,7 @@ export function RegisterForm() {
                         placeholder="••••••••"
                         type={showConfirmPassword ? "text" : "password"}
                         {...field}
+                        maxLength={20}
                         disabled={registerMutation.isPending}
                         className={hasError ? "border-destructive" : ""}
                       />

@@ -92,7 +92,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="#"
+                  href="/termos"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   Termos de uso
@@ -100,7 +100,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/privacidade"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   Política de privacidade

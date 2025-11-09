@@ -20,6 +20,7 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<"login" | "register">(defaultTab);
   const shouldReduceMotion = useReducedMotion();
+  const isInternalNavigation = useRef(false);
 
   // Refs para animações GSAP
   const logoRef = useRef<HTMLDivElement>(null);
@@ -29,14 +30,41 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
   const loginContentRef = useRef<HTMLDivElement>(null);
   const registerContentRef = useRef<HTMLDivElement>(null);
 
-  // Sincronizar tab com a rota atual
+  // Sincronizar tab com a rota atual apenas na montagem inicial ou navegação externa
   useEffect(() => {
+    // Se a navegação foi interna, não sincronizar
+    if (isInternalNavigation.current) {
+      // Resetar flag após um delay
+      const timer = setTimeout(() => {
+        isInternalNavigation.current = false;
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+
+    // Sincronizar apenas quando o pathname mudar externamente
     if (pathname === "/register") {
       setActiveTab("register");
     } else if (pathname === "/login") {
       setActiveTab("login");
     }
   }, [pathname]);
+
+  // Listener para botão voltar/avançar do navegador
+  useEffect(() => {
+    const handlePopState = () => {
+      // Quando o usuário usa botão voltar/avançar, não é navegação interna
+      isInternalNavigation.current = false;
+      const currentPath = window.location.pathname;
+      if (currentPath === "/register") {
+        setActiveTab("register");
+      } else if (currentPath === "/login") {
+        setActiveTab("login");
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   // Animações de entrada com GSAP
   useEffect(() => {
@@ -153,15 +181,26 @@ export function AuthContainer({ defaultTab = "login" }: AuthContainerProps) {
 
   const handleTabChange = (value: string) => {
     const newTab = value as "login" | "register";
+    const newPath = newTab === "login" ? "/login" : "/register";
+
+    // Não fazer nada se já estiver na tab correta
+    if (activeTab === newTab) return;
+
+    // Verificar a URL atual usando window.location em vez de pathname
+    const currentPath =
+      typeof window !== "undefined" ? window.location.pathname : pathname;
+
+    // Atualizar o estado local primeiro
     setActiveTab(newTab);
 
-    // Atualizar a URL sem recarregar a página
-    const newPath = newTab === "login" ? "/login" : "/register";
-    if (pathname !== newPath && typeof window !== "undefined") {
-      // Usar replaceState para atualizar URL sem recarregar
-      // Isso evita que o Next.js faça uma navegação completa
+    // Atualizar a URL sem recarregar a página apenas se necessário
+    if (typeof window !== "undefined" && currentPath !== newPath) {
+      // Marcar como navegação interna antes de mudar a URL
+      isInternalNavigation.current = true;
+
+      // Atualizar apenas a URL no navegador sem recarregar
       window.history.replaceState(
-        { ...window.history.state, pathname: newPath },
+        { ...window.history.state, as: newPath, url: newPath },
         "",
         newPath
       );
