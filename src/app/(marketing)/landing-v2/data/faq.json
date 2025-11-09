@@ -1,0 +1,43 @@
+[
+  {
+    "id": "como-funciona",
+    "question": "Como funciona o matching inteligente?",
+    "answer": "Nossa IA analisa seu pedido (tipo de serviço, localização, urgência) e cruza com o perfil dos prestadores cadastrados (especialidades, avaliações, histórico, disponibilidade). Você recebe apenas propostas relevantes e de prestadores verificados."
+  },
+  {
+    "id": "seguranca-pagamento",
+    "question": "Como funciona a segurança dos pagamentos?",
+    "answer": "O pagamento fica retido de forma segura até você confirmar que o serviço foi concluído conforme combinado. Se houver algum problema, nossa equipe de suporte pode intermediar. Aceitamos cartões de crédito e débito."
+  },
+  {
+    "id": "prazos-resposta",
+    "question": "Quanto tempo leva para receber propostas?",
+    "answer": "A maioria dos pedidos recebe propostas em até 2 horas. Para serviços mais específicos ou em horários não comerciais, pode levar até 24 horas. Você será notificado por e-mail e WhatsApp quando novas propostas chegarem."
+  },
+  {
+    "id": "cancelamento",
+    "question": "Posso cancelar um pedido?",
+    "answer": "Sim. Você pode cancelar antes de aceitar uma proposta sem custos. Após aceitar, o cancelamento segue nossa política: se o prestador ainda não iniciou, você recebe reembolso integral. Se já iniciou, o reembolso é proporcional ao trabalho realizado."
+  },
+  {
+    "id": "verificacao-prestadores",
+    "question": "Como são verificados os prestadores?",
+    "answer": "Todos os prestadores passam por verificação de identidade (CPF/CNPJ), documentos profissionais quando aplicável, e análise de histórico na plataforma. Prestadores com avaliações baixas ou problemas recorrentes são removidos."
+  },
+  {
+    "id": "suporte",
+    "question": "Como posso entrar em contato com o suporte?",
+    "answer": "Você pode falar conosco pelo WhatsApp (disponível 24/7), e-mail ou chat dentro do app. Nossa equipe responde em até 2 horas durante horário comercial e em até 12 horas fora dele."
+  },
+  {
+    "id": "reembolso",
+    "question": "Como solicito reembolso?",
+    "answer": "Se o serviço não foi concluído ou não atendeu ao combinado, você pode solicitar reembolso pelo app ou WhatsApp. Analisamos seu caso e processamos o reembolso em até 5 dias úteis, direto no método de pagamento usado."
+  },
+  {
+    "id": "prestador-cadastro",
+    "question": "Como me torno um prestador?",
+    "answer": "Clique em 'Tornar-se prestador' no menu, preencha seu perfil com especialidades e portfólio, e envie seus documentos para verificação. Após aprovação (geralmente em até 48h), você já pode receber pedidos na sua região."
+  }
+]
+

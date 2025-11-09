@@ -1,0 +1,35 @@
+[
+  {
+    "id": "step-1",
+    "number": 1,
+    "title": "Faça seu pedido",
+    "description": "Descreva o serviço que precisa, quando precisa e onde será realizado. Quanto mais detalhes, melhor o matching.",
+    "mockup": "/landing-v2/images/mockups/step-1-request.png",
+    "icon": "file-text"
+  },
+  {
+    "id": "step-2",
+    "number": 2,
+    "title": "Receba propostas",
+    "description": "Prestadores verificados enviam propostas com prazo, preço e avaliações. Compare e escolha o melhor para você.",
+    "mockup": "/landing-v2/images/mockups/step-2-proposals.png",
+    "icon": "inbox"
+  },
+  {
+    "id": "step-3",
+    "number": 3,
+    "title": "Converse e combine",
+    "description": "Use o chat integrado ou WhatsApp para alinhar detalhes, tirar dúvidas e confirmar tudo antes de começar.",
+    "mockup": "/landing-v2/images/mockups/step-3-chat.png",
+    "icon": "message-circle"
+  },
+  {
+    "id": "step-4",
+    "number": 4,
+    "title": "Pague com segurança",
+    "description": "O pagamento fica seguro até a conclusão. Acompanhe o progresso e libere quando estiver satisfeito.",
+    "mockup": "/landing-v2/images/mockups/step-4-payment.png",
+    "icon": "shield-check"
+  }
+]
+

@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 // =============================================================================
@@ -79,7 +80,7 @@ model UserRoleAssignment {
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
   expiresAt DateTime
   token     String   @unique
   createdAt DateTime @default(now())
@@ -93,7 +94,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(dbgenerated("gen_random_uuid()"))
   accountId             String
   providerId            String
   userId                String
@@ -112,7 +113,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
   identifier String
   value      String
   expiresAt  DateTime

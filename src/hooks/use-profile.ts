@@ -100,6 +100,25 @@ async function deleteAddress(userId: string, addressId: string): Promise<void> {
   }
 }
 
+async function toggleAddressActive(
+  userId: string,
+  addressId: string
+): Promise<AddressData> {
+  const response = await fetch(
+    `/api/user/${userId}/addresses/${addressId}/toggle`,
+    {
+      method: "PATCH",
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || "Erro ao alterar status do endereço");
+  }
+
+  return response.json();
+}
+
 // Hook for profile data
 export function useProfile() {
   const { data: session } = authClient.useSession();
@@ -184,10 +203,21 @@ export function useProfileMutations() {
     },
   });
 
+  const toggleAddressActiveMutation = useMutation({
+    mutationFn: (addressId: string) => {
+      if (!userId) throw new Error("Usuário não autenticado");
+      return toggleAddressActive(userId, addressId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["addresses", userId] });
+    },
+  });
+
   return {
     updateProfile: updateProfileMutation,
     createAddress: createAddressMutation,
     updateAddress: updateAddressMutation,
     deleteAddress: deleteAddressMutation,
+    toggleAddressActive: toggleAddressActiveMutation,
   };
 }

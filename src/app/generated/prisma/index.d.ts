@@ -11893,6 +11893,7 @@ export namespace Prisma {
     state: string | null
     lat: number | null
     lon: number | null
+    active: boolean | null
     createdAt: Date | null
   }
 
@@ -11909,6 +11910,7 @@ export namespace Prisma {
     state: string | null
     lat: number | null
     lon: number | null
+    active: boolean | null
     createdAt: Date | null
   }
 
@@ -11925,6 +11927,7 @@ export namespace Prisma {
     state: number
     lat: number
     lon: number
+    active: number
     createdAt: number
     _all: number
   }
@@ -11953,6 +11956,7 @@ export namespace Prisma {
     state?: true
     lat?: true
     lon?: true
+    active?: true
     createdAt?: true
   }
 
@@ -11969,6 +11973,7 @@ export namespace Prisma {
     state?: true
     lat?: true
     lon?: true
+    active?: true
     createdAt?: true
   }
 
@@ -11985,6 +11990,7 @@ export namespace Prisma {
     state?: true
     lat?: true
     lon?: true
+    active?: true
     createdAt?: true
     _all?: true
   }
@@ -12088,6 +12094,7 @@ export namespace Prisma {
     state: string | null
     lat: number | null
     lon: number | null
+    active: boolean
     createdAt: Date
     _count: AddressCountAggregateOutputType | null
     _avg: AddressAvgAggregateOutputType | null
@@ -12123,6 +12130,7 @@ export namespace Prisma {
     state?: boolean
     lat?: boolean
     lon?: boolean
+    active?: boolean
     createdAt?: boolean
     user?: boolean | Address$userArgs<ExtArgs>
     orders?: boolean | Address$ordersArgs<ExtArgs>
@@ -12142,6 +12150,7 @@ export namespace Prisma {
     state?: boolean
     lat?: boolean
     lon?: boolean
+    active?: boolean
     createdAt?: boolean
     user?: boolean | Address$userArgs<ExtArgs>
   }, ExtArgs["result"]["address"]>
@@ -12159,6 +12168,7 @@ export namespace Prisma {
     state?: boolean
     lat?: boolean
     lon?: boolean
+    active?: boolean
     createdAt?: boolean
     user?: boolean | Address$userArgs<ExtArgs>
   }, ExtArgs["result"]["address"]>
@@ -12176,10 +12186,11 @@ export namespace Prisma {
     state?: boolean
     lat?: boolean
     lon?: boolean
+    active?: boolean
     createdAt?: boolean
   }
 
-  export type AddressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "label" | "cep" | "street" | "number" | "complement" | "neighborhood" | "city" | "state" | "lat" | "lon" | "createdAt", ExtArgs["result"]["address"]>
+  export type AddressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "label" | "cep" | "street" | "number" | "complement" | "neighborhood" | "city" | "state" | "lat" | "lon" | "active" | "createdAt", ExtArgs["result"]["address"]>
   export type AddressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Address$userArgs<ExtArgs>
     orders?: boolean | Address$ordersArgs<ExtArgs>
@@ -12211,6 +12222,7 @@ export namespace Prisma {
       state: string | null
       lat: number | null
       lon: number | null
+      active: boolean
       createdAt: Date
     }, ExtArgs["result"]["address"]>
     composites: {}
@@ -12649,6 +12661,7 @@ export namespace Prisma {
     readonly state: FieldRef<"Address", 'String'>
     readonly lat: FieldRef<"Address", 'Float'>
     readonly lon: FieldRef<"Address", 'Float'>
+    readonly active: FieldRef<"Address", 'Boolean'>
     readonly createdAt: FieldRef<"Address", 'DateTime'>
   }
     
@@ -34128,6 +34141,7 @@ export namespace Prisma {
     state: 'state',
     lat: 'lat',
     lon: 'lon',
+    active: 'active',
     createdAt: 'createdAt'
   };
 
@@ -35156,6 +35170,7 @@ export namespace Prisma {
     state?: StringNullableFilter<"Address"> | string | null
     lat?: FloatNullableFilter<"Address"> | number | null
     lon?: FloatNullableFilter<"Address"> | number | null
+    active?: BoolFilter<"Address"> | boolean
     createdAt?: DateTimeFilter<"Address"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     orders?: OrderListRelationFilter
@@ -35174,6 +35189,7 @@ export namespace Prisma {
     state?: SortOrderInput | SortOrder
     lat?: SortOrderInput | SortOrder
     lon?: SortOrderInput | SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
     orders?: OrderOrderByRelationAggregateInput
@@ -35195,6 +35211,7 @@ export namespace Prisma {
     state?: StringNullableFilter<"Address"> | string | null
     lat?: FloatNullableFilter<"Address"> | number | null
     lon?: FloatNullableFilter<"Address"> | number | null
+    active?: BoolFilter<"Address"> | boolean
     createdAt?: DateTimeFilter<"Address"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     orders?: OrderListRelationFilter
@@ -35213,6 +35230,7 @@ export namespace Prisma {
     state?: SortOrderInput | SortOrder
     lat?: SortOrderInput | SortOrder
     lon?: SortOrderInput | SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     _count?: AddressCountOrderByAggregateInput
     _avg?: AddressAvgOrderByAggregateInput
@@ -35237,6 +35255,7 @@ export namespace Prisma {
     state?: StringNullableWithAggregatesFilter<"Address"> | string | null
     lat?: FloatNullableWithAggregatesFilter<"Address"> | number | null
     lon?: FloatNullableWithAggregatesFilter<"Address"> | number | null
+    active?: BoolWithAggregatesFilter<"Address"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Address"> | Date | string
   }
 
@@ -36868,7 +36887,7 @@ export namespace Prisma {
   }
 
   export type SessionCreateInput = {
-    id: string
+    id?: string
     expiresAt: Date | string
     token: string
     createdAt?: Date | string
@@ -36879,7 +36898,7 @@ export namespace Prisma {
   }
 
   export type SessionUncheckedCreateInput = {
-    id: string
+    id?: string
     expiresAt: Date | string
     token: string
     createdAt?: Date | string
@@ -36912,7 +36931,7 @@ export namespace Prisma {
   }
 
   export type SessionCreateManyInput = {
-    id: string
+    id?: string
     expiresAt: Date | string
     token: string
     createdAt?: Date | string
@@ -36944,7 +36963,7 @@ export namespace Prisma {
   }
 
   export type AccountCreateInput = {
-    id: string
+    id?: string
     accountId: string
     providerId: string
     accessToken?: string | null
@@ -36960,7 +36979,7 @@ export namespace Prisma {
   }
 
   export type AccountUncheckedCreateInput = {
-    id: string
+    id?: string
     accountId: string
     providerId: string
     userId: string
@@ -37008,7 +37027,7 @@ export namespace Prisma {
   }
 
   export type AccountCreateManyInput = {
-    id: string
+    id?: string
     accountId: string
     providerId: string
     userId: string
@@ -37055,7 +37074,7 @@ export namespace Prisma {
   }
 
   export type VerificationCreateInput = {
-    id: string
+    id?: string
     identifier: string
     value: string
     expiresAt: Date | string
@@ -37064,7 +37083,7 @@ export namespace Prisma {
   }
 
   export type VerificationUncheckedCreateInput = {
-    id: string
+    id?: string
     identifier: string
     value: string
     expiresAt: Date | string
@@ -37091,7 +37110,7 @@ export namespace Prisma {
   }
 
   export type VerificationCreateManyInput = {
-    id: string
+    id?: string
     identifier: string
     value: string
     expiresAt: Date | string
@@ -37267,6 +37286,7 @@ export namespace Prisma {
     state?: string | null
     lat?: number | null
     lon?: number | null
+    active?: boolean
     createdAt?: Date | string
     user?: UserCreateNestedOneWithoutAddressesInput
     orders?: OrderCreateNestedManyWithoutAddressInput
@@ -37285,6 +37305,7 @@ export namespace Prisma {
     state?: string | null
     lat?: number | null
     lon?: number | null
+    active?: boolean
     createdAt?: Date | string
     orders?: OrderUncheckedCreateNestedManyWithoutAddressInput
   }
@@ -37301,6 +37322,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutAddressesNestedInput
     orders?: OrderUpdateManyWithoutAddressNestedInput
@@ -37319,6 +37341,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUncheckedUpdateManyWithoutAddressNestedInput
   }
@@ -37336,6 +37359,7 @@ export namespace Prisma {
     state?: string | null
     lat?: number | null
     lon?: number | null
+    active?: boolean
     createdAt?: Date | string
   }
 
@@ -37351,6 +37375,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -37367,6 +37392,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -39409,6 +39435,7 @@ export namespace Prisma {
     state?: SortOrder
     lat?: SortOrder
     lon?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -39430,6 +39457,7 @@ export namespace Prisma {
     state?: SortOrder
     lat?: SortOrder
     lon?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -39446,6 +39474,7 @@ export namespace Prisma {
     state?: SortOrder
     lat?: SortOrder
     lon?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -42990,7 +43019,7 @@ export namespace Prisma {
   }
 
   export type AccountCreateWithoutUserInput = {
-    id: string
+    id?: string
     accountId: string
     providerId: string
     accessToken?: string | null
@@ -43005,7 +43034,7 @@ export namespace Prisma {
   }
 
   export type AccountUncheckedCreateWithoutUserInput = {
-    id: string
+    id?: string
     accountId: string
     providerId: string
     accessToken?: string | null
@@ -43030,7 +43059,7 @@ export namespace Prisma {
   }
 
   export type SessionCreateWithoutUserInput = {
-    id: string
+    id?: string
     expiresAt: Date | string
     token: string
     createdAt?: Date | string
@@ -43040,7 +43069,7 @@ export namespace Prisma {
   }
 
   export type SessionUncheckedCreateWithoutUserInput = {
-    id: string
+    id?: string
     expiresAt: Date | string
     token: string
     createdAt?: Date | string
@@ -43095,6 +43124,7 @@ export namespace Prisma {
     state?: string | null
     lat?: number | null
     lon?: number | null
+    active?: boolean
     createdAt?: Date | string
     orders?: OrderCreateNestedManyWithoutAddressInput
   }
@@ -43111,6 +43141,7 @@ export namespace Prisma {
     state?: string | null
     lat?: number | null
     lon?: number | null
+    active?: boolean
     createdAt?: Date | string
     orders?: OrderUncheckedCreateNestedManyWithoutAddressInput
   }
@@ -43784,6 +43815,7 @@ export namespace Prisma {
     state?: StringNullableFilter<"Address"> | string | null
     lat?: FloatNullableFilter<"Address"> | number | null
     lon?: FloatNullableFilter<"Address"> | number | null
+    active?: BoolFilter<"Address"> | boolean
     createdAt?: DateTimeFilter<"Address"> | Date | string
   }
 
@@ -46004,6 +46036,7 @@ export namespace Prisma {
     state?: string | null
     lat?: number | null
     lon?: number | null
+    active?: boolean
     createdAt?: Date | string
     user?: UserCreateNestedOneWithoutAddressesInput
   }
@@ -46021,6 +46054,7 @@ export namespace Prisma {
     state?: string | null
     lat?: number | null
     lon?: number | null
+    active?: boolean
     createdAt?: Date | string
   }
 
@@ -46560,6 +46594,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutAddressesNestedInput
   }
@@ -46577,6 +46612,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -49777,7 +49813,7 @@ export namespace Prisma {
   }
 
   export type AccountCreateManyUserInput = {
-    id: string
+    id?: string
     accountId: string
     providerId: string
     accessToken?: string | null
@@ -49792,7 +49828,7 @@ export namespace Prisma {
   }
 
   export type SessionCreateManyUserInput = {
-    id: string
+    id?: string
     expiresAt: Date | string
     token: string
     createdAt?: Date | string
@@ -49820,6 +49856,7 @@ export namespace Prisma {
     state?: string | null
     lat?: number | null
     lon?: number | null
+    active?: boolean
     createdAt?: Date | string
   }
 
@@ -50097,6 +50134,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUpdateManyWithoutAddressNestedInput
   }
@@ -50113,6 +50151,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUncheckedUpdateManyWithoutAddressNestedInput
   }
@@ -50129,6 +50168,7 @@ export namespace Prisma {
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lon?: NullableFloatFieldUpdateOperationsInput | number | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -35,6 +35,7 @@ const createAddressSchema = z.object({
     .max(2, "Estado deve ter 2 caracteres"),
   lat: z.number().optional(),
   lon: z.number().optional(),
+  active: z.boolean().optional(),
 });
 
 export async function GET(
@@ -74,6 +75,7 @@ export async function GET(
         state: true,
         lat: true,
         lon: true,
+        active: true,
         createdAt: true,
       },
       orderBy: { createdAt: "desc" },
@@ -132,6 +134,7 @@ export async function POST(
         state: true,
         lat: true,
         lon: true,
+        active: true,
         createdAt: true,
       },
     });

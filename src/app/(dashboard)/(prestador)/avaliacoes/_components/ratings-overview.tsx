@@ -51,7 +51,9 @@ export function RatingsOverview() {
         label="Avaliação Média"
         value={ratingStats.mediaGeral.toFixed(1)}
         caption={`${ratingStats.totalAvaliacoes} avaliações`}
-        icon={<Star className="h-5 w-5 text-yellow-600" />}
+        icon={
+          <Star className="h-5 w-5" style={{ color: "var(--chart-1)" }} />
+        }
         tone="warning"
         size="md"
       />
@@ -61,7 +63,9 @@ export function RatingsOverview() {
         value={ratingStats.totalAvaliacoes}
         delta={`+${ratingStats.avaliacoesRecentes} este mês`}
         trend="up"
-        icon={<Users className="h-5 w-5 text-blue-600" />}
+        icon={
+          <Users className="h-5 w-5" style={{ color: "var(--chart-2)" }} />
+        }
         tone="primary"
         size="md"
       />
@@ -72,7 +76,12 @@ export function RatingsOverview() {
         caption={`${Math.round(
           (ratingStats.comentarios / ratingStats.totalAvaliacoes) * 100
         )}% com comentários`}
-        icon={<MessageSquare className="h-5 w-5 text-green-600" />}
+        icon={
+          <MessageSquare
+            className="h-5 w-5"
+            style={{ color: "var(--chart-3)" }}
+          />
+        }
         tone="success"
         size="md"
       />
@@ -81,7 +90,9 @@ export function RatingsOverview() {
         label="Excelência"
         value={`${ratingStats.taxaExcelencia}%`}
         caption="Avaliações 4+ estrelas"
-        icon={<Award className="h-5 w-5 text-purple-600" />}
+        icon={
+          <Award className="h-5 w-5" style={{ color: "var(--chart-4)" }} />
+        }
         tone="default"
         size="md"
       />

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "addresses" ADD COLUMN "active" BOOLEAN NOT NULL DEFAULT true;
+

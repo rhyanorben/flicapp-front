@@ -96,217 +96,191 @@ async function main() {
   console.log("🏷️ Criando categorias de serviços...");
   const categories = [
     {
-      id: "1cd9adcd-f59d-49f4-adbf-fbe270d1eb43",
       name: "Vidraceiro",
       slug: "vidraceiro",
       active: true,
     },
     {
-      id: "1f72d4fb-ba0c-432d-ae65-0565bca38b6f",
       name: "Transporte / Frete",
       slug: "transporte-frete",
       active: true,
     },
     {
-      id: "2620e421-4e88-40ed-b759-5be606859e33",
       name: "Gesseiro",
       slug: "gesseiro",
       active: true,
     },
     {
-      id: "2da13a68-3c51-4c33-a1bd-049627f1db06",
       name: "Fotógrafo / Filmagem",
       slug: "fotografo-filmagem",
       active: true,
     },
     {
-      id: "3d13a67f-8792-4348-ba9a-85da2a2e730b",
       name: "Pedreiro / Reforma",
       slug: "pedreiro-reforma",
       active: true,
     },
     {
-      id: "498e5bc9-94b8-4121-8df4-41ae550f2d9b",
       name: "Pintor",
       slug: "pintor",
       active: true,
     },
     {
-      id: "4e390fa4-bc90-4599-8f86-53806245504a",
       name: "Personal Trainer",
       slug: "personal-trainer",
       active: true,
     },
     {
-      id: "4fb8b926-bf7a-4c92-925e-8ddbbca40a89",
       name: "Beleza - Maquiagem",
       slug: "maquiagem",
       active: true,
     },
     {
-      id: "5553dc5d-ab6d-4338-b9e4-47d3fcb60f69",
       name: "Montador de Móveis",
       slug: "montador-de-moveis",
       active: true,
     },
     {
-      id: "59b1cc4e-49b9-4fe7-a89a-40327d74aa11",
       name: "Manutenção de Eletrodomésticos",
       slug: "manutencao-eletrodomesticos",
       active: true,
     },
     {
-      id: "5f4fc170-cd0b-4913-befa-cd64d121fa90",
       name: "Dedetização",
       slug: "dedetizacao",
       active: true,
     },
     {
-      id: "63260ea8-33fc-4177-b1a3-7c5b0936ac7c",
       name: "Jardinagem",
       slug: "jardinagem",
       active: true,
     },
     {
-      id: "6bdafa8a-43d1-42c3-8599-d31a6b0e558e",
       name: "Encanador",
       slug: "encanador",
       active: true,
     },
     {
-      id: "73c236e8-f68f-4826-98ee-adaf06241898",
       name: "Eventos - Decoração",
       slug: "decoracao-eventos",
       active: true,
     },
     {
-      id: "74265db1-6174-4311-bc3a-847a50cccf9d",
       name: "Eventos - Buffet",
       slug: "buffet",
       active: true,
     },
     {
-      id: "8756a373-5f8e-461f-baac-f9ab5d846200",
       name: "Piscineiro",
       slug: "piscineiro",
       active: true,
     },
     {
-      id: "96671329-f49f-4cdf-9d25-30f240d5c813",
       name: "Designer Gráfico",
       slug: "designer-grafico",
       active: true,
     },
     {
-      id: "99006425-00ce-4e20-9d5e-67664f41b0df",
       name: "Chaveiro",
       slug: "chaveiro",
       active: true,
     },
     {
-      id: "99366d44-ed4a-45a9-9972-7f907fd2f3e8",
       name: "Serralheiro",
       slug: "serralheiro",
       active: true,
     },
     {
-      id: "a223e8ce-d1d1-46a6-bbfe-e0d3d9fa0078",
       name: "Mudança / Carretos",
       slug: "mudanca-carretos",
       active: true,
     },
     {
-      id: "b103612a-e678-4a61-92f3-2dd3a1e2c6e8",
       name: "Suporte de Informática",
       slug: "suporte-de-informatica",
       active: true,
     },
     {
-      id: "b70f72ab-75ec-46d7-9872-cad907b1f988",
       name: "Funilaria e Pintura Automotiva",
       slug: "funilaria-automotiva",
       active: true,
     },
     {
-      id: "ba47f8c1-7ee6-4c43-9c7f-d82fe8082228",
       name: "Mecânico Automotivo",
       slug: "mecanico-automotivo",
       active: true,
     },
     {
-      id: "bc4b5787-0830-40dc-a610-92a3e114ba3f",
       name: "Beleza - Cabeleireiro",
       slug: "cabeleireiro",
       active: true,
     },
     {
-      id: "c0c1c609-96df-4586-aa1e-fe104467d387",
       name: "Limpeza Residencial",
       slug: "limpeza-residencial",
       active: true,
     },
     {
-      id: "c4f30cfb-f117-4b35-9962-13fd9666540b",
       name: "Outros",
       slug: "outros",
       active: true,
     },
     {
-      id: "c51d56eb-60b1-4090-82e6-f572ee02de25",
       name: "Eletricista",
       slug: "eletricista",
       active: true,
     },
     {
-      id: "cc2cde4c-d2a0-4285-9b2b-ae323138871e",
       name: "Marceneiro",
       slug: "marceneiro",
       active: true,
     },
     {
-      id: "d630fa27-d0ac-4e4b-9b6c-a03a1a6de998",
       name: "Beleza - Manicure e Pedicure",
       slug: "manicure-pedicure",
       active: true,
     },
     {
-      id: "d8450fba-2c5b-4622-9077-83faaa293c16",
       name: "Eventos - DJ / Som",
       slug: "dj-som",
       active: true,
     },
     {
-      id: "e0b70f56-480d-47fc-9ec4-6eca23999fc4",
       name: "Cuidador de Idosos",
       slug: "cuidador-idosos",
       active: true,
     },
     {
-      id: "e69b2654-0609-42aa-a654-56fad655ec58",
       name: "Instalador de Ar-Condicionado",
       slug: "instalador-ar-condicionado",
       active: true,
     },
     {
-      id: "fa479488-a75f-42aa-9dac-940a508a21f",
       name: "Babá",
       slug: "baba",
       active: true,
     },
     {
-      id: "fe0f4831-15c7-4dfd-beb5-d35562e42cc9",
       name: "Professor Particular",
       slug: "professor-particular",
       active: true,
     },
   ];
 
+  // Criar categorias e armazenar seus IDs
+  const categoryMap = new Map<string, string>();
+
   for (const category of categories) {
-    await prisma.category.upsert({
-      where: { id: category.id },
+    const created = await prisma.category.upsert({
+      where: { slug: category.slug },
       update: {},
-      create: category,
+      create: {
+        name: category.name,
+        slug: category.slug,
+        active: category.active,
+      },
     });
+    categoryMap.set(category.slug, created.id);
   }
 
   console.log("✅ Categorias criadas:", categories.length);
@@ -408,23 +382,27 @@ async function main() {
 
   // Categorias do prestador
   const providerCategories = [
-    { categoryId: "c0c1c609-96df-4586-aa1e-fe104467d387", minPriceCents: 5000 }, // Limpeza Residencial
-    { categoryId: "498e5bc9-94b8-4121-8df4-41ae550f2d9b", minPriceCents: 8000 }, // Pintor
-    { categoryId: "63260ea8-33fc-4177-b1a3-7c5b0936ac7c", minPriceCents: 3000 }, // Jardinagem
+    { categorySlug: "limpeza-residencial", minPriceCents: 5000 },
+    { categorySlug: "pintor", minPriceCents: 8000 },
+    { categorySlug: "jardinagem", minPriceCents: 3000 },
   ];
 
   for (const pc of providerCategories) {
+    const categoryId = categoryMap.get(pc.categorySlug);
+    if (!categoryId) {
+      throw new Error(`Categoria não encontrada: ${pc.categorySlug}`);
+    }
     await prisma.providerCategory.upsert({
       where: {
         providerId_categoryId: {
           providerId: providerUser.id,
-          categoryId: pc.categoryId,
+          categoryId: categoryId,
         },
       },
       update: {},
       create: {
         providerId: providerUser.id,
-        categoryId: pc.categoryId,
+        categoryId: categoryId,
         minPriceCents: pc.minPriceCents,
         active: true,
         score: 4.5,
@@ -487,23 +465,26 @@ async function main() {
   });
 
   // Endereço do cliente
-  await prisma.address.upsert({
-    where: { id: "address-001" },
-    update: {},
-    create: {
-      id: "address-001",
-      userId: clientUser.id,
-      label: "Casa Principal",
-      cep: "01234-567",
-      street: "Rua das Flores",
-      number: "123",
-      neighborhood: "Centro",
-      city: "São Paulo",
-      state: "SP",
-      lat: -23.5505,
-      lon: -46.6333,
-    },
+  let clientAddress = await prisma.address.findFirst({
+    where: { userId: clientUser.id, label: "Casa Principal" },
   });
+
+  if (!clientAddress) {
+    clientAddress = await prisma.address.create({
+      data: {
+        userId: clientUser.id,
+        label: "Casa Principal",
+        cep: "01234-567",
+        street: "Rua das Flores",
+        number: "123",
+        neighborhood: "Centro",
+        city: "São Paulo",
+        state: "SP",
+        lat: -23.5505,
+        lon: -46.6333,
+      },
+    });
+  }
 
   console.log("✅ Usuários de exemplo criados");
 
@@ -548,62 +529,85 @@ async function main() {
 
   // 6. Criar pedido de exemplo
   console.log("📦 Criando pedido de exemplo...");
-  const sampleOrder = await prisma.order.upsert({
-    where: { id: "order-001" },
-    update: {},
-    create: {
-      id: "order-001",
+  let sampleOrder = await prisma.order.findFirst({
+    where: {
       clientId: clientUser.id,
-      addressId: "address-001",
-      categoryId: "c0c1c609-96df-4586-aa1e-fe104467d387", // Limpeza Residencial
       description:
         "Limpeza completa da casa, incluindo cozinha, banheiros e quartos.",
-      status: "pending",
-      depositMethod: "avg_min_20",
-      depositCents: 2000,
-      finalPriceCents: 10000,
     },
   });
+
+  if (!sampleOrder) {
+    sampleOrder = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("limpeza-residencial")!,
+        description:
+          "Limpeza completa da casa, incluindo cozinha, banheiros e quartos.",
+        status: "pending",
+        depositMethod: "avg_min_20",
+        depositCents: 2000,
+        finalPriceCents: 10000,
+      },
+    });
+  }
 
   // Slots de horário para o pedido
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow.setHours(9, 0, 0, 0);
 
-  const slot1 = await prisma.orderSlot.upsert({
-    where: { id: "slot-001" },
-    update: {},
-    create: {
-      id: "slot-001",
+  let slot1 = await prisma.orderSlot.findFirst({
+    where: {
       orderId: sampleOrder.id,
       label: "Manhã (9h-12h)",
-      startAt: tomorrow,
-      endAt: new Date(tomorrow.getTime() + 3 * 60 * 60 * 1000), // +3 horas
-      origin: "client",
-      chosen: false,
     },
   });
 
-  await prisma.orderSlot.upsert({
-    where: { id: "slot-002" },
-    update: {},
-    create: {
-      id: "slot-002",
+  if (!slot1) {
+    slot1 = await prisma.orderSlot.create({
+      data: {
+        orderId: sampleOrder.id,
+        label: "Manhã (9h-12h)",
+        startAt: tomorrow,
+        endAt: new Date(tomorrow.getTime() + 3 * 60 * 60 * 1000), // +3 horas
+        origin: "client",
+        chosen: false,
+      },
+    });
+  }
+
+  let slot2 = await prisma.orderSlot.findFirst({
+    where: {
       orderId: sampleOrder.id,
       label: "Tarde (14h-17h)",
-      startAt: new Date(tomorrow.getTime() + 5 * 60 * 60 * 1000), // +5 horas
-      endAt: new Date(tomorrow.getTime() + 8 * 60 * 60 * 1000), // +8 horas
-      origin: "client",
-      chosen: false,
     },
   });
+
+  if (!slot2) {
+    slot2 = await prisma.orderSlot.create({
+      data: {
+        orderId: sampleOrder.id,
+        label: "Tarde (14h-17h)",
+        startAt: new Date(tomorrow.getTime() + 5 * 60 * 60 * 1000), // +5 horas
+        endAt: new Date(tomorrow.getTime() + 8 * 60 * 60 * 1000), // +8 horas
+        origin: "client",
+        chosen: false,
+      },
+    });
+  }
 
   // Convite para o prestador
   await prisma.orderInvitation.upsert({
-    where: { id: "invitation-001" },
+    where: {
+      orderId_providerId: {
+        orderId: sampleOrder.id,
+        providerId: providerUser.id,
+      },
+    },
     update: {},
     create: {
-      id: "invitation-001",
       orderId: sampleOrder.id,
       providerId: providerUser.id,
       slotId: slot1.id,
@@ -620,26 +624,33 @@ async function main() {
   console.log("📦 Criando pedidos de histórico para a cliente...");
 
   // Pedido concluído com avaliação
-  const completedOrder1 = await prisma.order.upsert({
-    where: { id: "order-completed-001" },
-    update: {},
-    create: {
-      id: "order-completed-001",
+  let completedOrder1 = await prisma.order.findFirst({
+    where: {
       clientId: clientUser.id,
-      addressId: "address-001",
-      categoryId: "c0c1c609-96df-4586-aa1e-fe104467d387", // Limpeza Residencial
       description:
         "Limpeza completa da casa, incluindo cozinha, banheiros e quartos. Serviço excelente!",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 2000,
-      finalPriceCents: 10000,
-      slotStart: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 dias atrás
-      slotEnd: new Date(
-        Date.now() - 30 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000
-      ), // +3 horas
     },
   });
+
+  if (!completedOrder1) {
+    completedOrder1 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("limpeza-residencial")!,
+        description:
+          "Limpeza completa da casa, incluindo cozinha, banheiros e quartos. Serviço excelente!",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 2000,
+        finalPriceCents: 10000,
+        slotStart: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 dias atrás
+        slotEnd: new Date(
+          Date.now() - 30 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000
+        ), // +3 horas
+      },
+    });
+  }
 
   // Avaliação do pedido concluído
   await prisma.orderReview.upsert({
@@ -655,26 +666,33 @@ async function main() {
   });
 
   // Pedido concluído com avaliação
-  const completedOrder2 = await prisma.order.upsert({
-    where: { id: "order-completed-002" },
-    update: {},
-    create: {
-      id: "order-completed-002",
+  let completedOrder2 = await prisma.order.findFirst({
+    where: {
       clientId: clientUser.id,
-      addressId: "address-001",
-      categoryId: "498e5bc9-94b8-4121-8df4-41ae550f2d9b", // Pintor
       description:
         "Pintura da sala e quarto principal. Cores escolhidas: azul claro e branco.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 5000,
-      finalPriceCents: 25000,
-      slotStart: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000), // 15 dias atrás
-      slotEnd: new Date(
-        Date.now() - 15 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000
-      ), // +6 horas
     },
   });
+
+  if (!completedOrder2) {
+    completedOrder2 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("pintor")!,
+        description:
+          "Pintura da sala e quarto principal. Cores escolhidas: azul claro e branco.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 5000,
+        finalPriceCents: 25000,
+        slotStart: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000), // 15 dias atrás
+        slotEnd: new Date(
+          Date.now() - 15 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000
+        ), // +6 horas
+      },
+    });
+  }
 
   // Avaliação do segundo pedido concluído
   await prisma.orderReview.upsert({
@@ -690,70 +708,91 @@ async function main() {
   });
 
   // Pedido concluído sem avaliação
-  await prisma.order.upsert({
-    where: { id: "order-completed-003" },
-    update: {},
-    create: {
-      id: "order-completed-003",
+  let completedOrder3 = await prisma.order.findFirst({
+    where: {
       clientId: clientUser.id,
-      addressId: "address-001",
-      categoryId: "63260ea8-33fc-4177-b1a3-7c5b0936ac7c", // Jardinagem
       description:
         "Poda das plantas e limpeza do jardim. Manutenção geral da área externa.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 1500,
-      finalPriceCents: 7500,
-      slotStart: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 dias atrás
-      slotEnd: new Date(
-        Date.now() - 7 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
-      ), // +2 horas
     },
   });
+
+  if (!completedOrder3) {
+    completedOrder3 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("jardinagem")!,
+        description:
+          "Poda das plantas e limpeza do jardim. Manutenção geral da área externa.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 1500,
+        finalPriceCents: 7500,
+        slotStart: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 dias atrás
+        slotEnd: new Date(
+          Date.now() - 7 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
+        ), // +2 horas
+      },
+    });
+  }
 
   // Pedido cancelado
-  await prisma.order.upsert({
-    where: { id: "order-cancelled-001" },
-    update: {},
-    create: {
-      id: "order-cancelled-001",
+  let cancelledOrder1 = await prisma.order.findFirst({
+    where: {
       clientId: clientUser.id,
-      addressId: "address-001",
-      categoryId: "6bdafa8a-43d1-42c3-8599-d31a6b0e558e", // Encanador
       description:
         "Reparo no vazamento da torneira da cozinha. Cancelado por indisponibilidade do prestador.",
-      status: "cancelled",
-      depositMethod: "avg_min_20",
-      depositCents: 1000,
-      finalPriceCents: 5000,
-      slotStart: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000), // 20 dias atrás
-      slotEnd: new Date(
-        Date.now() - 20 * 24 * 60 * 60 * 1000 + 1 * 60 * 60 * 1000
-      ), // +1 hora
     },
   });
 
+  if (!cancelledOrder1) {
+    cancelledOrder1 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("encanador")!,
+        description:
+          "Reparo no vazamento da torneira da cozinha. Cancelado por indisponibilidade do prestador.",
+        status: "cancelled",
+        depositMethod: "avg_min_20",
+        depositCents: 1000,
+        finalPriceCents: 5000,
+        slotStart: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000), // 20 dias atrás
+        slotEnd: new Date(
+          Date.now() - 20 * 24 * 60 * 60 * 1000 + 1 * 60 * 60 * 1000
+        ), // +1 hora
+      },
+    });
+  }
+
   // Pedido concluído com avaliação baixa
-  const completedOrder4 = await prisma.order.upsert({
-    where: { id: "order-completed-004" },
-    update: {},
-    create: {
-      id: "order-completed-004",
+  let completedOrder4 = await prisma.order.findFirst({
+    where: {
       clientId: clientUser.id,
-      addressId: "address-001",
-      categoryId: "c51d56eb-60b1-4090-82e6-f572ee02de25", // Eletricista
       description:
         "Instalação de ventilador no quarto. Problema com a fiação antiga.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 3000,
-      finalPriceCents: 15000,
-      slotStart: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000), // 45 dias atrás
-      slotEnd: new Date(
-        Date.now() - 45 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
-      ), // +2 horas
     },
   });
+
+  if (!completedOrder4) {
+    completedOrder4 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("eletricista")!,
+        description:
+          "Instalação de ventilador no quarto. Problema com a fiação antiga.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 3000,
+        finalPriceCents: 15000,
+        slotStart: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000), // 45 dias atrás
+        slotEnd: new Date(
+          Date.now() - 45 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
+        ), // +2 horas
+      },
+    });
+  }
 
   // Avaliação do quarto pedido concluído
   await prisma.orderReview.upsert({
@@ -770,25 +809,31 @@ async function main() {
   });
 
   // Pedido concluído com avaliação
-  const completedOrder5 = await prisma.order.upsert({
-    where: { id: "order-completed-005" },
-    update: {},
-    create: {
-      id: "order-completed-005",
+  let completedOrder5 = await prisma.order.findFirst({
+    where: {
       clientId: clientUser.id,
-      addressId: "address-001",
-      categoryId: "bc4b5787-0830-40dc-a610-92a3e114ba3f", // Cabeleireiro
       description: "Corte e escova. Cabelo médio, corte moderno.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 800,
-      finalPriceCents: 4000,
-      slotStart: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 dias atrás
-      slotEnd: new Date(
-        Date.now() - 3 * 24 * 60 * 60 * 1000 + 1 * 60 * 60 * 1000
-      ), // +1 hora
     },
   });
+
+  if (!completedOrder5) {
+    completedOrder5 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("cabeleireiro")!,
+        description: "Corte e escova. Cabelo médio, corte moderno.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 800,
+        finalPriceCents: 4000,
+        slotStart: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 dias atrás
+        slotEnd: new Date(
+          Date.now() - 3 * 24 * 60 * 60 * 1000 + 1 * 60 * 60 * 1000
+        ), // +1 hora
+      },
+    });
+  }
 
   // Avaliação do quinto pedido concluído
   await prisma.orderReview.upsert({
@@ -804,25 +849,31 @@ async function main() {
   });
 
   // Pedido cancelado recente
-  await prisma.order.upsert({
-    where: { id: "order-cancelled-002" },
-    update: {},
-    create: {
-      id: "order-cancelled-002",
+  let cancelledOrder2 = await prisma.order.findFirst({
+    where: {
       clientId: clientUser.id,
-      addressId: "address-001",
-      categoryId: "59b1cc4e-49b9-4fe7-a89a-40327d74aa11", // Manutenção de Eletrodomésticos
       description: "Reparo na geladeira. Cancelado por mudança de planos.",
-      status: "cancelled",
-      depositMethod: "avg_min_20",
-      depositCents: 2000,
-      finalPriceCents: 10000,
-      slotStart: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 dia atrás
-      slotEnd: new Date(
-        Date.now() - 1 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
-      ), // +2 horas
     },
   });
+
+  if (!cancelledOrder2) {
+    cancelledOrder2 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("manutencao-eletrodomesticos")!,
+        description: "Reparo na geladeira. Cancelado por mudança de planos.",
+        status: "cancelled",
+        depositMethod: "avg_min_20",
+        depositCents: 2000,
+        finalPriceCents: 10000,
+        slotStart: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 dia atrás
+        slotEnd: new Date(
+          Date.now() - 1 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
+        ), // +2 horas
+      },
+    });
+  }
 
   console.log("✅ Pedidos de histórico criados para a cliente");
 
@@ -830,27 +881,35 @@ async function main() {
   console.log("📦 Criando pedidos de histórico para o prestador...");
 
   // Pedidos concluídos para o prestador
-  const providerCompletedOrder1 = await prisma.order.upsert({
-    where: { id: "provider-order-completed-001" },
-    update: {},
-    create: {
-      id: "provider-order-completed-001",
-      clientId: clientUser.id,
+  let providerCompletedOrder1 = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "c0c1c609-96df-4586-aa1e-fe104467d387", // Limpeza Residencial
       description:
         "Limpeza completa da casa, incluindo cozinha, banheiros e quartos.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 2000,
-      finalPriceCents: 10000,
-      slotStart: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000), // 60 dias atrás
-      slotEnd: new Date(
-        Date.now() - 60 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000
-      ),
+      slotStart: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
     },
   });
+
+  if (!providerCompletedOrder1) {
+    providerCompletedOrder1 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("limpeza-residencial")!,
+        description:
+          "Limpeza completa da casa, incluindo cozinha, banheiros e quartos.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 2000,
+        finalPriceCents: 10000,
+        slotStart: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000), // 60 dias atrás
+        slotEnd: new Date(
+          Date.now() - 60 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000
+        ),
+      },
+    });
+  }
 
   // Avaliação do primeiro pedido do prestador
   await prisma.orderReview.upsert({
@@ -865,27 +924,35 @@ async function main() {
     },
   });
 
-  const providerCompletedOrder2 = await prisma.order.upsert({
-    where: { id: "provider-order-completed-002" },
-    update: {},
-    create: {
-      id: "provider-order-completed-002",
-      clientId: clientUser.id,
+  let providerCompletedOrder2 = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "498e5bc9-94b8-4121-8df4-41ae550f2d9b", // Pintor
       description:
         "Pintura da sala e quarto principal. Cores escolhidas: azul claro e branco.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 5000,
-      finalPriceCents: 25000,
-      slotStart: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000), // 45 dias atrás
-      slotEnd: new Date(
-        Date.now() - 45 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000
-      ),
+      slotStart: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000),
     },
   });
+
+  if (!providerCompletedOrder2) {
+    providerCompletedOrder2 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("pintor")!,
+        description:
+          "Pintura da sala e quarto principal. Cores escolhidas: azul claro e branco.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 5000,
+        finalPriceCents: 25000,
+        slotStart: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000), // 45 dias atrás
+        slotEnd: new Date(
+          Date.now() - 45 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000
+        ),
+      },
+    });
+  }
 
   await prisma.orderReview.upsert({
     where: { orderId: providerCompletedOrder2.id },
@@ -899,27 +966,35 @@ async function main() {
     },
   });
 
-  const providerCompletedOrder3 = await prisma.order.upsert({
-    where: { id: "provider-order-completed-003" },
-    update: {},
-    create: {
-      id: "provider-order-completed-003",
-      clientId: clientUser.id,
+  let providerCompletedOrder3 = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "63260ea8-33fc-4177-b1a3-7c5b0936ac7c", // Jardinagem
       description:
         "Poda das plantas e limpeza do jardim. Manutenção geral da área externa.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 1500,
-      finalPriceCents: 7500,
-      slotStart: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 dias atrás
-      slotEnd: new Date(
-        Date.now() - 30 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
-      ),
+      slotStart: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     },
   });
+
+  if (!providerCompletedOrder3) {
+    providerCompletedOrder3 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("jardinagem")!,
+        description:
+          "Poda das plantas e limpeza do jardim. Manutenção geral da área externa.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 1500,
+        finalPriceCents: 7500,
+        slotStart: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 dias atrás
+        slotEnd: new Date(
+          Date.now() - 30 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
+        ),
+      },
+    });
+  }
 
   await prisma.orderReview.upsert({
     where: { orderId: providerCompletedOrder3.id },
@@ -933,27 +1008,34 @@ async function main() {
     },
   });
 
-  const providerCompletedOrder4 = await prisma.order.upsert({
-    where: { id: "provider-order-completed-004" },
-    update: {},
-    create: {
-      id: "provider-order-completed-004",
-      clientId: clientUser.id,
+  let providerCompletedOrder4 = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "c0c1c609-96df-4586-aa1e-fe104467d387", // Limpeza Residencial
       description:
         "Limpeza pós-reforma. Remoção de poeira e resíduos de construção.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 3000,
-      finalPriceCents: 15000,
-      slotStart: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000), // 20 dias atrás
-      slotEnd: new Date(
-        Date.now() - 20 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000
-      ),
     },
   });
+
+  if (!providerCompletedOrder4) {
+    providerCompletedOrder4 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("limpeza-residencial")!,
+        description:
+          "Limpeza pós-reforma. Remoção de poeira e resíduos de construção.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 3000,
+        finalPriceCents: 15000,
+        slotStart: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000), // 20 dias atrás
+        slotEnd: new Date(
+          Date.now() - 20 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000
+        ),
+      },
+    });
+  }
 
   await prisma.orderReview.upsert({
     where: { orderId: providerCompletedOrder4.id },
@@ -968,26 +1050,32 @@ async function main() {
     },
   });
 
-  const providerCompletedOrder5 = await prisma.order.upsert({
-    where: { id: "provider-order-completed-005" },
-    update: {},
-    create: {
-      id: "provider-order-completed-005",
-      clientId: clientUser.id,
+  let providerCompletedOrder5 = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "498e5bc9-94b8-4121-8df4-41ae550f2d9b", // Pintor
       description: "Pintura do quarto e banheiro. Cores neutras e modernas.",
-      status: "completed",
-      depositMethod: "avg_min_20",
-      depositCents: 4000,
-      finalPriceCents: 20000,
-      slotStart: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 dias atrás
-      slotEnd: new Date(
-        Date.now() - 10 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000
-      ),
     },
   });
+
+  if (!providerCompletedOrder5) {
+    providerCompletedOrder5 = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("pintor")!,
+        description: "Pintura do quarto e banheiro. Cores neutras e modernas.",
+        status: "completed",
+        depositMethod: "avg_min_20",
+        depositCents: 4000,
+        finalPriceCents: 20000,
+        slotStart: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 dias atrás
+        slotEnd: new Date(
+          Date.now() - 10 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000
+        ),
+      },
+    });
+  }
 
   await prisma.orderReview.upsert({
     where: { orderId: providerCompletedOrder5.id },
@@ -1002,89 +1090,121 @@ async function main() {
   });
 
   // Pedido em andamento para o prestador
-  await prisma.order.upsert({
-    where: { id: "provider-order-in-progress-001" },
-    update: {},
-    create: {
-      id: "provider-order-in-progress-001",
-      clientId: clientUser.id,
+  let providerInProgressOrder = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "c0c1c609-96df-4586-aa1e-fe104467d387", // Limpeza Residencial
       description: "Limpeza semanal da casa. Manutenção geral dos ambientes.",
       status: "in_progress",
-      depositMethod: "avg_min_20",
-      depositCents: 1000,
-      finalPriceCents: 5000,
-      slotStart: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 horas no futuro
-      slotEnd: new Date(Date.now() + 2 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000),
     },
   });
 
+  if (!providerInProgressOrder) {
+    providerInProgressOrder = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("limpeza-residencial")!,
+        description: "Limpeza semanal da casa. Manutenção geral dos ambientes.",
+        status: "in_progress",
+        depositMethod: "avg_min_20",
+        depositCents: 1000,
+        finalPriceCents: 5000,
+        slotStart: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 horas no futuro
+        slotEnd: new Date(Date.now() + 2 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000),
+      },
+    });
+  }
+
   // Pedido aceito (aguardando início)
-  await prisma.order.upsert({
-    where: { id: "provider-order-accepted-001" },
-    update: {},
-    create: {
-      id: "provider-order-accepted-001",
-      clientId: clientUser.id,
+  let providerAcceptedOrder = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "63260ea8-33fc-4177-b1a3-7c5b0936ac7c", // Jardinagem
       description:
         "Poda de árvores e limpeza do jardim. Trabalho de manutenção.",
       status: "accepted",
-      depositMethod: "avg_min_20",
-      depositCents: 2000,
-      finalPriceCents: 10000,
-      slotStart: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 dia no futuro
-      slotEnd: new Date(Date.now() + 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000),
     },
   });
+
+  if (!providerAcceptedOrder) {
+    providerAcceptedOrder = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("jardinagem")!,
+        description:
+          "Poda de árvores e limpeza do jardim. Trabalho de manutenção.",
+        status: "accepted",
+        depositMethod: "avg_min_20",
+        depositCents: 2000,
+        finalPriceCents: 10000,
+        slotStart: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 dia no futuro
+        slotEnd: new Date(
+          Date.now() + 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000
+        ),
+      },
+    });
+  }
 
   // Pedido pendente (matching)
-  await prisma.order.upsert({
-    where: { id: "provider-order-pending-001" },
-    update: {},
-    create: {
-      id: "provider-order-pending-001",
-      clientId: clientUser.id,
+  let providerPendingOrder = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "498e5bc9-94b8-4121-8df4-41ae550f2d9b", // Pintor
       description: "Pintura da fachada da casa. Cores claras e modernas.",
       status: "matching",
-      depositMethod: "avg_min_20",
-      depositCents: 6000,
-      finalPriceCents: 30000,
-      slotStart: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 dias no futuro
-      slotEnd: new Date(
-        Date.now() + 3 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000
-      ),
     },
   });
 
+  if (!providerPendingOrder) {
+    providerPendingOrder = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("pintor")!,
+        description: "Pintura da fachada da casa. Cores claras e modernas.",
+        status: "matching",
+        depositMethod: "avg_min_20",
+        depositCents: 6000,
+        finalPriceCents: 30000,
+        slotStart: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 dias no futuro
+        slotEnd: new Date(
+          Date.now() + 3 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000
+        ),
+      },
+    });
+  }
+
   // Pedido cancelado pelo prestador
-  await prisma.order.upsert({
-    where: { id: "provider-order-cancelled-001" },
-    update: {},
-    create: {
-      id: "provider-order-cancelled-001",
-      clientId: clientUser.id,
+  let providerCancelledOrder = await prisma.order.findFirst({
+    where: {
       providerId: providerUser.id,
-      addressId: "address-001",
-      categoryId: "c51d56eb-60b1-4090-82e6-f572ee02de25", // Eletricista
       description: "Instalação de ventilador. Cancelado por indisponibilidade.",
       status: "cancelled",
-      depositMethod: "avg_min_20",
-      depositCents: 2000,
-      finalPriceCents: 10000,
-      slotStart: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 dias atrás
-      slotEnd: new Date(
-        Date.now() - 5 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
-      ),
     },
   });
+
+  if (!providerCancelledOrder) {
+    providerCancelledOrder = await prisma.order.create({
+      data: {
+        clientId: clientUser.id,
+        providerId: providerUser.id,
+        addressId: clientAddress.id,
+        categoryId: categoryMap.get("eletricista")!,
+        description:
+          "Instalação de ventilador. Cancelado por indisponibilidade.",
+        status: "cancelled",
+        depositMethod: "avg_min_20",
+        depositCents: 2000,
+        finalPriceCents: 10000,
+        slotStart: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 dias atrás
+        slotEnd: new Date(
+          Date.now() - 5 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000
+        ),
+      },
+    });
+  }
 
   // Atualizar perfil do prestador com dados reais
   await prisma.providerProfile.update({

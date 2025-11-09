@@ -1,122 +1,80 @@
-# Database Seed
+# Prisma Database Setup
 
-Este diretório contém os arquivos de migração e seed do banco de dados.
+Este diretório contém a configuração do Prisma ORM para o projeto.
 
-## 🚀 Como executar o seed
+## Scripts Disponíveis
 
-Para popular o banco de dados com dados iniciais, execute:
+Execute os seguintes comandos na raiz do projeto:
 
-```bash
-npm run db:seed
+- `npm run db:generate` - Gera o Prisma Client após mudanças no schema
+- `npm run db:migrate` - Cria e aplica uma nova migration (desenvolvimento)
+- `npm run db:migrate:deploy` - Aplica migrations pendentes (produção)
+- `npm run db:migrate:reset` - Reseta o banco e aplica todas as migrations do zero
+- `npm run db:migrate:status` - Verifica o status das migrations
+- `npm run db:migrate:resolve` - Resolve problemas de migration (use com --applied ou --rolled-back)
+- `npm run db:studio` - Abre o Prisma Studio para visualizar/editar dados
+- `npm run db:seed` - Executa o seed do banco de dados
+- `npm run db:encode-password` - Codifica senha com caracteres especiais para URL
+
+## Configuração Inicial
+
+### 1. Configurar DATABASE_URL
+
+Crie um arquivo `.env` na raiz do projeto com:
+
+```env
+DATABASE_URL="postgresql://usuario:senha@host:porta/banco?schema=platform"
 ```
 
-## 📊 Dados criados pelo seed
+**Importante:** Se sua senha contém caracteres especiais, veja [DATABASE_URL_SETUP.md](./DATABASE_URL_SETUP.md).
 
-### Roles
+### 2. Configurar Shadow Database (Opcional)
 
-- **ADMINISTRADOR**: Acesso total ao sistema
-- **PRESTADOR**: Prestadores de serviços
-- **CLIENTE**: Clientes que solicitam serviços
+Para resolver problemas de shadow database, adicione também:
 
-### Usuários de Exemplo
-
-#### Administrador
-
-- **Email**: `admin@flicapp.com`
-- **Senha**: `Admin@FlicApp2024!`
-- **Role**: ADMINISTRADOR
-
-### Categorias de Serviços (35 categorias)
-
-1. Vidraceiro
-2. Transporte / Frete
-3. Gesseiro
-4. Fotógrafo / Filmagem
-5. Pedreiro / Reforma
-6. Pintor
-7. Personal Trainer
-8. Beleza - Maquiagem
-9. Montador de Móveis
-10. Manutenção de Eletrodomésticos
-11. Dedetização
-12. Jardinagem
-13. Encanador
-14. Eventos - Decoração
-15. Eventos - Buffet
-16. Piscineiro
-17. Designer Gráfico
-18. Chaveiro
-19. Serralheiro
-20. Mudança / Carretos
-21. Suporte de Informática
-22. Funilaria e Pintura Automotiva
-23. Mecânico Automotivo
-24. Beleza - Cabeleireiro
-25. Limpeza Residencial
-26. Outros
-27. Eletricista
-28. Marceneiro
-29. Beleza - Manicure e Pedicure
-30. Eventos - DJ / Som
-31. Cuidador de Idosos
-32. Instalador de Ar-Condicionado
-33. Babá
-34. Professor Particular
-
-### Usuários de Exemplo
-
-#### Prestador
-
-- **Email**: `joao.prestador@flicapp.com`
-- **Senha**: `JoaoPrestador2024!`
-- **Nome**: João Silva - Prestador
-- **Especialidades**: Limpeza, Pintura, Jardinagem
-- **Disponibilidade**: Segunda a sexta, 8h às 18h
-- **Raio de atendimento**: 15km
-
-#### Cliente
-
-- **Email**: `maria.cliente@flicapp.com`
-- **Senha**: `MariaCliente2024!`
-- **Nome**: Maria Santos - Cliente
-- **Endereço**: Rua das Flores, 123 - Centro, São Paulo/SP
-
-### Regras de Recusa
-
-- **CANCEL_CLIENT_24H**: Cliente cancela com 24h+ de antecedência (100% crédito)
-- **CANCEL_CLIENT_2H**: Cliente cancela com 2h+ de antecedência (50% crédito)
-- **CANCEL_PROVIDER**: Prestador cancela (100% crédito para cliente)
-- **NO_SHOW_CLIENT**: Cliente não comparece (50% para prestador, 50% plataforma)
-
-### Pedido de Exemplo
-
-- **Cliente**: Maria Santos
-- **Serviço**: Limpeza Residencial
-- **Status**: Pendente
-- **Valor**: R$ 100,00
-- **Caução**: R$ 20,00
-- **Slots**: Manhã (9h-12h) e Tarde (14h-17h)
-
-## 🔧 Comandos Úteis
-
-```bash
-# Executar migrações
-npx prisma migrate dev
-
-# Resetar banco e executar seed
-npx prisma migrate reset
-
-# Visualizar banco no Prisma Studio
-npx prisma studio
-
-# Gerar Prisma Client
-npx prisma generate
+```env
+SHADOW_DATABASE_URL="postgresql://usuario:senha@host:porta/shadow_db?schema=platform"
 ```
 
-## 📝 Notas Importantes
+Veja [SHADOW_DATABASE_FIX.md](./SHADOW_DATABASE_FIX.md) para mais detalhes.
 
-- O seed é idempotente (pode ser executado múltiplas vezes sem duplicar dados)
-- Usa `upsert` para evitar conflitos
-- Senhas são hasheadas com bcryptjs
-- IDs são gerados automaticamente com UUID
-- Todos os dados são criados com timestamps atuais
+### 3. Gerar Prisma Client
+
+```bash
+npm run db:generate
+```
+
+### 4. Aplicar Migrations
+
+```bash
+npm run db:migrate
+```
+
+## Troubleshooting
+
+### Erro P1013: Invalid Database URL
+
+- **Causa:** Caracteres especiais na senha não codificados
+- **Solução:** Veja [DATABASE_URL_SETUP.md](./DATABASE_URL_SETUP.md)
+
+### Erro P3014: Shadow Database Error
+
+- **Causa:** Problema com template database ou permissões
+- **Solução:** Veja [SHADOW_DATABASE_FIX.md](./SHADOW_DATABASE_FIX.md)
+
+### Erro P3018: Migration Failed - Tabela Já Existe
+
+- **Causa:** Migration tentando criar tabela que já existe no banco
+- **Solução:** Veja [MIGRATION_CONFLICT_FIX.md](./MIGRATION_CONFLICT_FIX.md)
+
+## Estrutura
+
+- `schema.prisma` - Schema do banco de dados
+- `migrations/` - Histórico de migrations
+- `seed.ts` - Script de seed para dados iniciais
+
+## Documentação Adicional
+
+- [DATABASE_URL_SETUP.md](./DATABASE_URL_SETUP.md) - Como configurar DATABASE_URL com caracteres especiais
+- [SHADOW_DATABASE_FIX.md](./SHADOW_DATABASE_FIX.md) - Como resolver problemas de shadow database
+- [MIGRATION_CONFLICT_FIX.md](./MIGRATION_CONFLICT_FIX.md) - Como resolver conflitos de migration (tabela já existe)

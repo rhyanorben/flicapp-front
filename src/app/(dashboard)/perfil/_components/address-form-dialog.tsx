@@ -256,7 +256,7 @@ export function AddressFormDialog({
                     <FormLabel>Label</FormLabel>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -399,7 +399,7 @@ export function AddressFormDialog({
                     <FormLabel>Estado</FormLabel>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>

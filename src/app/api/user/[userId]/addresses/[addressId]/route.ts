@@ -7,16 +7,19 @@ const updateAddressSchema = z.object({
   label: z
     .string()
     .min(1, "Label é obrigatório")
-    .max(50, "Label deve ter no máximo 50 caracteres"),
-  cep: z.string().regex(/^\d{5}-?\d{3}$/, "CEP deve ter 8 dígitos"),
+    .max(50, "Label deve ter no máximo 50 caracteres")
+    .optional(),
+  cep: z.string().regex(/^\d{5}-?\d{3}$/, "CEP deve ter 8 dígitos").optional(),
   street: z
     .string()
     .min(1, "Rua é obrigatória")
-    .max(200, "Rua deve ter no máximo 200 caracteres"),
+    .max(200, "Rua deve ter no máximo 200 caracteres")
+    .optional(),
   number: z
     .string()
     .min(1, "Número é obrigatório")
-    .max(20, "Número deve ter no máximo 20 caracteres"),
+    .max(20, "Número deve ter no máximo 20 caracteres")
+    .optional(),
   complement: z
     .string()
     .max(100, "Complemento deve ter no máximo 100 caracteres")
@@ -24,17 +27,21 @@ const updateAddressSchema = z.object({
   neighborhood: z
     .string()
     .min(1, "Bairro é obrigatório")
-    .max(100, "Bairro deve ter no máximo 100 caracteres"),
+    .max(100, "Bairro deve ter no máximo 100 caracteres")
+    .optional(),
   city: z
     .string()
     .min(1, "Cidade é obrigatória")
-    .max(100, "Cidade deve ter no máximo 100 caracteres"),
+    .max(100, "Cidade deve ter no máximo 100 caracteres")
+    .optional(),
   state: z
     .string()
     .min(2, "Estado é obrigatório")
-    .max(2, "Estado deve ter 2 caracteres"),
+    .max(2, "Estado deve ter 2 caracteres")
+    .optional(),
   lat: z.number().optional(),
   lon: z.number().optional(),
+  active: z.boolean().optional(),
 });
 
 export async function PATCH(
@@ -93,6 +100,7 @@ export async function PATCH(
         state: true,
         lat: true,
         lon: true,
+        active: true,
         createdAt: true,
       },
     });

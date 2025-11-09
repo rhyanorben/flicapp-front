@@ -90,6 +90,10 @@ export function buildNavigation(
           url: "/agenda",
         },
         {
+          title: "Endereços de Serviço",
+          url: "/enderecos-servico",
+        },
+        {
           title: "Relatórios",
           url: "/relatorios",
         },

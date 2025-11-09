@@ -19,6 +19,7 @@ export interface AddressData {
   state: string | null;
   lat: number | null;
   lon: number | null;
+  active: boolean;
   createdAt: string;
 }
 
@@ -33,6 +34,7 @@ export interface CreateAddressData {
   state: string;
   lat?: number;
   lon?: number;
+  active?: boolean;
 }
 
 export interface UpdateProfileData {
@@ -41,7 +43,9 @@ export interface UpdateProfileData {
   cpf?: string;
 }
 
-export interface UpdateAddressData extends CreateAddressData {}
+export interface UpdateAddressData extends CreateAddressData {
+  active?: boolean;
+}
 
 export interface ProfileFormData {
   name: string;

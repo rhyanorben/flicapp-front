@@ -218,6 +218,7 @@ exports.Prisma.AddressScalarFieldEnum = {
   state: 'state',
   lat: 'lat',
   lon: 'lon',
+  active: 'active',
   createdAt: 'createdAt'
 };
 
