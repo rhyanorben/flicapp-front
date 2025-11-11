@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UsersTable } from "./_components/users-table";
 import { useUsers } from "@/lib/queries/users";
 
 function GerenciarUsuariosTable() {
   const router = useRouter();
-  const { data: users, isLoading, error, refetch } = useUsers();
+  const [roleFilter, setRoleFilter] = useState<string>("todos");
+  const { data: users, isLoading, error, refetch } = useUsers(roleFilter);
 
   // Handle 403 redirect
   if (error?.message === "Acesso negado") {
@@ -17,11 +19,21 @@ function GerenciarUsuariosTable() {
     refetch();
   };
 
+  const handleFilterChange = (filter: string) => {
+    setRoleFilter(filter);
+  };
+
   if (isLoading) {
     return <GerenciarUsuariosTableSkeleton />;
   }
 
-  return <UsersTable users={users || []} onUserUpdate={handleUserUpdate} />;
+  return (
+    <UsersTable
+      users={users || []}
+      onUserUpdate={handleUserUpdate}
+      onFilterChange={handleFilterChange}
+    />
+  );
 }
 
 function GerenciarUsuariosTableSkeleton() {

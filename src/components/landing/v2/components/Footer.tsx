@@ -13,12 +13,12 @@ export function Footer() {
             <div className="flex items-center gap-2">
               <Image
                 src="/flicapp_logo.png"
-                alt="FlicAPP Logo"
+                alt="FlicApp Logo"
                 width={32}
                 height={32}
                 className="rounded"
               />
-              <span className="text-lg font-semibold">FlicAPP</span>
+              <span className="text-lg font-semibold">FlicApp</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Marketplace que conecta você aos melhores prestadores de serviço
@@ -43,7 +43,7 @@ export function Footer() {
                   href="#problemas"
                   className="text-muted-foreground hover:text-foreground"
                 >
-                  Por que FlicAPP
+                  Por que FlicApp
                 </Link>
               </li>
               <li>
@@ -120,7 +120,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t pt-8 sm:flex-row">
           <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} FlicAPP - Todos os direitos reservados.
+            © {new Date().getFullYear()} FlicApp - Todos os direitos reservados.
           </div>
           <div className="flex items-center gap-4">
             <Link

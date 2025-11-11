@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="text-sm text-muted-foreground">
-            © 2025 FlicAPP - Todos os direitos reservados.
+            © 2025 FlicApp - Todos os direitos reservados.
           </div>
           <div className="flex items-center gap-4 text-muted-foreground">
             <Link

@@ -2,7 +2,16 @@
 
 import { useState, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
-import { User, Mail, Calendar, Shield, Eye } from "lucide-react";
+import {
+  User,
+  Mail,
+  Calendar,
+  Shield,
+  Eye,
+  Star,
+  MapPin,
+  Package,
+} from "lucide-react";
 import { UserRole } from "@/app/generated/prisma";
 import { UserDetailsDialog } from "./user-details-dialog";
 import {
@@ -11,22 +20,21 @@ import {
   TableAction,
 } from "@/components/ui/generic-table";
 import { DetailModalSection } from "@/components/ui/detail-modal";
+import type { User as UserType, ProviderSummary } from "@/lib/api/users";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  image: string | null;
-  createdAt: string;
-  roles: UserRole[];
-}
+interface User extends UserType {}
 
 interface UsersTableProps {
   users: User[];
   onUserUpdate: () => void;
+  onFilterChange?: (filter: string) => void;
 }
 
-export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
+export function UsersTable({
+  users,
+  onUserUpdate,
+  onFilterChange,
+}: UsersTableProps) {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -107,6 +115,58 @@ export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
           return (
             <div className="flex gap-1 flex-wrap">
               {getRoleBadges(user.roles)}
+            </div>
+          );
+        },
+      },
+      {
+        key: "providerInfo",
+        label: "Info Prestador",
+        render: (value: unknown, row: Record<string, unknown>) => {
+          const user = row as unknown as User;
+          if (!user.providerSummary) {
+            return (
+              <span className="text-sm text-muted-foreground">—</span>
+            );
+          }
+          const summary = user.providerSummary;
+          return (
+            <div className="space-y-1.5">
+              {summary.hasProfile ? (
+                <div className="flex items-center gap-2 text-sm">
+                  <Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
+                  <span className="font-medium">
+                    {summary.avgRating.toFixed(1)}
+                  </span>
+                  <span className="text-muted-foreground text-xs">
+                    ({summary.totalReviews})
+                  </span>
+                </div>
+              ) : (
+                <Badge
+                  variant="outline"
+                  className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-800 text-xs"
+                >
+                  Sem perfil
+                </Badge>
+              )}
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <Package className="h-3 w-3" />
+                  <span>{summary.categoriesCount} cat.</span>
+                </div>
+                {summary.hasActiveAddress ? (
+                  <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
+                    <MapPin className="h-3 w-3" />
+                    <span>Endereço</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
+                    <MapPin className="h-3 w-3" />
+                    <span>Sem endereço</span>
+                  </div>
+                )}
+              </div>
             </div>
           );
         },
@@ -200,6 +260,9 @@ export function UsersTable({ users, onUserUpdate }: UsersTableProps) {
           { value: "PRESTADOR", label: "Prestador" },
           { value: "CLIENTE", label: "Cliente" },
         ]}
+        onFilter={(value) => {
+          onFilterChange?.(value);
+        }}
         onRowClick={(row) => {
           const user = row as unknown as User;
           handleViewUser(user);

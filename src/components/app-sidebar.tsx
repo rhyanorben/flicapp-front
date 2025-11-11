@@ -56,12 +56,12 @@ export function AppSidebar({
       <SidebarHeader>
         <div className="flex items-center justify-between p-2">
           {/* <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">
-            FlicAPP
+            FlicApp
           </span> */}
           <Link href="/dashboard">
             <Image
               src="/logo-flicapp-horizontal.png"
-              alt="FlicAPP"
+              alt="FlicApp"
               className="group-data-[collapsible=icon]:hidden"
               width={170}
               height={40}

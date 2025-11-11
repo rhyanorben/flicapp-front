@@ -54,7 +54,7 @@ export function ValueProps() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            A virada: FlicAPP
+            A virada: FlicApp
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Tudo que você precisa para encontrar e contratar serviços com

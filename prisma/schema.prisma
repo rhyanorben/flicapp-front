@@ -67,7 +67,7 @@ model Role {
 }
 
 model UserRoleAssignment {
-  id        String   @id @default(cuid())
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
   userId    String
   roleId    String
   createdAt DateTime @default(now())
@@ -75,7 +75,7 @@ model UserRoleAssignment {
   role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, roleId])
+  @@unique([userId, roleId], map: "ux_ura_user_role")
   @@map("user_role_assignment")
 }
 
@@ -322,7 +322,7 @@ model OrderCategory {
 model OrderInvitation {
   id              String    @id @default(dbgenerated("gen_random_uuid()"))
   orderId         String
-  providerId      String
+  providerId      String?
   slotId          String?
   score           Decimal?
   sentAt          DateTime  @default(now())
@@ -336,7 +336,7 @@ model OrderInvitation {
   meta            Json?
   
   order           Order     @relation(fields: [orderId], references: [id])
-  provider        User      @relation(fields: [providerId], references: [id])
+  provider        User?     @relation(fields: [providerId], references: [id])
   slot            OrderSlot? @relation(fields: [slotId], references: [id])
 
   @@unique([orderId, providerId])

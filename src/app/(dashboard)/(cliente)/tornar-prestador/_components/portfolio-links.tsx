@@ -116,6 +116,9 @@ export function PortfolioLinks({
                     disabled={disabled}
                     maxLength={50}
                   />
+                  <div className="text-xs text-muted-foreground">
+                    {newLink.title.length}/50 caracteres
+                  </div>
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-muted-foreground">
@@ -130,6 +133,9 @@ export function PortfolioLinks({
                     disabled={disabled}
                     maxLength={200}
                   />
+                  <div className="text-xs text-muted-foreground">
+                    {newLink.url.length}/200 caracteres
+                  </div>
                 </div>
               </div>
               <Button
@@ -173,6 +179,9 @@ export function PortfolioLinks({
                           disabled={disabled}
                           maxLength={50}
                         />
+                        <div className="text-xs text-muted-foreground">
+                          {editLink.title.length}/50 caracteres
+                        </div>
                       </div>
                       <div className="space-y-1">
                         <label className="text-xs font-medium text-muted-foreground">
@@ -186,6 +195,9 @@ export function PortfolioLinks({
                           disabled={disabled}
                           maxLength={200}
                         />
+                        <div className="text-xs text-muted-foreground">
+                          {editLink.url.length}/200 caracteres
+                        </div>
                       </div>
                     </div>
                     <div className="flex gap-2">

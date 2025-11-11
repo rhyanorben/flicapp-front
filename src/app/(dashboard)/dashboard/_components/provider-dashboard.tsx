@@ -39,6 +39,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, User } from "lucide-react";
 import { useProviderDashboard } from "@/hooks/use-dashboard-data";
+import { ProviderStatusCard } from "./provider-status-card";
 
 export function ProviderDashboard() {
   const { data, isLoading, error } = useProviderDashboard();
@@ -59,6 +60,9 @@ export function ProviderDashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Provider Status Card */}
+      <ProviderStatusCard />
+
       {/* Filter Bar */}
       <DashboardFilters />
 

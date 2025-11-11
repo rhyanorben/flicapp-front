@@ -39,7 +39,7 @@ export function FAQ() {
             Perguntas frequentes
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Tire suas dúvidas sobre a FlicAPP
+            Tire suas dúvidas sobre a FlicApp
           </p>
         </motion.div>
 

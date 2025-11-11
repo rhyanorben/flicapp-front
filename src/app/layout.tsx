@@ -11,7 +11,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "FlicAPP - Encontre serviços confiáveis em minutos",
+  title: "FlicApp - Encontre serviços confiáveis em minutos",
   description:
     "Marketplace que conecta você a prestadores verificados. Matching inteligente, chat integrado e pagamento seguro. Resolva seus problemas hoje.",
   keywords: [
@@ -21,19 +21,19 @@ export const metadata: Metadata = {
     "serviços locais",
     "matching inteligente",
   ],
-  authors: [{ name: "FlicAPP" }],
+  authors: [{ name: "FlicApp" }],
   openGraph: {
     type: "website",
     locale: "pt_BR",
     url: "https://flicapp.com.br",
-    title: "FlicAPP - Encontre serviços confiáveis em minutos",
+    title: "FlicApp - Encontre serviços confiáveis em minutos",
     description:
       "Marketplace que conecta você a prestadores verificados. Matching inteligente, chat integrado e pagamento seguro.",
-    siteName: "FlicAPP",
+    siteName: "FlicApp",
   },
   twitter: {
     card: "summary_large_image",
-    title: "FlicAPP - Encontre serviços confiáveis em minutos",
+    title: "FlicApp - Encontre serviços confiáveis em minutos",
     description:
       "Marketplace que conecta você a prestadores verificados. Matching inteligente, chat integrado e pagamento seguro.",
   },
@@ -61,14 +61,14 @@ export default function RootLayout({
         "@type": "WebSite",
         "@id": "https://flicapp.com.br/#website",
         url: "https://flicapp.com.br",
-        name: "FlicAPP",
+        name: "FlicApp",
         description:
           "Marketplace que conecta clientes a prestadores de serviço locais",
       },
       {
         "@type": "Organization",
         "@id": "https://flicapp.com.br/#organization",
-        name: "FlicAPP",
+        name: "FlicApp",
         url: "https://flicapp.com.br",
         logo: {
           "@type": "ImageObject",
@@ -77,12 +77,12 @@ export default function RootLayout({
       },
       {
         "@type": "Product",
-        name: "FlicAPP Marketplace",
+        name: "FlicApp Marketplace",
         description:
           "Plataforma de marketplace para conectar clientes e prestadores de serviços",
         brand: {
           "@type": "Brand",
-          name: "FlicAPP",
+          name: "FlicApp",
         },
         aggregateRating: {
           "@type": "AggregateRating",

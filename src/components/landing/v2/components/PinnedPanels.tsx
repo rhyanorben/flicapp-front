@@ -175,7 +175,7 @@ export function PinnedPanels() {
         {/* CTA para próxima seção */}
         <div className="mt-24 text-center">
           <p className="text-muted-foreground mb-4">
-            Esses problemas são do passado com a FlicAPP
+            Esses problemas são do passado com a FlicApp
           </p>
           <a
             href="#a-virada"

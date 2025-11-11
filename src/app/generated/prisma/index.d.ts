@@ -21715,7 +21715,7 @@ export namespace Prisma {
   export type OrderInvitationGroupByOutputType = {
     id: string
     orderId: string
-    providerId: string
+    providerId: string | null
     slotId: string | null
     score: Decimal | null
     sentAt: Date
@@ -21764,7 +21764,7 @@ export namespace Prisma {
     expiresAt?: boolean
     meta?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
-    provider?: boolean | UserDefaultArgs<ExtArgs>
+    provider?: boolean | OrderInvitation$providerArgs<ExtArgs>
     slot?: boolean | OrderInvitation$slotArgs<ExtArgs>
   }, ExtArgs["result"]["orderInvitation"]>
 
@@ -21784,7 +21784,7 @@ export namespace Prisma {
     expiresAt?: boolean
     meta?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
-    provider?: boolean | UserDefaultArgs<ExtArgs>
+    provider?: boolean | OrderInvitation$providerArgs<ExtArgs>
     slot?: boolean | OrderInvitation$slotArgs<ExtArgs>
   }, ExtArgs["result"]["orderInvitation"]>
 
@@ -21804,7 +21804,7 @@ export namespace Prisma {
     expiresAt?: boolean
     meta?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
-    provider?: boolean | UserDefaultArgs<ExtArgs>
+    provider?: boolean | OrderInvitation$providerArgs<ExtArgs>
     slot?: boolean | OrderInvitation$slotArgs<ExtArgs>
   }, ExtArgs["result"]["orderInvitation"]>
 
@@ -21828,17 +21828,17 @@ export namespace Prisma {
   export type OrderInvitationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "providerId" | "slotId" | "score" | "sentAt" | "respondedAt" | "response" | "waMessageId" | "waRemoteJid" | "categorySlug" | "status" | "expiresAt" | "meta", ExtArgs["result"]["orderInvitation"]>
   export type OrderInvitationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
-    provider?: boolean | UserDefaultArgs<ExtArgs>
+    provider?: boolean | OrderInvitation$providerArgs<ExtArgs>
     slot?: boolean | OrderInvitation$slotArgs<ExtArgs>
   }
   export type OrderInvitationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
-    provider?: boolean | UserDefaultArgs<ExtArgs>
+    provider?: boolean | OrderInvitation$providerArgs<ExtArgs>
     slot?: boolean | OrderInvitation$slotArgs<ExtArgs>
   }
   export type OrderInvitationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
-    provider?: boolean | UserDefaultArgs<ExtArgs>
+    provider?: boolean | OrderInvitation$providerArgs<ExtArgs>
     slot?: boolean | OrderInvitation$slotArgs<ExtArgs>
   }
 
@@ -21846,13 +21846,13 @@ export namespace Prisma {
     name: "OrderInvitation"
     objects: {
       order: Prisma.$OrderPayload<ExtArgs>
-      provider: Prisma.$UserPayload<ExtArgs>
+      provider: Prisma.$UserPayload<ExtArgs> | null
       slot: Prisma.$OrderSlotPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orderId: string
-      providerId: string
+      providerId: string | null
       slotId: string | null
       score: Prisma.Decimal | null
       sentAt: Date
@@ -22259,7 +22259,7 @@ export namespace Prisma {
   export interface Prisma__OrderInvitationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    provider<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    provider<T extends OrderInvitation$providerArgs<ExtArgs> = {}>(args?: Subset<T, OrderInvitation$providerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     slot<T extends OrderInvitation$slotArgs<ExtArgs> = {}>(args?: Subset<T, OrderInvitation$slotArgs<ExtArgs>>): Prisma__OrderSlotClient<$Result.GetResult<Prisma.$OrderSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -22697,6 +22697,25 @@ export namespace Prisma {
      * Limit how many OrderInvitations to delete.
      */
     limit?: number
+  }
+
+  /**
+   * OrderInvitation.provider
+   */
+  export type OrderInvitation$providerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -34640,6 +34659,7 @@ export namespace Prisma {
     id?: string
     email?: string
     phoneE164?: string
+    cpf?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -34648,7 +34668,6 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     role?: StringNullableFilter<"User"> | string | null
     whatsappId?: StringNullableFilter<"User"> | string | null
-    cpf?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
@@ -34669,7 +34688,7 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewListRelationFilter
     orderStatusHistory?: OrderStatusHistoryListRelationFilter
     matchScores?: MatchScoreListRelationFilter
-  }, "id" | "email" | "phoneE164">
+  }, "id" | "email" | "phoneE164" | "cpf">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -35815,7 +35834,7 @@ export namespace Prisma {
     NOT?: OrderInvitationWhereInput | OrderInvitationWhereInput[]
     id?: StringFilter<"OrderInvitation"> | string
     orderId?: StringFilter<"OrderInvitation"> | string
-    providerId?: StringFilter<"OrderInvitation"> | string
+    providerId?: StringNullableFilter<"OrderInvitation"> | string | null
     slotId?: StringNullableFilter<"OrderInvitation"> | string | null
     score?: DecimalNullableFilter<"OrderInvitation"> | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFilter<"OrderInvitation"> | Date | string
@@ -35828,14 +35847,14 @@ export namespace Prisma {
     expiresAt?: DateTimeNullableFilter<"OrderInvitation"> | Date | string | null
     meta?: JsonNullableFilter<"OrderInvitation">
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
-    provider?: XOR<UserScalarRelationFilter, UserWhereInput>
+    provider?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     slot?: XOR<OrderSlotNullableScalarRelationFilter, OrderSlotWhereInput> | null
   }
 
   export type OrderInvitationOrderByWithRelationInput = {
     id?: SortOrder
     orderId?: SortOrder
-    providerId?: SortOrder
+    providerId?: SortOrderInput | SortOrder
     slotId?: SortOrderInput | SortOrder
     score?: SortOrderInput | SortOrder
     sentAt?: SortOrder
@@ -35860,7 +35879,7 @@ export namespace Prisma {
     OR?: OrderInvitationWhereInput[]
     NOT?: OrderInvitationWhereInput | OrderInvitationWhereInput[]
     orderId?: StringFilter<"OrderInvitation"> | string
-    providerId?: StringFilter<"OrderInvitation"> | string
+    providerId?: StringNullableFilter<"OrderInvitation"> | string | null
     slotId?: StringNullableFilter<"OrderInvitation"> | string | null
     score?: DecimalNullableFilter<"OrderInvitation"> | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFilter<"OrderInvitation"> | Date | string
@@ -35872,14 +35891,14 @@ export namespace Prisma {
     expiresAt?: DateTimeNullableFilter<"OrderInvitation"> | Date | string | null
     meta?: JsonNullableFilter<"OrderInvitation">
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
-    provider?: XOR<UserScalarRelationFilter, UserWhereInput>
+    provider?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     slot?: XOR<OrderSlotNullableScalarRelationFilter, OrderSlotWhereInput> | null
   }, "id" | "waMessageId" | "orderId_providerId">
 
   export type OrderInvitationOrderByWithAggregationInput = {
     id?: SortOrder
     orderId?: SortOrder
-    providerId?: SortOrder
+    providerId?: SortOrderInput | SortOrder
     slotId?: SortOrderInput | SortOrder
     score?: SortOrderInput | SortOrder
     sentAt?: SortOrder
@@ -35904,7 +35923,7 @@ export namespace Prisma {
     NOT?: OrderInvitationScalarWhereWithAggregatesInput | OrderInvitationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"OrderInvitation"> | string
     orderId?: StringWithAggregatesFilter<"OrderInvitation"> | string
-    providerId?: StringWithAggregatesFilter<"OrderInvitation"> | string
+    providerId?: StringNullableWithAggregatesFilter<"OrderInvitation"> | string | null
     slotId?: StringNullableWithAggregatesFilter<"OrderInvitation"> | string | null
     score?: DecimalNullableWithAggregatesFilter<"OrderInvitation"> | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeWithAggregatesFilter<"OrderInvitation"> | Date | string
@@ -37988,14 +38007,14 @@ export namespace Prisma {
     expiresAt?: Date | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
     order: OrderCreateNestedOneWithoutOrderInvitationsInput
-    provider: UserCreateNestedOneWithoutOrderInvitationsInput
+    provider?: UserCreateNestedOneWithoutOrderInvitationsInput
     slot?: OrderSlotCreateNestedOneWithoutInvitationsInput
   }
 
   export type OrderInvitationUncheckedCreateInput = {
     id?: string
     orderId: string
-    providerId: string
+    providerId?: string | null
     slotId?: string | null
     score?: Decimal | DecimalJsLike | number | string | null
     sentAt?: Date | string
@@ -38022,14 +38041,14 @@ export namespace Prisma {
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
     order?: OrderUpdateOneRequiredWithoutOrderInvitationsNestedInput
-    provider?: UserUpdateOneRequiredWithoutOrderInvitationsNestedInput
+    provider?: UserUpdateOneWithoutOrderInvitationsNestedInput
     slot?: OrderSlotUpdateOneWithoutInvitationsNestedInput
   }
 
   export type OrderInvitationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
+    providerId?: NullableStringFieldUpdateOperationsInput | string | null
     slotId?: NullableStringFieldUpdateOperationsInput | string | null
     score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38046,7 +38065,7 @@ export namespace Prisma {
   export type OrderInvitationCreateManyInput = {
     id?: string
     orderId: string
-    providerId: string
+    providerId?: string | null
     slotId?: string | null
     score?: Decimal | DecimalJsLike | number | string | null
     sentAt?: Date | string
@@ -38077,7 +38096,7 @@ export namespace Prisma {
   export type OrderInvitationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
+    providerId?: NullableStringFieldUpdateOperationsInput | string | null
     slotId?: NullableStringFieldUpdateOperationsInput | string | null
     score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42348,10 +42367,12 @@ export namespace Prisma {
     update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutOrderInvitationsInput, OrderUpdateWithoutOrderInvitationsInput>, OrderUncheckedUpdateWithoutOrderInvitationsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutOrderInvitationsNestedInput = {
+  export type UserUpdateOneWithoutOrderInvitationsNestedInput = {
     create?: XOR<UserCreateWithoutOrderInvitationsInput, UserUncheckedCreateWithoutOrderInvitationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutOrderInvitationsInput
     upsert?: UserUpsertWithoutOrderInvitationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrderInvitationsInput, UserUpdateWithoutOrderInvitationsInput>, UserUncheckedUpdateWithoutOrderInvitationsInput>
   }
@@ -44099,7 +44120,7 @@ export namespace Prisma {
     NOT?: OrderInvitationScalarWhereInput | OrderInvitationScalarWhereInput[]
     id?: StringFilter<"OrderInvitation"> | string
     orderId?: StringFilter<"OrderInvitation"> | string
-    providerId?: StringFilter<"OrderInvitation"> | string
+    providerId?: StringNullableFilter<"OrderInvitation"> | string | null
     slotId?: StringNullableFilter<"OrderInvitation"> | string | null
     score?: DecimalNullableFilter<"OrderInvitation"> | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFilter<"OrderInvitation"> | Date | string
@@ -46150,13 +46171,13 @@ export namespace Prisma {
     status?: string | null
     expiresAt?: Date | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
-    provider: UserCreateNestedOneWithoutOrderInvitationsInput
+    provider?: UserCreateNestedOneWithoutOrderInvitationsInput
     slot?: OrderSlotCreateNestedOneWithoutInvitationsInput
   }
 
   export type OrderInvitationUncheckedCreateWithoutOrderInput = {
     id?: string
-    providerId: string
+    providerId?: string | null
     slotId?: string | null
     score?: Decimal | DecimalJsLike | number | string | null
     sentAt?: Date | string
@@ -47006,13 +47027,13 @@ export namespace Prisma {
     expiresAt?: Date | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
     order: OrderCreateNestedOneWithoutOrderInvitationsInput
-    provider: UserCreateNestedOneWithoutOrderInvitationsInput
+    provider?: UserCreateNestedOneWithoutOrderInvitationsInput
   }
 
   export type OrderInvitationUncheckedCreateWithoutSlotInput = {
     id?: string
     orderId: string
-    providerId: string
+    providerId?: string | null
     score?: Decimal | DecimalJsLike | number | string | null
     sentAt?: Date | string
     respondedAt?: Date | string | null
@@ -51035,7 +51056,7 @@ export namespace Prisma {
 
   export type OrderInvitationCreateManyOrderInput = {
     id?: string
-    providerId: string
+    providerId?: string | null
     slotId?: string | null
     score?: Decimal | DecimalJsLike | number | string | null
     sentAt?: Date | string
@@ -51164,13 +51185,13 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
-    provider?: UserUpdateOneRequiredWithoutOrderInvitationsNestedInput
+    provider?: UserUpdateOneWithoutOrderInvitationsNestedInput
     slot?: OrderSlotUpdateOneWithoutInvitationsNestedInput
   }
 
   export type OrderInvitationUncheckedUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
+    providerId?: NullableStringFieldUpdateOperationsInput | string | null
     slotId?: NullableStringFieldUpdateOperationsInput | string | null
     score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -51186,7 +51207,7 @@ export namespace Prisma {
 
   export type OrderInvitationUncheckedUpdateManyWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
+    providerId?: NullableStringFieldUpdateOperationsInput | string | null
     slotId?: NullableStringFieldUpdateOperationsInput | string | null
     score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -51373,7 +51394,7 @@ export namespace Prisma {
   export type OrderInvitationCreateManySlotInput = {
     id?: string
     orderId: string
-    providerId: string
+    providerId?: string | null
     score?: Decimal | DecimalJsLike | number | string | null
     sentAt?: Date | string
     respondedAt?: Date | string | null
@@ -51399,13 +51420,13 @@ export namespace Prisma {
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     meta?: NullableJsonNullValueInput | InputJsonValue
     order?: OrderUpdateOneRequiredWithoutOrderInvitationsNestedInput
-    provider?: UserUpdateOneRequiredWithoutOrderInvitationsNestedInput
+    provider?: UserUpdateOneWithoutOrderInvitationsNestedInput
   }
 
   export type OrderInvitationUncheckedUpdateWithoutSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
+    providerId?: NullableStringFieldUpdateOperationsInput | string | null
     score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
     respondedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -51421,7 +51442,7 @@ export namespace Prisma {
   export type OrderInvitationUncheckedUpdateManyWithoutSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
-    providerId?: StringFieldUpdateOperationsInput | string
+    providerId?: NullableStringFieldUpdateOperationsInput | string | null
     score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
     respondedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
