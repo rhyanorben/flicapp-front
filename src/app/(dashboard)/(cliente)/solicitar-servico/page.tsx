@@ -1,4 +1,4 @@
-import { ServiceRequestForm } from "./_components/service-request-form";
+import { WhatsAppServiceRequest } from "./_components/whatsapp-service-request";
 
 export default function SolicitarServicoPage() {
   return (
@@ -9,10 +9,10 @@ export default function SolicitarServicoPage() {
             Solicitar Serviço
           </h1>
           <p className="text-muted-foreground">
-            Preencha o formulário abaixo para solicitar um serviço
+            Descreva o serviço que você precisa e gere um link do WhatsApp
           </p>
         </div>
-        <ServiceRequestForm />
+        <WhatsAppServiceRequest />
       </div>
     </div>
   );

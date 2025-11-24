@@ -13,11 +13,72 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Get query parameters
+    const { searchParams } = new URL(request.url);
+    const period = searchParams.get("period");
+    const status = searchParams.get("status");
+    const dateFromParam = searchParams.get("dateFrom");
+    const dateToParam = searchParams.get("dateTo");
+
+    // Build date filter based on period or custom date range
+    let dateFilter: { gte?: Date; lte?: Date } | undefined = undefined;
+    
+    if (dateFromParam || dateToParam) {
+      // Custom date range
+      dateFilter = {};
+      if (dateFromParam) {
+        dateFilter.gte = new Date(dateFromParam);
+      }
+      if (dateToParam) {
+        const toDate = new Date(dateToParam);
+        // Set to end of day
+        toDate.setHours(23, 59, 59, 999);
+        dateFilter.lte = toDate;
+      }
+    } else if (period) {
+      // Predefined period
+      const now = new Date();
+      let startDate: Date;
+      
+      switch (period) {
+        case "7d":
+          startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+          dateFilter = { gte: startDate };
+          break;
+        case "30d":
+          startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+          dateFilter = { gte: startDate };
+          break;
+        case "90d":
+          startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+          dateFilter = { gte: startDate };
+          break;
+      }
+    }
+
+    // Build where clause
+    const where: any = {
+      clientId: session.user.id,
+    };
+
+    if (dateFilter) {
+      where.createdAt = dateFilter;
+    }
+
+    if (status && status !== "all") {
+      // Map status values to order statuses
+      const statusMap: Record<string, string> = {
+        pending: "matching",
+        approved: "accepted",
+        rejected: "cancelled",
+      };
+      const mappedStatus = statusMap[status] || status;
+      where.status = mappedStatus;
+    }
+
     // Get user's orders with relations
     const orders = await prisma.order.findMany({
-      where: {
-        clientId: session.user.id,
-      },
+      where,
       include: {
         category: {
           select: {
@@ -65,11 +126,30 @@ export async function GET(request: NextRequest) {
       (order) => order.status === "completed" && !order.orderReview
     ).length;
 
-    // Calculate monthly requests for the last 6 months
+    // Calculate monthly requests - use filtered orders
     const currentDate = new Date();
     const monthlyRequests: Record<string, number> = {};
 
-    for (let i = 5; i >= 0; i--) {
+    // Determine range based on filters or default to 6 months
+    let monthsToShow = 6;
+    let startDate = new Date();
+    
+    if (dateFilter?.gte) {
+      startDate = dateFilter.gte;
+      const monthsDiff = (currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
+      monthsToShow = Math.min(Math.ceil(monthsDiff) + 1, 12);
+    } else if (period === "7d") {
+      monthsToShow = 1;
+      startDate = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    } else if (period === "30d") {
+      monthsToShow = 1;
+      startDate = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+    } else if (period === "90d") {
+      monthsToShow = 3;
+      startDate = new Date(currentDate.getTime() - 90 * 24 * 60 * 60 * 1000);
+    }
+
+    for (let i = monthsToShow - 1; i >= 0; i--) {
       const date = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth() - i,
@@ -84,12 +164,14 @@ export async function GET(request: NextRequest) {
 
     orders.forEach((order) => {
       const orderDate = new Date(order.createdAt);
-      const monthKey = orderDate.toLocaleDateString("pt-BR", {
-        month: "short",
-        year: "2-digit",
-      });
-      if (monthlyRequests.hasOwnProperty(monthKey)) {
-        monthlyRequests[monthKey]++;
+      if (orderDate >= startDate) {
+        const monthKey = orderDate.toLocaleDateString("pt-BR", {
+          month: "short",
+          year: "2-digit",
+        });
+        if (monthlyRequests.hasOwnProperty(monthKey)) {
+          monthlyRequests[monthKey]++;
+        }
       }
     });
 

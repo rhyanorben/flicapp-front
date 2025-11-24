@@ -110,12 +110,28 @@ interface ProviderDashboardData {
   };
 }
 
+interface DashboardFilters {
+  period?: string;
+  status?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
+}
+
 // Admin Dashboard Hook
-export const useAdminDashboard = () => {
+export const useAdminDashboard = (filters?: DashboardFilters) => {
   return useQuery<AdminDashboardData, Error>({
-    queryKey: ["adminDashboard"],
+    queryKey: ["adminDashboard", filters],
     queryFn: async () => {
-      const response = await fetch("/api/dashboard/admin");
+      const params = new URLSearchParams();
+      if (filters?.period) params.append("period", filters.period);
+      if (filters?.status) params.append("status", filters.status);
+      if (filters?.dateFrom) params.append("dateFrom", filters.dateFrom.toISOString());
+      if (filters?.dateTo) params.append("dateTo", filters.dateTo.toISOString());
+      
+      const queryString = params.toString();
+      const url = `/api/dashboard/admin${queryString ? `?${queryString}` : ""}`;
+      
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch admin dashboard data");
       }
@@ -126,11 +142,20 @@ export const useAdminDashboard = () => {
 };
 
 // Client Dashboard Hook
-export const useClientDashboard = () => {
+export const useClientDashboard = (filters?: DashboardFilters) => {
   return useQuery<ClientDashboardData, Error>({
-    queryKey: ["clientDashboard"],
+    queryKey: ["clientDashboard", filters],
     queryFn: async () => {
-      const response = await fetch("/api/dashboard/client");
+      const params = new URLSearchParams();
+      if (filters?.period) params.append("period", filters.period);
+      if (filters?.status) params.append("status", filters.status);
+      if (filters?.dateFrom) params.append("dateFrom", filters.dateFrom.toISOString());
+      if (filters?.dateTo) params.append("dateTo", filters.dateTo.toISOString());
+      
+      const queryString = params.toString();
+      const url = `/api/dashboard/client${queryString ? `?${queryString}` : ""}`;
+      
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch client dashboard data");
       }
@@ -141,11 +166,20 @@ export const useClientDashboard = () => {
 };
 
 // Provider Dashboard Hook
-export const useProviderDashboard = () => {
+export const useProviderDashboard = (filters?: DashboardFilters) => {
   return useQuery<ProviderDashboardData, Error>({
-    queryKey: ["providerDashboard"],
+    queryKey: ["providerDashboard", filters],
     queryFn: async () => {
-      const response = await fetch("/api/dashboard/provider");
+      const params = new URLSearchParams();
+      if (filters?.period) params.append("period", filters.period);
+      if (filters?.status) params.append("status", filters.status);
+      if (filters?.dateFrom) params.append("dateFrom", filters.dateFrom.toISOString());
+      if (filters?.dateTo) params.append("dateTo", filters.dateTo.toISOString());
+      
+      const queryString = params.toString();
+      const url = `/api/dashboard/provider${queryString ? `?${queryString}` : ""}`;
+      
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch provider dashboard data");
       }
