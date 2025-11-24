@@ -12,27 +12,86 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Get query parameters
+    const { searchParams } = new URL(req.url);
+    const period = searchParams.get("period");
+    const status = searchParams.get("status");
+    const dateFromParam = searchParams.get("dateFrom");
+    const dateToParam = searchParams.get("dateTo");
+
     const providerId = session.user.id;
+
+    // Build date filter based on period or custom date range
+    let dateFilter: { gte?: Date; lte?: Date } | undefined = undefined;
+    
+    if (dateFromParam || dateToParam) {
+      // Custom date range
+      dateFilter = {};
+      if (dateFromParam) {
+        dateFilter.gte = new Date(dateFromParam);
+      }
+      if (dateToParam) {
+        const toDate = new Date(dateToParam);
+        toDate.setHours(23, 59, 59, 999);
+        dateFilter.lte = toDate;
+      }
+    } else if (period) {
+      // Predefined period
+      const now = new Date();
+      let startDate: Date;
+      
+      switch (period) {
+        case "7d":
+          startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+          dateFilter = { gte: startDate };
+          break;
+        case "30d":
+          startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+          dateFilter = { gte: startDate };
+          break;
+        case "90d":
+          startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+          dateFilter = { gte: startDate };
+          break;
+      }
+    }
+
+    // Build base where clause
+    const baseWhere: any = { providerId };
+    
+    if (dateFilter) {
+      baseWhere.createdAt = dateFilter;
+    }
+
+    const statusMap: Record<string, string> = {
+      pending: "matching",
+      approved: "accepted",
+      rejected: "cancelled",
+    };
+    
+    if (status && status !== "all") {
+      baseWhere.status = statusMap[status] || status;
+    }
 
     // Get orders statistics for this provider
     const totalOrders = await prisma.order.count({
-      where: { providerId },
+      where: baseWhere,
     });
 
     const pendingOrders = await prisma.order.count({
-      where: { providerId, status: "matching" },
+      where: { ...baseWhere, status: "matching" },
     });
 
     const acceptedOrders = await prisma.order.count({
-      where: { providerId, status: "accepted" },
+      where: { ...baseWhere, status: "accepted" },
     });
 
     const completedOrders = await prisma.order.count({
-      where: { providerId, status: "completed" },
+      where: { ...baseWhere, status: "completed" },
     });
 
     const rejectedOrders = await prisma.order.count({
-      where: { providerId, status: "cancelled" },
+      where: { ...baseWhere, status: "cancelled" },
     });
 
     // Get rating statistics
@@ -51,16 +110,34 @@ export async function GET(req: NextRequest) {
     const acceptanceRate =
       totalOrders > 0 ? Math.round((acceptedOrders / totalOrders) * 100) : 0;
 
-    // Get monthly trend for the last 6 months
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    // Get monthly trend - use filtered date range
+    const currentDate = new Date();
+    let monthsToShow = 6;
+    let startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 6);
+
+    if (dateFilter?.gte) {
+      startDate = dateFilter.gte;
+      const monthsDiff = (currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
+      monthsToShow = Math.min(Math.ceil(monthsDiff) + 1, 12);
+    } else if (period === "7d") {
+      monthsToShow = 1;
+      startDate = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    } else if (period === "30d") {
+      monthsToShow = 1;
+      startDate = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+    } else if (period === "90d") {
+      monthsToShow = 3;
+      startDate = new Date(currentDate.getTime() - 90 * 24 * 60 * 60 * 1000);
+    }
 
     const ordersByMonth = await prisma.order.groupBy({
       by: ["createdAt"],
       _count: { id: true },
       where: {
         providerId,
-        createdAt: { gte: sixMonthsAgo },
+        createdAt: { gte: startDate },
+        ...(status && status !== "all" ? { status: baseWhere.status } : {}),
       },
       orderBy: { createdAt: "asc" },
     });
@@ -82,16 +159,16 @@ export async function GET(req: NextRequest) {
       "Dez",
     ];
 
-    for (let i = 5; i >= 0; i--) {
+    for (let i = monthsToShow - 1; i >= 0; i--) {
       const date = new Date();
       date.setMonth(date.getMonth() - i);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear().toString().slice(-2)}`;
       monthlyTrend[monthKey] = 0;
     }
 
     ordersByMonth.forEach((group) => {
       const date = new Date(group.createdAt);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear().toString().slice(-2)}`;
       if (monthlyTrend.hasOwnProperty(monthKey)) {
         monthlyTrend[monthKey] += group._count.id;
       }
@@ -115,7 +192,7 @@ export async function GET(req: NextRequest) {
 
     // Get recent requests (orders assigned to this provider)
     const recentRequests = await prisma.order.findMany({
-      where: { providerId },
+      where: baseWhere,
       take: 10,
       orderBy: { createdAt: "desc" },
       include: {
