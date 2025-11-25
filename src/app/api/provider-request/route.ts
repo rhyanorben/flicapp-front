@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { PrismaClient } from "@/app/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { getUserRoles } from "@/lib/role-utils";
-
-const prisma = new PrismaClient();
+import { convertPhoneToE164 } from "@/lib/utils/phone-mask";
 
 export async function POST(request: NextRequest) {
   try {
@@ -66,6 +65,22 @@ export async function POST(request: NextRequest) {
         { error: "Todos os campos obrigatórios devem ser preenchidos" },
         { status: 400 }
       );
+    }
+
+    // Convert phone to E164 format and update user
+    let phoneE164: string | undefined;
+    try {
+      phoneE164 = convertPhoneToE164(phone);
+      // Update user's phone if provided
+      if (phoneE164) {
+        await prisma.user.update({
+          where: { id: userId },
+          data: { phoneE164 },
+        });
+      }
+    } catch (error) {
+      console.error("Error converting phone to E164:", error);
+      // Continue with request creation even if phone conversion fails
     }
 
     const providerRequest = await prisma.providerRequest.create({

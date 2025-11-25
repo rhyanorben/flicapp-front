@@ -8,10 +8,10 @@ import {
   type UpdateUserRolesData,
 } from "@/lib/api/users";
 
-export function useUsers() {
+export function useUsers(roleFilter?: string) {
   return useQuery({
-    queryKey: ["users"],
-    queryFn: getUsers,
+    queryKey: ["users", roleFilter],
+    queryFn: () => getUsers(roleFilter),
   });
 }
 

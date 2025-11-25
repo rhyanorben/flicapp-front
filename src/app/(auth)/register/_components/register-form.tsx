@@ -20,6 +20,7 @@ import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import Lottie from "lottie-react";
 import confetti from "canvas-confetti";
+import { cn } from "@/lib/utils";
 
 const registerSchema = z
   .object({
@@ -46,6 +47,37 @@ const registerSchema = z
   });
 
 type SignupFormValues = z.infer<typeof registerSchema>;
+
+// Função para traduzir mensagens de erro para português
+function translateErrorMessage(message: string): string {
+  const lowerMessage = message.toLowerCase();
+
+  // Mapeamento de mensagens comuns do better-auth
+  const translations: Record<string, string> = {
+    "invalid password": "Senha inválida",
+    "invalid email or password": "Email ou senha inválidos",
+    "invalid credentials": "Credenciais inválidas",
+    "incorrect password": "Senha incorreta",
+    "wrong password": "Senha incorreta",
+    "user not found": "Usuário não encontrado",
+    "email not found": "Email não encontrado",
+    "invalid email": "Email inválido",
+    "email already exists": "Este email já está em uso",
+    "email already registered": "Este email já está cadastrado",
+    "this email is already in use": "Este email já está em uso",
+    "user already exists": "Usuário já existe",
+  };
+
+  // Verifica se há uma tradução exata
+  for (const [key, value] of Object.entries(translations)) {
+    if (lowerMessage.includes(key)) {
+      return value;
+    }
+  }
+
+  // Se não encontrar tradução, retorna a mensagem original
+  return message;
+}
 
 // Simple loading animation data (fallback if Lottie file not available)
 const loadingAnimationData = {
@@ -186,6 +218,61 @@ export function RegisterForm() {
     }
   }, [registerMutation.isSuccess, shouldReduceMotion]);
 
+  // Tratamento de erros da mutation
+  useEffect(() => {
+    if (registerMutation.error) {
+      const rawErrorMessage =
+        registerMutation.error.message || "Erro ao cadastrar";
+      const errorMessage = translateErrorMessage(rawErrorMessage);
+      const lowerMessage = errorMessage.toLowerCase();
+
+      // Limpa erros anteriores
+      form.clearErrors();
+
+      // Tenta identificar qual campo está com erro baseado na mensagem
+      // Erros de email duplicado
+      if (
+        lowerMessage.includes("já está em uso") ||
+        lowerMessage.includes("já existe") ||
+        lowerMessage.includes("already exists") ||
+        lowerMessage.includes("email já") ||
+        (lowerMessage.includes("email") &&
+          (lowerMessage.includes("cadastrado") ||
+            lowerMessage.includes("registrado")))
+      ) {
+        form.setError("email", {
+          type: "manual",
+          message: errorMessage,
+        });
+      }
+      // Erros de senha
+      else if (
+        lowerMessage.includes("senha") ||
+        lowerMessage.includes("password") ||
+        lowerMessage.includes("confirmação")
+      ) {
+        form.setError("password", {
+          type: "manual",
+          message: errorMessage,
+        });
+      }
+      // Erros de nome
+      else if (lowerMessage.includes("nome") || lowerMessage.includes("name")) {
+        form.setError("name", {
+          type: "manual",
+          message: errorMessage,
+        });
+      }
+      // Erros genéricos - mostra no campo de email por padrão
+      else {
+        form.setError("email", {
+          type: "manual",
+          message: errorMessage,
+        });
+      }
+    }
+  }, [registerMutation.error, form]);
+
   function onSubmit(formData: SignupFormValues) {
     registerMutation.mutate({
       name: formData.name,
@@ -227,7 +314,11 @@ export function RegisterForm() {
                         placeholder="Seu nome completo"
                         {...field}
                         disabled={registerMutation.isPending}
-                        className={hasError ? "border-destructive" : ""}
+                        className={cn(
+                          hasError
+                            ? "border-destructive"
+                            : "border-blue-100 dark:border-white/15 bg-white/70 dark:bg-white/5 focus-visible:border-[#1d4ed8] focus-visible:ring-[#1d4ed8] dark:focus-visible:border-white"
+                        )}
                       />
                     </motion.div>
                   </FormControl>
@@ -265,7 +356,11 @@ export function RegisterForm() {
                         type="email"
                         {...field}
                         disabled={registerMutation.isPending}
-                        className={hasError ? "border-destructive" : ""}
+                        className={cn(
+                          hasError
+                            ? "border-destructive"
+                            : "border-blue-100 dark:border-white/15 bg-white/70 dark:bg-white/5 focus-visible:border-[#1d4ed8] focus-visible:ring-[#1d4ed8] dark:focus-visible:border-white"
+                        )}
                       />
                     </motion.div>
                   </FormControl>
@@ -305,7 +400,11 @@ export function RegisterForm() {
                         {...field}
                         maxLength={20}
                         disabled={registerMutation.isPending}
-                        className={hasError ? "border-destructive" : ""}
+                        className={cn(
+                          hasError
+                            ? "border-destructive"
+                            : "border-blue-100 dark:border-white/15 bg-white/70 dark:bg-white/5 focus-visible:border-[#1d4ed8] focus-visible:ring-[#1d4ed8] dark:focus-visible:border-white"
+                        )}
                       />
                       <Button
                         type="button"
@@ -372,7 +471,11 @@ export function RegisterForm() {
                         {...field}
                         maxLength={20}
                         disabled={registerMutation.isPending}
-                        className={hasError ? "border-destructive" : ""}
+                        className={cn(
+                          hasError
+                            ? "border-destructive"
+                            : "border-blue-100 dark:border-white/15 bg-white/70 dark:bg-white/5 focus-visible:border-[#1d4ed8] focus-visible:ring-[#1d4ed8] dark:focus-visible:border-white"
+                        )}
                       />
                       <Button
                         type="button"
@@ -422,7 +525,7 @@ export function RegisterForm() {
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-[#1d4ed8] hover:bg-[#153a9c] dark:bg-[#2563eb] dark:hover:bg-[#1d4ed8] text-white"
               disabled={registerMutation.isPending}
             >
               {registerMutation.isPending ? (

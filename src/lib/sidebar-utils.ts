@@ -50,10 +50,10 @@ export function buildNavigation(
         title: "Histórico",
         url: "/historico",
       },
-      {
-        title: "Favoritos",
-        url: "/favoritos",
-      },
+      // {
+      //   title: "Favoritos",
+      //   url: "/favoritos",
+      // },
     ];
 
     if (!isProvider) {

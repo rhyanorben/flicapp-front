@@ -60,14 +60,14 @@ export default function TermosPage() {
                   1. Aceitação dos Termos
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  Ao acessar e utilizar a plataforma FlicAPP, você concorda em
+                  Ao acessar e utilizar a plataforma FlicApp, você concorda em
                   cumprir e estar vinculado a estes Termos de Uso. Se você não
                   concorda com alguma parte destes termos, não deve utilizar
                   nossos serviços.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   Estes termos constituem um acordo legal entre você e a
-                  FlicAPP. Ao criar uma conta ou utilizar nossos serviços, você
+                  FlicApp. Ao criar uma conta ou utilizar nossos serviços, você
                   confirma que leu, compreendeu e aceita todos os termos aqui
                   descritos.
                 </p>
@@ -79,7 +79,7 @@ export default function TermosPage() {
                   2. Descrição do Serviço
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  A FlicAPP é uma plataforma digital que conecta clientes a
+                  A FlicApp é uma plataforma digital que conecta clientes a
                   prestadores de serviços verificados. Nossa missão é facilitar
                   a contratação de serviços de qualidade, oferecendo:
                 </p>
@@ -91,7 +91,7 @@ export default function TermosPage() {
                   <li>Suporte ao cliente durante todo o processo</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-4">
-                  A FlicAPP atua como intermediária na conexão entre clientes e
+                  A FlicApp atua como intermediária na conexão entre clientes e
                   prestadores, não sendo responsável pela execução dos serviços
                   contratados.
                 </p>
@@ -178,10 +178,10 @@ export default function TermosPage() {
                   5. Responsabilidades
                 </h2>
                 <h3 className="text-xl font-medium mb-3">
-                  5.1. Responsabilidades da FlicAPP
+                  5.1. Responsabilidades da FlicApp
                 </h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  A FlicAPP se compromete a:
+                  A FlicApp se compromete a:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mb-4">
                   <li>
@@ -201,7 +201,7 @@ export default function TermosPage() {
                   5.2. Limitações de Responsabilidade
                 </h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  A FlicAPP não se responsabiliza por:
+                  A FlicApp não se responsabiliza por:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                   <li>
@@ -227,9 +227,9 @@ export default function TermosPage() {
                   6. Propriedade Intelectual
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  Todo o conteúdo da plataforma FlicAPP, incluindo textos,
+                  Todo o conteúdo da plataforma FlicApp, incluindo textos,
                   gráficos, logos, ícones, imagens, clipes de áudio, downloads
-                  digitais e compilações de dados, é propriedade da FlicAPP ou
+                  digitais e compilações de dados, é propriedade da FlicApp ou
                   de seus fornecedores de conteúdo e está protegido pelas leis
                   de direitos autorais brasileiras e internacionais.
                 </p>
@@ -238,7 +238,7 @@ export default function TermosPage() {
                   trabalhos derivados, exibir publicamente, executar
                   publicamente, republicar, baixar, armazenar ou transmitir
                   qualquer material de nosso site sem o consentimento prévio e
-                  por escrito da FlicAPP.
+                  por escrito da FlicApp.
                 </p>
               </section>
 
@@ -290,7 +290,7 @@ export default function TermosPage() {
               {/* Footer da página */}
               <div className="border-t pt-8 mt-12">
                 <p className="text-sm text-muted-foreground mb-4">
-                  Ao utilizar a plataforma FlicAPP, você também concorda com
+                  Ao utilizar a plataforma FlicApp, você também concorda com
                   nossa{" "}
                   <Link
                     href="/privacidade"

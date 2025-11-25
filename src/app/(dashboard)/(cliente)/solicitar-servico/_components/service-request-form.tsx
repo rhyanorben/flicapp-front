@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, User, MessageSquare, AlertCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { useSubmitServiceRequest } from "@/lib/queries/services";
 import { useUserData } from "@/hooks/use-user-data";
 import { ServiceTypeCards } from "./service-type-cards";
@@ -306,7 +307,7 @@ export function ServiceRequestForm() {
               {getFieldError("serviceType") && (
                 <div className="flex items-center gap-2 text-sm text-destructive">
                   <AlertCircle className="h-4 w-4" />
-                  {getFieldError("serviceType")}
+                  <span>{getFieldError("serviceType")}</span>
                 </div>
               )}
             </div>
@@ -349,7 +350,7 @@ export function ServiceRequestForm() {
               {getFieldError("description") && (
                 <div className="flex items-center gap-2 text-sm text-destructive">
                   <AlertCircle className="h-4 w-4" />
-                  {getFieldError("description")}
+                  <span>{getFieldError("description")}</span>
                 </div>
               )}
             </div>
@@ -528,15 +529,19 @@ export function ServiceRequestForm() {
               {getFieldError("location") && (
                 <div className="flex items-center gap-2 text-sm text-destructive">
                   <AlertCircle className="h-4 w-4" />
-                  {getFieldError("location")}
+                  <span>{getFieldError("location")}</span>
                 </div>
               )}
 
               {!addressData.number && addressData.cep && (
-                <div className="flex items-center gap-2 text-sm text-amber-600 bg-amber-50 p-3 rounded-md border border-amber-200">
-                  <AlertCircle className="h-4 w-4" />
-                  <span>Informe o número para completar o endereço</span>
-                </div>
+                <Card className="border-amber-200 bg-amber-50/50 dark:bg-amber-950/20 dark:border-amber-800">
+                  <CardContent className="p-3">
+                    <div className="flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400">
+                      <AlertCircle className="h-4 w-4" />
+                      <span>Informe o número para completar o endereço</span>
+                    </div>
+                  </CardContent>
+                </Card>
               )}
             </div>
 
@@ -660,7 +665,7 @@ export function ServiceRequestForm() {
                 {getFieldError("contactName") && (
                   <div className="flex items-center gap-2 text-sm text-destructive">
                     <AlertCircle className="h-4 w-4" />
-                    {getFieldError("contactName")}
+                    <span>{getFieldError("contactName")}</span>
                   </div>
                 )}
               </div>
@@ -682,7 +687,7 @@ export function ServiceRequestForm() {
                 {getFieldError("contactPhone") && (
                   <div className="flex items-center gap-2 text-sm text-destructive">
                     <AlertCircle className="h-4 w-4" />
-                    {getFieldError("contactPhone")}
+                    <span>{getFieldError("contactPhone")}</span>
                   </div>
                 )}
               </div>

@@ -49,7 +49,7 @@ export default function PrivacidadePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            A FlicAPP está comprometida em proteger sua privacidade e garantir a
+            A FlicApp está comprometida em proteger sua privacidade e garantir a
             segurança dos seus dados pessoais, em conformidade com a Lei Geral
             de Proteção de Dados (LGPD - Lei nº 13.709/2018).
           </motion.p>

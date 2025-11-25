@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 
 const loginSchema = z.object({
   email: z.email({ message: "Email inválido" }),
@@ -28,6 +29,35 @@ const loginSchema = z.object({
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
+
+// Função para traduzir mensagens de erro para português
+function translateErrorMessage(message: string): string {
+  const lowerMessage = message.toLowerCase();
+
+  // Mapeamento de mensagens comuns do better-auth
+  const translations: Record<string, string> = {
+    "invalid password": "Senha inválida",
+    "invalid email or password": "Email ou senha inválidos",
+    "invalid credentials": "Credenciais inválidas",
+    "incorrect password": "Senha incorreta",
+    "wrong password": "Senha incorreta",
+    "user not found": "Usuário não encontrado",
+    "email not found": "Email não encontrado",
+    "invalid email": "Email inválido",
+    "email already exists": "Este email já está em uso",
+    "email already registered": "Este email já está cadastrado",
+  };
+
+  // Verifica se há uma tradução exata
+  for (const [key, value] of Object.entries(translations)) {
+    if (lowerMessage.includes(key)) {
+      return value;
+    }
+  }
+
+  // Se não encontrar tradução, retorna a mensagem original
+  return message;
+}
 
 // Simple loading animation data (fallback if Lottie file not available)
 const loadingAnimationData = {
@@ -167,7 +197,85 @@ export function LoginForm() {
           setIsLoading(false);
         },
         onError: (context: { error?: { message?: string } }) => {
-          alert(context?.error?.message || "Erro ao logar");
+          const rawErrorMessage = context?.error?.message || "Erro ao logar";
+          const errorMessage = translateErrorMessage(rawErrorMessage);
+
+          // Limpa erros anteriores
+          form.clearErrors();
+
+          // Tenta identificar se o erro é relacionado ao email ou senha
+          const lowerMessage = errorMessage.toLowerCase();
+
+          // PRIMEIRO: Verifica mensagens específicas de senha inválida (mais comum)
+          if (
+            lowerMessage.includes("invalid password") ||
+            lowerMessage.includes("senha inválida") ||
+            lowerMessage.includes("password inválido") ||
+            lowerMessage.includes("senha incorreta") ||
+            lowerMessage.includes("incorrect password") ||
+            lowerMessage.includes("wrong password")
+          ) {
+            form.setError("password", {
+              type: "manual",
+              message: errorMessage,
+            });
+          }
+          // SEGUNDO: Verifica mensagens genéricas de credenciais inválidas
+          // (essas mensagens mencionam tanto email quanto senha, mas devem aparecer no campo de senha)
+          else if (
+            lowerMessage.includes("email or password") ||
+            lowerMessage.includes("email ou senha") ||
+            lowerMessage.includes("email and password") ||
+            lowerMessage.includes("email e senha") ||
+            lowerMessage.includes("invalid email or password") ||
+            lowerMessage.includes("email ou senha inválido") ||
+            lowerMessage.includes("credenciais inválidas") ||
+            lowerMessage.includes("invalid credentials")
+          ) {
+            form.setError("password", {
+              type: "manual",
+              message: errorMessage,
+            });
+          }
+          // TERCEIRO: Verifica outros erros que mencionam senha ou credenciais
+          else if (
+            lowerMessage.includes("senha") ||
+            lowerMessage.includes("password") ||
+            lowerMessage.includes("credenciais") ||
+            lowerMessage.includes("credentials") ||
+            lowerMessage.includes("incorrect") ||
+            lowerMessage.includes("incorreto") ||
+            lowerMessage.includes("wrong") ||
+            lowerMessage.includes("errado") ||
+            lowerMessage.includes("inválido") ||
+            lowerMessage.includes("invalid")
+          ) {
+            form.setError("password", {
+              type: "manual",
+              message: errorMessage,
+            });
+          }
+          // SEGUNDO: Erros MUITO específicos de email (usuário não encontrado)
+          else if (
+            lowerMessage.includes("usuário não encontrado") ||
+            lowerMessage.includes("user not found") ||
+            lowerMessage.includes("email não encontrado") ||
+            lowerMessage.includes("email não existe")
+          ) {
+            form.setError("email", {
+              type: "manual",
+              message: errorMessage,
+            });
+          }
+          // TERCEIRO: Para TODOS os outros erros genéricos, mostra no campo de senha
+          // (erros como "Erro ao logar", "Falha na autenticação", etc)
+          else {
+            form.setError("password", {
+              type: "manual",
+              message: errorMessage,
+            });
+          }
+
           setIsLoading(false);
         },
       }
@@ -209,7 +317,11 @@ export function LoginForm() {
                         type="email"
                         {...field}
                         disabled={isLoading}
-                        className={hasError ? "border-destructive" : ""}
+                        className={cn(
+                          hasError
+                            ? "border-destructive"
+                            : "border-blue-100 dark:border-white/15 bg-white/70 dark:bg-white/5 focus-visible:border-[#1d4ed8] focus-visible:ring-[#1d4ed8] dark:focus-visible:border-white"
+                        )}
                       />
                     </motion.div>
                   </FormControl>
@@ -249,7 +361,11 @@ export function LoginForm() {
                         type={showPassword ? "text" : "password"}
                         {...field}
                         disabled={isLoading}
-                        className={hasError ? "border-destructive" : ""}
+                        className={cn(
+                          hasError
+                            ? "border-destructive"
+                            : "border-blue-100 dark:border-white/15 bg-white/70 dark:bg-white/5 focus-visible:border-[#1d4ed8] focus-visible:ring-[#1d4ed8] dark:focus-visible:border-white"
+                        )}
                       />
                       <Button
                         type="button"
@@ -291,7 +407,7 @@ export function LoginForm() {
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-[#1d4ed8] hover:bg-[#153a9c] dark:bg-[#2563eb] dark:hover:bg-[#1d4ed8] text-white"
               disabled={form.formState.isSubmitting || isLoading}
             >
               {isLoading || form.formState.isSubmitting ? (

@@ -41,25 +41,64 @@ export function convertPhoneToE164(phone: string): string {
   // Remove all non-numeric characters
   const numbers = phone.replace(/\D/g, "");
 
-  // If already has country code, return as is
-  if (numbers.startsWith("55") && numbers.length === 13) {
-    return `+${numbers}`;
+  // If already has country code, check if it needs the 9
+  if (numbers.startsWith("55")) {
+    const withoutCountryCode = numbers.substring(2);
+    // If has 11 digits after country code, return as is
+    if (withoutCountryCode.length === 11) {
+      return `+${numbers}`;
+    }
+    // If has 10 digits after country code, check if needs 9
+    if (withoutCountryCode.length === 10) {
+      const ddd = withoutCountryCode.substring(0, 2);
+      const rest = withoutCountryCode.substring(2);
+      // If it's a mobile pattern (starts with 4-9), add the 9
+      if (parseInt(ddd) >= 11 && parseInt(ddd) <= 99 && /^[4-9]/.test(rest)) {
+        return `+55${ddd}9${rest}`;
+      }
+      // Otherwise return as is (landline)
+      return `+${numbers}`;
+    }
+    // If has 13 digits total, return as is
+    if (numbers.length === 13) {
+      return `+${numbers}`;
+    }
   }
 
   // Add country code +55 for Brazil
   if (numbers.length === 11) {
+    // Check if it's already a mobile number (starts with DDD + 9)
+    const ddd = numbers.substring(0, 2);
+    const firstDigit = numbers.substring(2, 3);
+    // If first digit after DDD is 9, it's already a mobile number
+    if (firstDigit === "9") {
+      return `+55${numbers}`;
+    }
+    // If first digit is 4-8, it might be missing the 9, but we assume it's correct
+    // Most likely it's already correct (11 digits)
     return `+55${numbers}`;
   }
 
-  // If 10 digits, add 9 for mobile (Brazil mobile format)
+  // If 10 digits, check if it's mobile or landline
   if (numbers.length === 10) {
     const ddd = numbers.substring(0, 2);
     const rest = numbers.substring(2);
 
     // Check if it's a valid mobile number pattern
-    if (parseInt(ddd) >= 11 && parseInt(ddd) <= 99 && /^[4-9]/.test(rest)) {
-      return `+55${ddd}9${rest}`;
+    // Mobile numbers in Brazil typically start with 6, 7, 8, or 9 after DDD
+    // But we also check if the first digit is 4-9 to be safe
+    if (parseInt(ddd) >= 11 && parseInt(ddd) <= 99) {
+      // If the number after DDD starts with 4-9, it's likely a mobile number
+      // Add the 9 after DDD for mobile format
+      if (/^[4-9]/.test(rest)) {
+        return `+55${ddd}9${rest}`;
+      }
+      // If it starts with 2 or 3, it's likely a landline (but some areas use these for mobile too)
+      // For safety, if it's 10 digits and doesn't start with 4-9, assume it's landline
+      return `+55${numbers}`;
     }
+    // Invalid DDD, return as is
+    return `+55${numbers}`;
   }
 
   throw new Error("Formato de telefone inválido");

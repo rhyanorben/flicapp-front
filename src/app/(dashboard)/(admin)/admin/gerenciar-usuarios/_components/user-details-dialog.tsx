@@ -12,9 +12,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { UserRole } from "@/app/generated/prisma";
 import { Loader2 } from "lucide-react";
 import { useUpdateUserRoles } from "@/lib/queries/users";
+import { useProviderDetails } from "@/lib/queries/admin-providers";
+import { ProviderProfileSection } from "./provider-profile-section";
+import { ProviderCategoriesSection } from "./provider-categories-section";
+import { ProviderAddressSection } from "./provider-address-section";
+import { ProviderPhoneSection } from "./provider-phone-section";
+import { ProviderValidationStatus } from "./provider-validation-status";
 
 interface User {
   id: string;
@@ -39,7 +47,13 @@ export function UserDetailsDialog({
   onUpdate,
 }: UserDetailsDialogProps) {
   const [selectedRoles, setSelectedRoles] = useState<UserRole[]>(user.roles);
+  const isProvider = user.roles.includes("PRESTADOR");
   const updateUserRoles = useUpdateUserRoles();
+  const {
+    data: providerDetails,
+    isLoading: isLoadingProviderDetails,
+    refetch: refetchProviderDetails,
+  } = useProviderDetails(isProvider && isOpen ? user.id : null);
 
   useEffect(() => {
     setSelectedRoles(user.roles);
@@ -85,84 +99,155 @@ export function UserDetailsDialog({
     }
   };
 
+  const handleProviderUpdate = () => {
+    refetchProviderDetails();
+    onUpdate();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Detalhes do Usuário</DialogTitle>
           <DialogDescription>
-            Visualize e gerencie as roles do usuário
+            Visualize e gerencie as informações do usuário
+            {isProvider && " e do prestador"}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label className="text-sm font-semibold">Nome</Label>
-            <p className="text-sm text-muted-foreground">{user.name}</p>
-          </div>
+        <Tabs defaultValue="basic" className="w-full">
+          <TabsList
+            className={isProvider ? "grid w-full grid-cols-2" : "w-full"}
+          >
+            <TabsTrigger value="basic">Informações Básicas</TabsTrigger>
+            {isProvider && (
+              <TabsTrigger value="provider">Perfil de Prestador</TabsTrigger>
+            )}
+          </TabsList>
 
-          <div className="space-y-2">
-            <Label className="text-sm font-semibold">Email</Label>
-            <p className="text-sm text-muted-foreground">{user.email}</p>
-          </div>
-
-          <div className="space-y-2">
-            <Label className="text-sm font-semibold">Data de Cadastro</Label>
-            <p className="text-sm text-muted-foreground">
-              {new Date(user.createdAt).toLocaleDateString("pt-BR", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-          </div>
-
-          <div className="space-y-3 pt-4 border-t">
-            <Label className="text-sm font-semibold">Roles</Label>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="role-cliente"
-                checked={selectedRoles.includes("CLIENTE")}
-                onCheckedChange={() => handleRoleToggle("CLIENTE")}
-              />
-              <label
-                htmlFor="role-cliente"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                Cliente
-              </label>
+          <TabsContent value="basic" className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Nome</Label>
+              <p className="text-sm text-muted-foreground">{user.name}</p>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="role-prestador"
-                checked={selectedRoles.includes("PRESTADOR")}
-                onCheckedChange={() => handleRoleToggle("PRESTADOR")}
-              />
-              <label
-                htmlFor="role-prestador"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                Prestador
-              </label>
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Email</Label>
+              <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="role-admin"
-                checked={selectedRoles.includes("ADMINISTRADOR")}
-                onCheckedChange={() => handleRoleToggle("ADMINISTRADOR")}
-              />
-              <label
-                htmlFor="role-admin"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                Administrador
-              </label>
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Data de Cadastro</Label>
+              <p className="text-sm text-muted-foreground">
+                {new Date(user.createdAt).toLocaleDateString("pt-BR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
             </div>
-          </div>
-        </div>
+
+            <Separator />
+
+            <div className="space-y-3">
+              <Label className="text-sm font-semibold">Roles</Label>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="role-cliente"
+                  checked={selectedRoles.includes("CLIENTE")}
+                  onCheckedChange={() => handleRoleToggle("CLIENTE")}
+                />
+                <label
+                  htmlFor="role-cliente"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                >
+                  Cliente
+                </label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="role-prestador"
+                  checked={selectedRoles.includes("PRESTADOR")}
+                  onCheckedChange={() => handleRoleToggle("PRESTADOR")}
+                />
+                <label
+                  htmlFor="role-prestador"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                >
+                  Prestador
+                </label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="role-admin"
+                  checked={selectedRoles.includes("ADMINISTRADOR")}
+                  onCheckedChange={() => handleRoleToggle("ADMINISTRADOR")}
+                />
+                <label
+                  htmlFor="role-admin"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                >
+                  Administrador
+                </label>
+              </div>
+            </div>
+          </TabsContent>
+
+          {isProvider && (
+            <TabsContent value="provider" className="space-y-6 py-4">
+              {isLoadingProviderDetails ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : providerDetails ? (
+                <>
+                  <ProviderValidationStatus
+                    providerDetails={providerDetails}
+                  />
+
+                  <Separator />
+
+                  <ProviderProfileSection
+                    providerId={user.id}
+                    profile={providerDetails.providerProfile}
+                    onUpdate={handleProviderUpdate}
+                  />
+
+                  <Separator />
+
+                  <ProviderCategoriesSection
+                    providerId={user.id}
+                    categories={providerDetails.providerCategories}
+                    onUpdate={handleProviderUpdate}
+                  />
+
+                  <Separator />
+
+                  <ProviderAddressSection
+                    providerId={user.id}
+                    address={providerDetails.activeAddress}
+                    onUpdate={handleProviderUpdate}
+                  />
+
+                  <Separator />
+
+                  <ProviderPhoneSection
+                    providerId={user.id}
+                    phoneE164={providerDetails.phoneE164}
+                    onUpdate={handleProviderUpdate}
+                  />
+                </>
+              ) : (
+                <div className="text-center py-8 text-sm text-muted-foreground">
+                  Erro ao carregar informações do prestador
+                </div>
+              )}
+            </TabsContent>
+          )}
+        </Tabs>
 
         <DialogFooter>
           <Button
@@ -170,7 +255,7 @@ export function UserDetailsDialog({
             onClick={onClose}
             disabled={updateUserRoles.isPending}
           >
-            Cancelar
+            Fechar
           </Button>
           <Button onClick={handleSave} disabled={updateUserRoles.isPending}>
             {updateUserRoles.isPending ? (
@@ -179,7 +264,7 @@ export function UserDetailsDialog({
                 Salvando...
               </>
             ) : (
-              "Salvar Alterações"
+              "Salvar Alterações de Roles"
             )}
           </Button>
         </DialogFooter>

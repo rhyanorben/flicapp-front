@@ -50,12 +50,8 @@ export function useRegister() {
         router.replace("/login");
       }
     },
-    onError: (error: Error) => {
-      toast({
-        title: "Erro",
-        description: error.message,
-        variant: "destructive",
-      });
+    onError: () => {
+      // Erros são tratados no formulário usando form.setError()
     },
   });
 }

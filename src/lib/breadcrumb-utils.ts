@@ -60,9 +60,9 @@ export function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
 
   const breadcrumbs: BreadcrumbItem[] = [];
 
-  // Always start with FlicAPP home
+  // Always start with FlicApp home
   breadcrumbs.push({
-    label: "FlicAPP",
+    label: "FlicApp",
     href: "/dashboard",
   });
 

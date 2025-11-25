@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Loader2 } from "lucide-react";
 import { useSubmitProviderRequest } from "@/lib/queries/provider-requests";
-import { formatPhoneNumber, validatePhoneNumber } from "@/lib/utils/phone-mask";
+import { formatPhoneNumber, validatePhoneNumber, formatPhoneFromE164 } from "@/lib/utils/phone-mask";
 import {
   formatDocument,
   validateDocument,
@@ -26,6 +26,7 @@ import {
 import { formatCEP, validateCEP, fetchAddressByCEP } from "@/lib/utils/viacep";
 import { ServiceSelection as ServiceSelectionComponent } from "./service-selection";
 import { PortfolioLinks } from "./portfolio-links";
+import { useUserData } from "@/hooks/use-user-data";
 
 const providerRequestSchema = z.object({
   services: z
@@ -140,6 +141,7 @@ type ProviderRequestFormValues = z.infer<typeof providerRequestSchema>;
 
 export function ProviderRequestForm() {
   const submitProviderRequest = useSubmitProviderRequest();
+  const { userData } = useUserData();
 
   const form = useForm<ProviderRequestFormValues>({
     resolver: zodResolver(providerRequestSchema),
@@ -157,6 +159,14 @@ export function ProviderRequestForm() {
 
   const [isLoadingCEP, setIsLoadingCEP] = useState(false);
   const [documentError, setDocumentError] = useState<string | null>(null);
+
+  // Pre-fill phone from user data if available
+  useEffect(() => {
+    if (userData?.phoneE164) {
+      const formattedPhone = formatPhoneFromE164(userData.phoneE164);
+      form.setValue("phone", formattedPhone);
+    }
+  }, [userData, form]);
 
   const handleDocumentChange = (value: string) => {
     const formatted = formatDocument(value);
