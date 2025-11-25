@@ -4,9 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider = "postgresql"
 }
 
 // =============================================================================
@@ -24,7 +22,7 @@ model User {
   role       String? // ADMINISTRADOR, PRESTADOR, CLIENTE
   phoneE164  String? @unique
   whatsappId String?
-  cpf        String?
+  cpf        String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -67,7 +65,7 @@ model Role {
 }
 
 model UserRoleAssignment {
-  id        String   @id @default(cuid())
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
   userId    String
   roleId    String
   createdAt DateTime @default(now())
@@ -75,7 +73,7 @@ model UserRoleAssignment {
   role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, roleId])
+  @@unique([userId, roleId], map: "ux_ura_user_role")
   @@map("user_role_assignment")
 }
 
@@ -164,6 +162,7 @@ model Address {
   state        String?
   lat          Float?
   lon          Float?
+  active       Boolean  @default(true)
   createdAt    DateTime @default(now())
 
   user   User?   @relation(fields: [userId], references: [id])
@@ -321,7 +320,7 @@ model OrderCategory {
 model OrderInvitation {
   id           String    @id @default(dbgenerated("gen_random_uuid()"))
   orderId      String
-  providerId   String
+  providerId   String?
   slotId       String?
   score        Decimal?
   sentAt       DateTime  @default(now())
@@ -335,7 +334,7 @@ model OrderInvitation {
   meta         Json?
 
   order    Order      @relation(fields: [orderId], references: [id])
-  provider User       @relation(fields: [providerId], references: [id])
+  provider User?      @relation(fields: [providerId], references: [id])
   slot     OrderSlot? @relation(fields: [slotId], references: [id])
 
   @@unique([orderId, providerId])

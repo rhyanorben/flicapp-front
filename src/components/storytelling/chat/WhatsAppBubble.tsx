@@ -48,7 +48,7 @@ export const WhatsAppBubble = React.memo(
           </div>
         ) : (
           <div
-            className={`max-w-[85%] p-2 rounded-lg shadow-sm text-[14px] leading-snug relative ${
+            className={`max-w-[85%] p-2 rounded-lg shadow-sm text-[14px] leading-snug relative overflow-x-hidden ${
               isUser
                 ? "bg-[#E7FFDB] text-gray-900 rounded-tr-none"
                 : "bg-white text-gray-900 rounded-tl-none"
@@ -75,7 +75,7 @@ export const WhatsAppBubble = React.memo(
                 </div>
               </div>
             ) : (
-              <div className="whitespace-pre-wrap">{message.text}</div>
+              <div className="whitespace-pre-wrap break-words overflow-wrap-anywhere">{message.text}</div>
             )}
             <div className="flex justify-end items-end gap-0.5 mt-1 opacity-60">
               <span className="text-[10px]">10:00</span>

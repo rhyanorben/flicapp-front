@@ -26,6 +26,7 @@ import { CHAT_SCRIPT } from "./data/chatScript";
 import { StepContent } from "./types";
 import { useScrollProgress } from "./hooks/useScrollProgress";
 import { STORY_SECTION_IDS, STORY_WHATSAPP_LINK } from "./constants";
+import "./FlicAppScrollytelling.css";
 
 export const FlicAppScrollytelling = () => {
   const [view, setView] = useState<"landing" | "auth">("landing");
@@ -151,8 +152,9 @@ export const FlicAppScrollytelling = () => {
     }
 
     const stepProgress = [p1, p2, p3, p4, p5];
+    // Marcar como ativa quando progresso > 0.2 (mais cedo para textos aparecerem)
     for (let i = stepProgress.length - 1; i >= 0; i -= 1) {
-      if (stepProgress[i] > 0.6) {
+      if (stepProgress[i] > 0.2) {
         setActiveSection(i + 1);
         return;
       }
@@ -205,7 +207,7 @@ export const FlicAppScrollytelling = () => {
 
       <div className="fixed inset-0 pointer-events-none z-30 flex items-center justify-center overflow-hidden">
         <div
-          className="transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-20 will-change-transform"
+          className="transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-20 will-change-transform hidden md:block"
           style={{
             transform:
               activeSection === 0
@@ -221,7 +223,7 @@ export const FlicAppScrollytelling = () => {
             <div className="flex-1 overflow-hidden relative z-10 flex flex-col">
               <div
                 ref={chatContainerRef}
-                className="flex-1 px-3 py-2 overflow-y-auto flex flex-col min-h-0 scroll-smooth pb-10"
+                className="flex-1 px-3 py-2 overflow-y-auto overflow-x-hidden flex flex-col min-h-0 scroll-smooth pb-10"
               >
                 <div className="flex justify-center my-2 opacity-80 shrink-0">
                   <span className="bg-[#E1F3FB] text-gray-800 text-[10px] font-medium px-2 py-1 rounded shadow-sm border border-white/50 uppercase tracking-wide">
@@ -266,17 +268,19 @@ export const FlicAppScrollytelling = () => {
           id={STORY_SECTION_IDS.hero}
           className="min-h-[100vh] flex flex-col items-center justify-center pointer-events-auto pb-20 sm:pb-32 lg:pb-40 bg-gradient-to-b from-white via-[#e8f1ff] to-[#d6e6ff] dark:from-[#010817] dark:via-[#04122d] dark:to-[#071a3d] transition-colors"
         >
-          <div className="text-center px-4 max-w-4xl mx-auto mb-10 mt-20 relative z-10">
+          <div className="text-center px-4 max-w-4xl mx-auto mb-10 mt-16 md:mt-20 relative z-10">
             <div className="inline-flex items-center gap-2 bg-white text-[#1d4ed8] dark:bg-white/10 dark:text-white px-4 py-2 rounded-full text-sm font-bold mb-8 animate-bounce shadow-sm border border-blue-100 dark:border-white/20">
               <Zap size={16} fill="currentColor" />
               <span>Sem baixar aplicativos</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white mb-8 leading-tight">
-              A magia acontece no{" "}
-              <span className="text-[#25D366] relative inline-block">
-                WhatsApp.
+            {/* ATUALIZADO: H1 com o efeito "SAL" (Sublinhado e Cor) de volta */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tight text-slate-900 dark:text-white mb-6 md:mb-8 leading-tight">
+              Resolva problemas do dia a dia com{" "}
+              <span className="relative inline-block text-[#008069] dark:text-[#25D366] px-2">
+                apenas um clique.
+                {/* O famoso sublinhado 'pá' */}
                 <svg
-                  className="absolute w-full h-3 -bottom-1 left-0 text-[#25D366] opacity-40"
+                  className="absolute w-full h-2 md:h-3 -bottom-1 left-0 text-[#25D366] dark:text-[#25D366] opacity-60 dark:opacity-80"
                   viewBox="0 0 100 10"
                   preserveAspectRatio="none"
                 >
@@ -289,22 +293,24 @@ export const FlicAppScrollytelling = () => {
                 </svg>
               </span>
             </h1>
-            <p className="text-xl text-slate-600 dark:text-slate-200 max-w-xl mx-auto mb-12 leading-relaxed">
-              Sem cadastro, sem download. Role para ver como nossa IA resolve
-              seu problema em uma única conversa.
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-xl mx-auto mb-8 md:mb-12 leading-relaxed px-2">
+              Conectamos você aos melhores prestadores de serviço da sua região
+              de forma rápida, segura e com a ajuda de Inteligência Artificial.
             </p>
-            <button
-              type="button"
-              onClick={handleStartStory}
-              className="flex flex-col items-center gap-3 mt-8 animate-bounce opacity-60 hover:opacity-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1d4ed8]"
-            >
-              <span className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-300">
-                Começar a história
-              </span>
-              <div className="w-12 h-12 bg-white dark:bg-white/10 rounded-full shadow-md flex items-center justify-center border border-gray-200 dark:border-white/10 text-[#1d4ed8] dark:text-white">
-                <ChevronDown size={24} strokeWidth={3} />
-              </div>
-            </button>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={handleStartStory}
+                className="flex flex-col items-center gap-3 mt-8 animate-bounce opacity-60 hover:opacity-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1d4ed8]"
+              >
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-300">
+                  Começar a história
+                </span>
+                <div className="w-12 h-12 bg-white dark:bg-white/10 rounded-full shadow-md flex items-center justify-center border border-gray-200 dark:border-white/10 text-[#1d4ed8] dark:text-white">
+                  <ChevronDown size={24} strokeWidth={3} />
+                </div>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -321,22 +327,25 @@ export const FlicAppScrollytelling = () => {
           ref={ctaRef}
           className="min-h-[60vh] md:h-[80vh] bg-white dark:bg-[#020d22] flex items-center justify-center relative pointer-events-auto z-50 border-t border-slate-100 dark:border-white/10 transition-colors"
         >
-          <div className="text-center max-w-3xl px-6">
-            <h2 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-8">
+          <div className="text-center max-w-3xl px-4 sm:px-6">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6 md:mb-8">
               Fale agora com a Flic.
             </h2>
-            <p className="text-lg text-slate-500 dark:text-slate-200 mb-12">
+            <p className="text-base sm:text-lg text-slate-500 dark:text-slate-200 mb-8 md:mb-12">
               Sem baixar nada. É só mandar um Zap.
             </p>
             <a
               href={STORY_WHATSAPP_LINK}
               target="_blank"
               rel="noreferrer"
-              className="bg-[#25D366] text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full inline-flex items-center justify-center gap-3 hover:bg-[#1da851] transition-all shadow-xl hover:scale-105 mx-auto group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#25D366]"
+              className="bg-[#25D366] text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 rounded-full inline-flex items-center justify-center gap-2 sm:gap-3 hover:bg-[#1da851] transition-all shadow-xl hover:scale-105 mx-auto group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#25D366] text-sm sm:text-base"
             >
-              <Smartphone size={28} className="group-hover:animate-wiggle" />
+              <Smartphone
+                size={24}
+                className="sm:w-7 sm:h-7 group-hover:animate-wiggle"
+              />
               <div className="text-left">
-                <div className="text-lg font-bold">Chamar no WhatsApp</div>
+                <div className="font-bold">Chamar no WhatsApp</div>
               </div>
             </a>
           </div>
@@ -347,16 +356,6 @@ export const FlicAppScrollytelling = () => {
         <FAQSection />
         <StoryFooter />
       </div>
-
-      <style>{`
-        .ease-spring { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
-        .group-hover\\:animate-wiggle:hover { animation: wiggle 0.5s ease-in-out infinite; }
-        @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fade 0.5s ease-out forwards; }
-        @keyframes messagePop { 0% { opacity: 0; transform: scale(0.5) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
-        .animate-message-pop { animation: messagePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-      `}</style>
     </div>
   );
 };

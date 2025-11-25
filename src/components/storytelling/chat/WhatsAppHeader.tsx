@@ -1,16 +1,23 @@
 "use client";
 
 import React from "react";
-import { ArrowLeft, MoreVertical, Phone, Video, Zap } from "lucide-react";
+import Image from "next/image";
+import { MoreVertical, Phone, Video, Zap } from "lucide-react";
 
 export const WhatsAppHeader = React.memo(() => (
   <div className="bg-[#008069] text-white px-3 py-2 flex items-center gap-2 shadow-md z-30 relative shrink-0 h-[60px]">
-    <div className="flex items-center">
-      <ArrowLeft size={20} />
-    </div>
-    <div className="w-9 h-9 ml-1 rounded-full bg-white p-0.5 overflow-hidden flex-shrink-0">
-      <div className="w-full h-full bg-indigo-600 flex items-center justify-center rounded-full">
-        <Zap size={18} fill="white" />
+    <div className="w-9 h-9 ml-1 rounded-full bg-indigo-600 p-0.5 overflow-hidden flex-shrink-0">
+      <div className="w-full h-full  flex items-center justify-center rounded-full">
+        {/* <Zap size={18} fill="white" /> */}
+        <div className="flex items-center bg-white rounded-full p-1.5">
+          <Image
+            src="/flicapp_logo.png"
+            alt="FlicApp"
+            width={20}
+            height={20}
+            className="object-contain"
+          />
+        </div>
       </div>
     </div>
     <div className="flex-1 ml-2 overflow-hidden">

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import React from "react";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, X } from "lucide-react";
 import { STORY_SECTION_IDS } from "../constants";
+import Link from "next/link";
 
 export const StoryFooter = () => (
   <footer className="bg-[#03102a] dark:bg-[#01040b] text-slate-200 pt-16 pb-8 border-t border-blue-900/40 dark:border-white/10 transition-colors">
@@ -22,38 +23,38 @@ export const StoryFooter = () => (
             a segurança da IA.
           </p>
           <div className="flex gap-4">
-            <a
-              href="https://instagram.com/flicapp"
+            <Link
+              href="https://instagram.com/flic.app"
               target="_blank"
               rel="noreferrer"
               className="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white hover:text-[#0a1f44] transition-colors"
             >
               <Instagram size={18} />
-            </a>
-            <a
-              href="https://twitter.com/flicapp"
+            </Link>
+            <Link
+              href="https://x.com/flicappbr"
               target="_blank"
               rel="noreferrer"
               className="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white hover:text-[#0a1f44] transition-colors"
             >
-              <Twitter size={18} />
-            </a>
-            <a
+              <X size={18} />
+            </Link>
+            <Link
               href="https://linkedin.com/company/flicapp"
               target="_blank"
               rel="noreferrer"
               className="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white hover:text-[#0a1f44] transition-colors"
             >
               <Linkedin size={18} />
-            </a>
-            <a
-              href="https://facebook.com/flicapp"
+            </Link>
+            <Link
+              href="https://www.facebook.com/profile.php?id=61575777085170"
               target="_blank"
               rel="noreferrer"
               className="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white hover:text-[#0a1f44] transition-colors"
             >
               <Facebook size={18} />
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -86,14 +87,14 @@ export const StoryFooter = () => (
                 Segurança
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href={`#${STORY_SECTION_IDS.faq}`}
                 className="hover:text-blue-300 transition-colors"
               >
                 Preços
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -103,14 +104,14 @@ export const StoryFooter = () => (
           </h4>
           <ul className="space-y-3 text-sm">
             <li>
-              <a
+              <Link
                 href={`#${STORY_SECTION_IDS.about}`}
                 className="hover:text-blue-300 transition-colors"
               >
                 Sobre Nós
-              </a>
+              </Link>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="mailto:contato@flicapp.com"
                 className="hover:text-blue-300 transition-colors"
@@ -130,7 +131,7 @@ export const StoryFooter = () => (
               >
                 Imprensa
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -140,36 +141,20 @@ export const StoryFooter = () => (
           </h4>
           <ul className="space-y-3 text-sm">
             <li>
-              <a
-                href="/terms"
+              <Link
+                href="/termos"
                 className="hover:text-blue-300 transition-colors"
               >
                 Termos de Uso
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/privacy"
+              <Link
+                href="/privacidade"
                 className="hover:text-blue-300 transition-colors"
               >
                 Política de Privacidade
-              </a>
-            </li>
-            <li>
-              <a
-                href="/cookies"
-                className="hover:text-blue-300 transition-colors"
-              >
-                Cookies
-              </a>
-            </li>
-            <li>
-              <a
-                href="/help-center"
-                className="hover:text-blue-300 transition-colors"
-              >
-                Central de Ajuda
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -177,7 +162,7 @@ export const StoryFooter = () => (
 
       <div className="border-t border-blue-900/40 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-xs text-slate-400">
-          © 2024 FlicApp Tecnologia Ltda. Todos os direitos reservados.
+          © 2025 FlicApp. Todos os direitos reservados.
         </p>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-green-500"></div>

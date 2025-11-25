@@ -29,7 +29,8 @@ export default async function DashboardLayout({
 
   // Read sidebar state from cookie on server side
   const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+  const sidebarState = cookieStore.get("sidebar_state")?.value;
+  const defaultOpen = sidebarState ? sidebarState === "true" : true;
 
   // Read accordion state from cookie on server side
   const accordionStateCookie = cookieStore.get("nav_accordion_state")?.value;
