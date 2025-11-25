@@ -15,6 +15,7 @@ import { WhatsAppFloat } from "../components/landing/v2/components/WhatsAppFloat
 import { trackPageView } from "@/lib/analytics";
 import { Footer } from "../components/landing/v2/components/Footer";
 import { ToggleTheme } from "@/components/ui/toggle-theme";
+import { FlicAppScrollytelling } from "@/components/storytelling";
 
 export default function Home() {
   useEffect(() => {

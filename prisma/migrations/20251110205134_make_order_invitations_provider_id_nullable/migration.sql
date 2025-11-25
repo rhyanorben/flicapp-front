@@ -2,3 +2,4 @@
 ALTER TABLE "public"."order_invitations"
   ALTER COLUMN "providerId" DROP NOT NULL;
 
+

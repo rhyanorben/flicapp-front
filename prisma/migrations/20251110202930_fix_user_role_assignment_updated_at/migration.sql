@@ -8,3 +8,4 @@ ALTER TABLE "public"."user_role_assignment"
   ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP,
   ALTER COLUMN "updatedAt" SET NOT NULL;
 
+
