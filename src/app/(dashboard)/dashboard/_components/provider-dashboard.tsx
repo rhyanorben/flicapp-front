@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -42,7 +43,19 @@ import { useProviderDashboard } from "@/hooks/use-dashboard-data";
 import { ProviderStatusCard } from "./provider-status-card";
 
 export function ProviderDashboard() {
-  const { data, isLoading, error } = useProviderDashboard();
+  const [selectedPeriod, setSelectedPeriod] = useState("30d");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined;
+    to: Date | undefined;
+  }>({ from: undefined, to: undefined });
+
+  const { data, isLoading, error } = useProviderDashboard({
+    period: selectedPeriod,
+    status: selectedStatus === "all" ? undefined : selectedStatus,
+    dateFrom: dateRange.from,
+    dateTo: dateRange.to,
+  });
 
   if (isLoading) {
     return <ProviderDashboardSkeleton />;
@@ -64,7 +77,14 @@ export function ProviderDashboard() {
       <ProviderStatusCard />
 
       {/* Filter Bar */}
-      <DashboardFilters />
+      <DashboardFilters
+        selectedPeriod={selectedPeriod}
+        selectedStatus={selectedStatus}
+        dateRange={dateRange}
+        onPeriodChange={setSelectedPeriod}
+        onStatusChange={setSelectedStatus}
+        onDateRangeChange={setDateRange}
+      />
 
       {/* Row 1: KPI Cards with Sparklines */}
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
