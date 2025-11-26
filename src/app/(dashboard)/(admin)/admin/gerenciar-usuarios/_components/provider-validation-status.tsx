@@ -12,7 +12,7 @@ export function ProviderValidationStatus({
   providerDetails,
 }: ProviderValidationStatusProps) {
   const hasProfile = !!providerDetails.providerProfile;
-  const hasCategories = providerDetails.providerCategories.length > 0;
+  // const hasCategories = providerDetails.providerCategories.length > 0;
   const hasActiveCategories =
     providerDetails.providerCategories.filter((c) => c.active).length > 0;
   const hasAddress = !!providerDetails.activeAddress;
@@ -93,4 +93,3 @@ export function ProviderValidationStatus({
     </div>
   );
 }
-

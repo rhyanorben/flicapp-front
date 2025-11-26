@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
-  User,
+  User as UserIcon,
   Mail,
   Calendar,
   Shield,
@@ -20,9 +20,7 @@ import {
   TableAction,
 } from "@/components/ui/generic-table";
 import { DetailModalSection } from "@/components/ui/detail-modal";
-import type { User as UserType, ProviderSummary } from "@/lib/api/users";
-
-interface User extends UserType {}
+import type { User } from "@/lib/api/users";
 
 interface UsersTableProps {
   users: User[];
@@ -125,9 +123,7 @@ export function UsersTable({
         render: (value: unknown, row: Record<string, unknown>) => {
           const user = row as unknown as User;
           if (!user.providerSummary) {
-            return (
-              <span className="text-sm text-muted-foreground">—</span>
-            );
+            return <span className="text-sm text-muted-foreground">—</span>;
           }
           const summary = user.providerSummary;
           return (
@@ -216,12 +212,12 @@ export function UsersTable({
     <>
       <DetailModalSection
         title="ID do Usuário"
-        icon={<User className="h-3 w-3" />}
+        icon={<UserIcon className="h-3 w-3" />}
       >
         {user.id}
       </DetailModalSection>
 
-      <DetailModalSection title="Nome" icon={<User className="h-3 w-3" />}>
+      <DetailModalSection title="Nome" icon={<UserIcon className="h-3 w-3" />}>
         {user.name}
       </DetailModalSection>
 

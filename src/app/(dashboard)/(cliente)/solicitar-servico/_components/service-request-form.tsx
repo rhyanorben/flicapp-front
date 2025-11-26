@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, User, MessageSquare, AlertCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { useSubmitServiceRequest } from "@/lib/queries/services";
 import { useUserData } from "@/hooks/use-user-data";
 import { ServiceTypeCards } from "./service-type-cards";

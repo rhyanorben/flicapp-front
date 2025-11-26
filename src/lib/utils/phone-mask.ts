@@ -68,7 +68,7 @@ export function convertPhoneToE164(phone: string): string {
   // Add country code +55 for Brazil
   if (numbers.length === 11) {
     // Check if it's already a mobile number (starts with DDD + 9)
-    const ddd = numbers.substring(0, 2);
+    // const ddd = numbers.substring(0, 2);
     const firstDigit = numbers.substring(2, 3);
     // If first digit after DDD is 9, it's already a mobile number
     if (firstDigit === "9") {

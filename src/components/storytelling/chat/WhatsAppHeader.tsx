@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { MoreVertical, Phone, Video, Zap } from "lucide-react";
+import { MoreVertical, Phone, Video } from "lucide-react";
 
 export const WhatsAppHeader = React.memo(() => (
   <div className="bg-[#008069] text-white px-3 py-2 flex items-center gap-2 shadow-md z-30 relative shrink-0 h-[60px]">

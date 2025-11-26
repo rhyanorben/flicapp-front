@@ -17,10 +17,10 @@ import {
   XCircle,
   AlertCircle,
   ArrowRight,
-  User,
-  Package,
-  MapPin,
-  Phone,
+  // User,
+  // Package,
+  // MapPin,
+  // Phone,
 } from "lucide-react";
 import { useProviderProfile } from "@/lib/queries/provider-profile";
 
@@ -44,7 +44,7 @@ export function ProviderStatusCard() {
   }
 
   const hasProfile = !!providerDetails.providerProfile;
-  const hasCategories = providerDetails.providerCategories.length > 0;
+  // const hasCategories = providerDetails.providerCategories.length > 0;
   const hasActiveCategories =
     providerDetails.providerCategories.filter((c) => c.active).length > 0;
   const hasAddress = !!providerDetails.activeAddress;
@@ -120,7 +120,9 @@ export function ProviderStatusCard() {
             <CardDescription className="mt-2">
               {allValid
                 ? "Seu perfil está completo e você está apto a receber solicitações de serviços."
-                : `Complete seu perfil para começar a receber solicitações. Faltam ${missingItems.length} item${missingItems.length > 1 ? "s" : ""}.`}
+                : `Complete seu perfil para começar a receber solicitações. Faltam ${
+                    missingItems.length
+                  } item${missingItems.length > 1 ? "s" : ""}.`}
             </CardDescription>
           </div>
         </div>
@@ -203,4 +205,3 @@ export function ProviderStatusCard() {
     </Card>
   );
 }
-

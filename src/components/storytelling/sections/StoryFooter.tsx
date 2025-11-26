@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { Facebook, Instagram, Linkedin, Twitter, X } from "lucide-react";
+import { Facebook, Instagram, Linkedin, X } from "lucide-react";
 import { STORY_SECTION_IDS } from "../constants";
 import Link from "next/link";
 

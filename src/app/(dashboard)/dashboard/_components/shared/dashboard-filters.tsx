@@ -16,20 +16,20 @@ import { Button } from "@/components/ui/button";
 import { Filter, Calendar, ChevronDown } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import type { DateRange as ReactDayPickerDateRange } from "react-day-picker";
+
+type DateRange = {
+  from: Date | undefined;
+  to: Date | undefined;
+};
 
 interface DashboardFiltersProps {
   onPeriodChange?: (period: string) => void;
   onStatusChange?: (status: string) => void;
-  onDateRangeChange?: (dateRange: {
-    from: Date | undefined;
-    to: Date | undefined;
-  }) => void;
+  onDateRangeChange?: (dateRange: DateRange) => void;
   selectedPeriod?: string;
   selectedStatus?: string;
-  dateRange?: {
-    from: Date | undefined;
-    to: Date | undefined;
-  };
+  dateRange?: DateRange;
 }
 
 export function DashboardFilters({
@@ -40,10 +40,9 @@ export function DashboardFilters({
   selectedStatus = "all",
   dateRange,
 }: DashboardFiltersProps) {
-  const [internalDateRange, setInternalDateRange] = useState<{
-    from: Date | undefined;
-    to: Date | undefined;
-  }>(dateRange || { from: undefined, to: undefined });
+  const [internalDateRange, setInternalDateRange] = useState<DateRange>(
+    dateRange || { from: undefined, to: undefined }
+  );
 
   const handlePeriodChange = (period: string) => {
     onPeriodChange?.(period);
@@ -58,7 +57,7 @@ export function DashboardFilters({
     onStatusChange?.(status);
   };
 
-  const handleDateRangeSelect = (range: { from: Date | undefined; to: Date | undefined } | undefined) => {
+  const handleDateRangeSelect = (range: DateRange | undefined) => {
     if (!range) {
       setInternalDateRange({ from: undefined, to: undefined });
       onDateRangeChange?.({ from: undefined, to: undefined });
@@ -84,7 +83,10 @@ export function DashboardFilters({
 
   const displayDateRange = () => {
     if (internalDateRange?.from && internalDateRange?.to) {
-      return `${format(internalDateRange.from, "dd/MM/yyyy")} - ${format(internalDateRange.to, "dd/MM/yyyy")}`;
+      return `${format(internalDateRange.from, "dd/MM/yyyy")} - ${format(
+        internalDateRange.to,
+        "dd/MM/yyyy"
+      )}`;
     }
     if (internalDateRange?.from) {
       return `A partir de ${format(internalDateRange.from, "dd/MM/yyyy")}`;
@@ -172,17 +174,28 @@ export function DashboardFilters({
                   </Button>
                 </div>
               </div>
-              
+
               <div className="border-t pt-4">
-                <p className="text-sm font-medium mb-2">Período personalizado</p>
+                <p className="text-sm font-medium mb-2">
+                  Período personalizado
+                </p>
                 <CalendarComponent
                   mode="range"
-                  selected={{
-                    from: internalDateRange.from,
-                    to: internalDateRange.to,
-                  } as any}
-                  onSelect={(range: any) => {
-                    handleDateRangeSelect(range as { from: Date | undefined; to: Date | undefined } | undefined);
+                  selected={
+                    {
+                      from: internalDateRange.from,
+                      to: internalDateRange.to,
+                    } as ReactDayPickerDateRange
+                  }
+                  onSelect={(range: ReactDayPickerDateRange | undefined) => {
+                    handleDateRangeSelect(
+                      range
+                        ? {
+                            from: range.from,
+                            to: range.to,
+                          }
+                        : undefined
+                    );
                   }}
                   numberOfMonths={2}
                 />
