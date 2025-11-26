@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
+import { sendVerificationEmail } from "@/lib/email";
+
+function generateVerificationCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
 const registerSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -79,11 +84,38 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Gerar e enviar código de verificação
+    const normalizedEmail = email.toLowerCase().trim();
+    const code = generateVerificationCode();
+    const expiresAt = new Date();
+    expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+
+    await prisma.emailVerificationCode.create({
+      data: {
+        userId: userId,
+        email: normalizedEmail,
+        code,
+        expiresAt,
+      },
+    });
+
+    // Enviar email de verificação
+    try {
+      await sendVerificationEmail(normalizedEmail, code);
+    } catch (emailError) {
+      console.error("Error sending verification email:", emailError);
+      // Não falha o registro se o email não for enviado
+    }
+
     return NextResponse.json(
       {
         success: true,
         message: "Usuário registrado com sucesso",
-        user: (signUpResponse as { user?: unknown })?.user,
+        user: {
+          id: userId,
+          name,
+          email,
+        },
       },
       { status: 201 }
     );

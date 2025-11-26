@@ -44,6 +44,16 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
  */
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
 /**
+ * Model EmailVerificationCode
+ * 
+ */
+export type EmailVerificationCode = $Result.DefaultSelection<Prisma.$EmailVerificationCodePayload>
+/**
+ * Model PasswordResetToken
+ * 
+ */
+export type PasswordResetToken = $Result.DefaultSelection<Prisma.$PasswordResetTokenPayload>
+/**
  * Model ProviderRequest
  * 
  */
@@ -351,6 +361,26 @@ export class PrismaClient<
     * ```
     */
   get verification(): Prisma.VerificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.emailVerificationCode`: Exposes CRUD operations for the **EmailVerificationCode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailVerificationCodes
+    * const emailVerificationCodes = await prisma.emailVerificationCode.findMany()
+    * ```
+    */
+  get emailVerificationCode(): Prisma.EmailVerificationCodeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.passwordResetToken`: Exposes CRUD operations for the **PasswordResetToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PasswordResetTokens
+    * const passwordResetTokens = await prisma.passwordResetToken.findMany()
+    * ```
+    */
+  get passwordResetToken(): Prisma.PasswordResetTokenDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.providerRequest`: Exposes CRUD operations for the **ProviderRequest** model.
@@ -991,6 +1021,8 @@ export namespace Prisma {
     Session: 'Session',
     Account: 'Account',
     Verification: 'Verification',
+    EmailVerificationCode: 'EmailVerificationCode',
+    PasswordResetToken: 'PasswordResetToken',
     ProviderRequest: 'ProviderRequest',
     Address: 'Address',
     ProviderProfile: 'ProviderProfile',
@@ -1026,7 +1058,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "userRoleAssignment" | "session" | "account" | "verification" | "providerRequest" | "address" | "providerProfile" | "providerAvailability" | "providerCategory" | "category" | "order" | "orderSlot" | "orderCategory" | "orderInvitation" | "orderStatusHistory" | "orderReview" | "payment" | "paymentEvent" | "commission" | "clientCredit" | "providerPayout" | "matchScore" | "llmClassification" | "refusalRule"
+      modelProps: "user" | "role" | "userRoleAssignment" | "session" | "account" | "verification" | "emailVerificationCode" | "passwordResetToken" | "providerRequest" | "address" | "providerProfile" | "providerAvailability" | "providerCategory" | "category" | "order" | "orderSlot" | "orderCategory" | "orderInvitation" | "orderStatusHistory" | "orderReview" | "payment" | "paymentEvent" | "commission" | "clientCredit" | "providerPayout" | "matchScore" | "llmClassification" | "refusalRule"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1471,6 +1503,154 @@ export namespace Prisma {
           count: {
             args: Prisma.VerificationCountArgs<ExtArgs>
             result: $Utils.Optional<VerificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmailVerificationCode: {
+        payload: Prisma.$EmailVerificationCodePayload<ExtArgs>
+        fields: Prisma.EmailVerificationCodeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailVerificationCodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailVerificationCodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>
+          }
+          findFirst: {
+            args: Prisma.EmailVerificationCodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailVerificationCodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>
+          }
+          findMany: {
+            args: Prisma.EmailVerificationCodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>[]
+          }
+          create: {
+            args: Prisma.EmailVerificationCodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>
+          }
+          createMany: {
+            args: Prisma.EmailVerificationCodeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailVerificationCodeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>[]
+          }
+          delete: {
+            args: Prisma.EmailVerificationCodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>
+          }
+          update: {
+            args: Prisma.EmailVerificationCodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailVerificationCodeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailVerificationCodeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmailVerificationCodeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>[]
+          }
+          upsert: {
+            args: Prisma.EmailVerificationCodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailVerificationCodePayload>
+          }
+          aggregate: {
+            args: Prisma.EmailVerificationCodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailVerificationCode>
+          }
+          groupBy: {
+            args: Prisma.EmailVerificationCodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailVerificationCodeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailVerificationCodeCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailVerificationCodeCountAggregateOutputType> | number
+          }
+        }
+      }
+      PasswordResetToken: {
+        payload: Prisma.$PasswordResetTokenPayload<ExtArgs>
+        fields: Prisma.PasswordResetTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PasswordResetTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PasswordResetTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.PasswordResetTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PasswordResetTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+          }
+          findMany: {
+            args: Prisma.PasswordResetTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[]
+          }
+          create: {
+            args: Prisma.PasswordResetTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+          }
+          createMany: {
+            args: Prisma.PasswordResetTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PasswordResetTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.PasswordResetTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+          }
+          update: {
+            args: Prisma.PasswordResetTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.PasswordResetTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PasswordResetTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PasswordResetTokenUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[]
+          }
+          upsert: {
+            args: Prisma.PasswordResetTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.PasswordResetTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePasswordResetToken>
+          }
+          groupBy: {
+            args: Prisma.PasswordResetTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PasswordResetTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetTokenCountAggregateOutputType> | number
           }
         }
       }
@@ -3052,6 +3232,8 @@ export namespace Prisma {
     session?: SessionOmit
     account?: AccountOmit
     verification?: VerificationOmit
+    emailVerificationCode?: EmailVerificationCodeOmit
+    passwordResetToken?: PasswordResetTokenOmit
     providerRequest?: ProviderRequestOmit
     address?: AddressOmit
     providerProfile?: ProviderProfileOmit
@@ -3169,6 +3351,8 @@ export namespace Prisma {
     orderReviewsAsProvider: number
     orderStatusHistory: number
     matchScores: number
+    emailVerificationCodes: number
+    passwordResetTokens: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3189,6 +3373,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: boolean | UserCountOutputTypeCountOrderReviewsAsProviderArgs
     orderStatusHistory?: boolean | UserCountOutputTypeCountOrderStatusHistoryArgs
     matchScores?: boolean | UserCountOutputTypeCountMatchScoresArgs
+    emailVerificationCodes?: boolean | UserCountOutputTypeCountEmailVerificationCodesArgs
+    passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
   }
 
   // Custom InputTypes
@@ -3319,6 +3505,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountMatchScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MatchScoreWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEmailVerificationCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailVerificationCodeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PasswordResetTokenWhereInput
   }
 
 
@@ -3832,6 +4032,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: boolean | User$orderReviewsAsProviderArgs<ExtArgs>
     orderStatusHistory?: boolean | User$orderStatusHistoryArgs<ExtArgs>
     matchScores?: boolean | User$matchScoresArgs<ExtArgs>
+    emailVerificationCodes?: boolean | User$emailVerificationCodesArgs<ExtArgs>
+    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3897,6 +4099,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: boolean | User$orderReviewsAsProviderArgs<ExtArgs>
     orderStatusHistory?: boolean | User$orderStatusHistoryArgs<ExtArgs>
     matchScores?: boolean | User$matchScoresArgs<ExtArgs>
+    emailVerificationCodes?: boolean | User$emailVerificationCodesArgs<ExtArgs>
+    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3923,6 +4127,8 @@ export namespace Prisma {
       orderReviewsAsProvider: Prisma.$OrderReviewPayload<ExtArgs>[]
       orderStatusHistory: Prisma.$OrderStatusHistoryPayload<ExtArgs>[]
       matchScores: Prisma.$MatchScorePayload<ExtArgs>[]
+      emailVerificationCodes: Prisma.$EmailVerificationCodePayload<ExtArgs>[]
+      passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4348,6 +4554,8 @@ export namespace Prisma {
     orderReviewsAsProvider<T extends User$orderReviewsAsProviderArgs<ExtArgs> = {}>(args?: Subset<T, User$orderReviewsAsProviderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     orderStatusHistory<T extends User$orderStatusHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$orderStatusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchScores<T extends User$matchScoresArgs<ExtArgs> = {}>(args?: Subset<T, User$matchScoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    emailVerificationCodes<T extends User$emailVerificationCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$emailVerificationCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5200,6 +5408,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MatchScoreScalarFieldEnum | MatchScoreScalarFieldEnum[]
+  }
+
+  /**
+   * User.emailVerificationCodes
+   */
+  export type User$emailVerificationCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    where?: EmailVerificationCodeWhereInput
+    orderBy?: EmailVerificationCodeOrderByWithRelationInput | EmailVerificationCodeOrderByWithRelationInput[]
+    cursor?: EmailVerificationCodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmailVerificationCodeScalarFieldEnum | EmailVerificationCodeScalarFieldEnum[]
+  }
+
+  /**
+   * User.passwordResetTokens
+   */
+  export type User$passwordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    where?: PasswordResetTokenWhereInput
+    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
+    cursor?: PasswordResetTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
   }
 
   /**
@@ -10608,6 +10864,2200 @@ export namespace Prisma {
      * Omit specific fields from the Verification
      */
     omit?: VerificationOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmailVerificationCode
+   */
+
+  export type AggregateEmailVerificationCode = {
+    _count: EmailVerificationCodeCountAggregateOutputType | null
+    _min: EmailVerificationCodeMinAggregateOutputType | null
+    _max: EmailVerificationCodeMaxAggregateOutputType | null
+  }
+
+  export type EmailVerificationCodeMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    email: string | null
+    code: string | null
+    expiresAt: Date | null
+    verifiedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailVerificationCodeMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    email: string | null
+    code: string | null
+    expiresAt: Date | null
+    verifiedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailVerificationCodeCountAggregateOutputType = {
+    id: number
+    userId: number
+    email: number
+    code: number
+    expiresAt: number
+    verifiedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmailVerificationCodeMinAggregateInputType = {
+    id?: true
+    userId?: true
+    email?: true
+    code?: true
+    expiresAt?: true
+    verifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailVerificationCodeMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    email?: true
+    code?: true
+    expiresAt?: true
+    verifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailVerificationCodeCountAggregateInputType = {
+    id?: true
+    userId?: true
+    email?: true
+    code?: true
+    expiresAt?: true
+    verifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmailVerificationCodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailVerificationCode to aggregate.
+     */
+    where?: EmailVerificationCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailVerificationCodes to fetch.
+     */
+    orderBy?: EmailVerificationCodeOrderByWithRelationInput | EmailVerificationCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailVerificationCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailVerificationCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailVerificationCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailVerificationCodes
+    **/
+    _count?: true | EmailVerificationCodeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailVerificationCodeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailVerificationCodeMaxAggregateInputType
+  }
+
+  export type GetEmailVerificationCodeAggregateType<T extends EmailVerificationCodeAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailVerificationCode]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailVerificationCode[P]>
+      : GetScalarType<T[P], AggregateEmailVerificationCode[P]>
+  }
+
+
+
+
+  export type EmailVerificationCodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailVerificationCodeWhereInput
+    orderBy?: EmailVerificationCodeOrderByWithAggregationInput | EmailVerificationCodeOrderByWithAggregationInput[]
+    by: EmailVerificationCodeScalarFieldEnum[] | EmailVerificationCodeScalarFieldEnum
+    having?: EmailVerificationCodeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailVerificationCodeCountAggregateInputType | true
+    _min?: EmailVerificationCodeMinAggregateInputType
+    _max?: EmailVerificationCodeMaxAggregateInputType
+  }
+
+  export type EmailVerificationCodeGroupByOutputType = {
+    id: string
+    userId: string
+    email: string
+    code: string
+    expiresAt: Date
+    verifiedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailVerificationCodeCountAggregateOutputType | null
+    _min: EmailVerificationCodeMinAggregateOutputType | null
+    _max: EmailVerificationCodeMaxAggregateOutputType | null
+  }
+
+  type GetEmailVerificationCodeGroupByPayload<T extends EmailVerificationCodeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailVerificationCodeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailVerificationCodeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailVerificationCodeGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailVerificationCodeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailVerificationCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    email?: boolean
+    code?: boolean
+    expiresAt?: boolean
+    verifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailVerificationCode"]>
+
+  export type EmailVerificationCodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    email?: boolean
+    code?: boolean
+    expiresAt?: boolean
+    verifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailVerificationCode"]>
+
+  export type EmailVerificationCodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    email?: boolean
+    code?: boolean
+    expiresAt?: boolean
+    verifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailVerificationCode"]>
+
+  export type EmailVerificationCodeSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    email?: boolean
+    code?: boolean
+    expiresAt?: boolean
+    verifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmailVerificationCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "email" | "code" | "expiresAt" | "verifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["emailVerificationCode"]>
+  export type EmailVerificationCodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EmailVerificationCodeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EmailVerificationCodeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $EmailVerificationCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailVerificationCode"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      email: string
+      code: string
+      expiresAt: Date
+      verifiedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["emailVerificationCode"]>
+    composites: {}
+  }
+
+  type EmailVerificationCodeGetPayload<S extends boolean | null | undefined | EmailVerificationCodeDefaultArgs> = $Result.GetResult<Prisma.$EmailVerificationCodePayload, S>
+
+  type EmailVerificationCodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailVerificationCodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailVerificationCodeCountAggregateInputType | true
+    }
+
+  export interface EmailVerificationCodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailVerificationCode'], meta: { name: 'EmailVerificationCode' } }
+    /**
+     * Find zero or one EmailVerificationCode that matches the filter.
+     * @param {EmailVerificationCodeFindUniqueArgs} args - Arguments to find a EmailVerificationCode
+     * @example
+     * // Get one EmailVerificationCode
+     * const emailVerificationCode = await prisma.emailVerificationCode.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailVerificationCodeFindUniqueArgs>(args: SelectSubset<T, EmailVerificationCodeFindUniqueArgs<ExtArgs>>): Prisma__EmailVerificationCodeClient<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmailVerificationCode that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmailVerificationCodeFindUniqueOrThrowArgs} args - Arguments to find a EmailVerificationCode
+     * @example
+     * // Get one EmailVerificationCode
+     * const emailVerificationCode = await prisma.emailVerificationCode.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailVerificationCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailVerificationCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailVerificationCodeClient<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailVerificationCode that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailVerificationCodeFindFirstArgs} args - Arguments to find a EmailVerificationCode
+     * @example
+     * // Get one EmailVerificationCode
+     * const emailVerificationCode = await prisma.emailVerificationCode.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailVerificationCodeFindFirstArgs>(args?: SelectSubset<T, EmailVerificationCodeFindFirstArgs<ExtArgs>>): Prisma__EmailVerificationCodeClient<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailVerificationCode that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailVerificationCodeFindFirstOrThrowArgs} args - Arguments to find a EmailVerificationCode
+     * @example
+     * // Get one EmailVerificationCode
+     * const emailVerificationCode = await prisma.emailVerificationCode.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailVerificationCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailVerificationCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailVerificationCodeClient<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmailVerificationCodes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailVerificationCodeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailVerificationCodes
+     * const emailVerificationCodes = await prisma.emailVerificationCode.findMany()
+     * 
+     * // Get first 10 EmailVerificationCodes
+     * const emailVerificationCodes = await prisma.emailVerificationCode.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailVerificationCodeWithIdOnly = await prisma.emailVerificationCode.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailVerificationCodeFindManyArgs>(args?: SelectSubset<T, EmailVerificationCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmailVerificationCode.
+     * @param {EmailVerificationCodeCreateArgs} args - Arguments to create a EmailVerificationCode.
+     * @example
+     * // Create one EmailVerificationCode
+     * const EmailVerificationCode = await prisma.emailVerificationCode.create({
+     *   data: {
+     *     // ... data to create a EmailVerificationCode
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailVerificationCodeCreateArgs>(args: SelectSubset<T, EmailVerificationCodeCreateArgs<ExtArgs>>): Prisma__EmailVerificationCodeClient<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmailVerificationCodes.
+     * @param {EmailVerificationCodeCreateManyArgs} args - Arguments to create many EmailVerificationCodes.
+     * @example
+     * // Create many EmailVerificationCodes
+     * const emailVerificationCode = await prisma.emailVerificationCode.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailVerificationCodeCreateManyArgs>(args?: SelectSubset<T, EmailVerificationCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailVerificationCodes and returns the data saved in the database.
+     * @param {EmailVerificationCodeCreateManyAndReturnArgs} args - Arguments to create many EmailVerificationCodes.
+     * @example
+     * // Create many EmailVerificationCodes
+     * const emailVerificationCode = await prisma.emailVerificationCode.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailVerificationCodes and only return the `id`
+     * const emailVerificationCodeWithIdOnly = await prisma.emailVerificationCode.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailVerificationCodeCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailVerificationCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EmailVerificationCode.
+     * @param {EmailVerificationCodeDeleteArgs} args - Arguments to delete one EmailVerificationCode.
+     * @example
+     * // Delete one EmailVerificationCode
+     * const EmailVerificationCode = await prisma.emailVerificationCode.delete({
+     *   where: {
+     *     // ... filter to delete one EmailVerificationCode
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailVerificationCodeDeleteArgs>(args: SelectSubset<T, EmailVerificationCodeDeleteArgs<ExtArgs>>): Prisma__EmailVerificationCodeClient<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmailVerificationCode.
+     * @param {EmailVerificationCodeUpdateArgs} args - Arguments to update one EmailVerificationCode.
+     * @example
+     * // Update one EmailVerificationCode
+     * const emailVerificationCode = await prisma.emailVerificationCode.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailVerificationCodeUpdateArgs>(args: SelectSubset<T, EmailVerificationCodeUpdateArgs<ExtArgs>>): Prisma__EmailVerificationCodeClient<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmailVerificationCodes.
+     * @param {EmailVerificationCodeDeleteManyArgs} args - Arguments to filter EmailVerificationCodes to delete.
+     * @example
+     * // Delete a few EmailVerificationCodes
+     * const { count } = await prisma.emailVerificationCode.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailVerificationCodeDeleteManyArgs>(args?: SelectSubset<T, EmailVerificationCodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailVerificationCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailVerificationCodeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailVerificationCodes
+     * const emailVerificationCode = await prisma.emailVerificationCode.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailVerificationCodeUpdateManyArgs>(args: SelectSubset<T, EmailVerificationCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailVerificationCodes and returns the data updated in the database.
+     * @param {EmailVerificationCodeUpdateManyAndReturnArgs} args - Arguments to update many EmailVerificationCodes.
+     * @example
+     * // Update many EmailVerificationCodes
+     * const emailVerificationCode = await prisma.emailVerificationCode.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EmailVerificationCodes and only return the `id`
+     * const emailVerificationCodeWithIdOnly = await prisma.emailVerificationCode.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmailVerificationCodeUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailVerificationCodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EmailVerificationCode.
+     * @param {EmailVerificationCodeUpsertArgs} args - Arguments to update or create a EmailVerificationCode.
+     * @example
+     * // Update or create a EmailVerificationCode
+     * const emailVerificationCode = await prisma.emailVerificationCode.upsert({
+     *   create: {
+     *     // ... data to create a EmailVerificationCode
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailVerificationCode we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailVerificationCodeUpsertArgs>(args: SelectSubset<T, EmailVerificationCodeUpsertArgs<ExtArgs>>): Prisma__EmailVerificationCodeClient<$Result.GetResult<Prisma.$EmailVerificationCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmailVerificationCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailVerificationCodeCountArgs} args - Arguments to filter EmailVerificationCodes to count.
+     * @example
+     * // Count the number of EmailVerificationCodes
+     * const count = await prisma.emailVerificationCode.count({
+     *   where: {
+     *     // ... the filter for the EmailVerificationCodes we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailVerificationCodeCountArgs>(
+      args?: Subset<T, EmailVerificationCodeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailVerificationCodeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailVerificationCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailVerificationCodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailVerificationCodeAggregateArgs>(args: Subset<T, EmailVerificationCodeAggregateArgs>): Prisma.PrismaPromise<GetEmailVerificationCodeAggregateType<T>>
+
+    /**
+     * Group by EmailVerificationCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailVerificationCodeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailVerificationCodeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailVerificationCodeGroupByArgs['orderBy'] }
+        : { orderBy?: EmailVerificationCodeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailVerificationCodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailVerificationCodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailVerificationCode model
+   */
+  readonly fields: EmailVerificationCodeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailVerificationCode.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailVerificationCodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailVerificationCode model
+   */
+  interface EmailVerificationCodeFieldRefs {
+    readonly id: FieldRef<"EmailVerificationCode", 'String'>
+    readonly userId: FieldRef<"EmailVerificationCode", 'String'>
+    readonly email: FieldRef<"EmailVerificationCode", 'String'>
+    readonly code: FieldRef<"EmailVerificationCode", 'String'>
+    readonly expiresAt: FieldRef<"EmailVerificationCode", 'DateTime'>
+    readonly verifiedAt: FieldRef<"EmailVerificationCode", 'DateTime'>
+    readonly createdAt: FieldRef<"EmailVerificationCode", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmailVerificationCode", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailVerificationCode findUnique
+   */
+  export type EmailVerificationCodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailVerificationCode to fetch.
+     */
+    where: EmailVerificationCodeWhereUniqueInput
+  }
+
+  /**
+   * EmailVerificationCode findUniqueOrThrow
+   */
+  export type EmailVerificationCodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailVerificationCode to fetch.
+     */
+    where: EmailVerificationCodeWhereUniqueInput
+  }
+
+  /**
+   * EmailVerificationCode findFirst
+   */
+  export type EmailVerificationCodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailVerificationCode to fetch.
+     */
+    where?: EmailVerificationCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailVerificationCodes to fetch.
+     */
+    orderBy?: EmailVerificationCodeOrderByWithRelationInput | EmailVerificationCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailVerificationCodes.
+     */
+    cursor?: EmailVerificationCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailVerificationCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailVerificationCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailVerificationCodes.
+     */
+    distinct?: EmailVerificationCodeScalarFieldEnum | EmailVerificationCodeScalarFieldEnum[]
+  }
+
+  /**
+   * EmailVerificationCode findFirstOrThrow
+   */
+  export type EmailVerificationCodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailVerificationCode to fetch.
+     */
+    where?: EmailVerificationCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailVerificationCodes to fetch.
+     */
+    orderBy?: EmailVerificationCodeOrderByWithRelationInput | EmailVerificationCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailVerificationCodes.
+     */
+    cursor?: EmailVerificationCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailVerificationCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailVerificationCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailVerificationCodes.
+     */
+    distinct?: EmailVerificationCodeScalarFieldEnum | EmailVerificationCodeScalarFieldEnum[]
+  }
+
+  /**
+   * EmailVerificationCode findMany
+   */
+  export type EmailVerificationCodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailVerificationCodes to fetch.
+     */
+    where?: EmailVerificationCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailVerificationCodes to fetch.
+     */
+    orderBy?: EmailVerificationCodeOrderByWithRelationInput | EmailVerificationCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailVerificationCodes.
+     */
+    cursor?: EmailVerificationCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailVerificationCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailVerificationCodes.
+     */
+    skip?: number
+    distinct?: EmailVerificationCodeScalarFieldEnum | EmailVerificationCodeScalarFieldEnum[]
+  }
+
+  /**
+   * EmailVerificationCode create
+   */
+  export type EmailVerificationCodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmailVerificationCode.
+     */
+    data: XOR<EmailVerificationCodeCreateInput, EmailVerificationCodeUncheckedCreateInput>
+  }
+
+  /**
+   * EmailVerificationCode createMany
+   */
+  export type EmailVerificationCodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailVerificationCodes.
+     */
+    data: EmailVerificationCodeCreateManyInput | EmailVerificationCodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailVerificationCode createManyAndReturn
+   */
+  export type EmailVerificationCodeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * The data used to create many EmailVerificationCodes.
+     */
+    data: EmailVerificationCodeCreateManyInput | EmailVerificationCodeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailVerificationCode update
+   */
+  export type EmailVerificationCodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmailVerificationCode.
+     */
+    data: XOR<EmailVerificationCodeUpdateInput, EmailVerificationCodeUncheckedUpdateInput>
+    /**
+     * Choose, which EmailVerificationCode to update.
+     */
+    where: EmailVerificationCodeWhereUniqueInput
+  }
+
+  /**
+   * EmailVerificationCode updateMany
+   */
+  export type EmailVerificationCodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailVerificationCodes.
+     */
+    data: XOR<EmailVerificationCodeUpdateManyMutationInput, EmailVerificationCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailVerificationCodes to update
+     */
+    where?: EmailVerificationCodeWhereInput
+    /**
+     * Limit how many EmailVerificationCodes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailVerificationCode updateManyAndReturn
+   */
+  export type EmailVerificationCodeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * The data used to update EmailVerificationCodes.
+     */
+    data: XOR<EmailVerificationCodeUpdateManyMutationInput, EmailVerificationCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailVerificationCodes to update
+     */
+    where?: EmailVerificationCodeWhereInput
+    /**
+     * Limit how many EmailVerificationCodes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailVerificationCode upsert
+   */
+  export type EmailVerificationCodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmailVerificationCode to update in case it exists.
+     */
+    where: EmailVerificationCodeWhereUniqueInput
+    /**
+     * In case the EmailVerificationCode found by the `where` argument doesn't exist, create a new EmailVerificationCode with this data.
+     */
+    create: XOR<EmailVerificationCodeCreateInput, EmailVerificationCodeUncheckedCreateInput>
+    /**
+     * In case the EmailVerificationCode was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailVerificationCodeUpdateInput, EmailVerificationCodeUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailVerificationCode delete
+   */
+  export type EmailVerificationCodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+    /**
+     * Filter which EmailVerificationCode to delete.
+     */
+    where: EmailVerificationCodeWhereUniqueInput
+  }
+
+  /**
+   * EmailVerificationCode deleteMany
+   */
+  export type EmailVerificationCodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailVerificationCodes to delete
+     */
+    where?: EmailVerificationCodeWhereInput
+    /**
+     * Limit how many EmailVerificationCodes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailVerificationCode without action
+   */
+  export type EmailVerificationCodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailVerificationCode
+     */
+    select?: EmailVerificationCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailVerificationCode
+     */
+    omit?: EmailVerificationCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailVerificationCodeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PasswordResetToken
+   */
+
+  export type AggregatePasswordResetToken = {
+    _count: PasswordResetTokenCountAggregateOutputType | null
+    _min: PasswordResetTokenMinAggregateOutputType | null
+    _max: PasswordResetTokenMaxAggregateOutputType | null
+  }
+
+  export type PasswordResetTokenMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    token: string | null
+    code: string | null
+    expiresAt: Date | null
+    usedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PasswordResetTokenMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    token: string | null
+    code: string | null
+    expiresAt: Date | null
+    usedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PasswordResetTokenCountAggregateOutputType = {
+    id: number
+    userId: number
+    token: number
+    code: number
+    expiresAt: number
+    usedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PasswordResetTokenMinAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    code?: true
+    expiresAt?: true
+    usedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PasswordResetTokenMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    code?: true
+    expiresAt?: true
+    usedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PasswordResetTokenCountAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    code?: true
+    expiresAt?: true
+    usedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PasswordResetTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordResetToken to aggregate.
+     */
+    where?: PasswordResetTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetTokens to fetch.
+     */
+    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PasswordResetTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PasswordResetTokens
+    **/
+    _count?: true | PasswordResetTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PasswordResetTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PasswordResetTokenMaxAggregateInputType
+  }
+
+  export type GetPasswordResetTokenAggregateType<T extends PasswordResetTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregatePasswordResetToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePasswordResetToken[P]>
+      : GetScalarType<T[P], AggregatePasswordResetToken[P]>
+  }
+
+
+
+
+  export type PasswordResetTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PasswordResetTokenWhereInput
+    orderBy?: PasswordResetTokenOrderByWithAggregationInput | PasswordResetTokenOrderByWithAggregationInput[]
+    by: PasswordResetTokenScalarFieldEnum[] | PasswordResetTokenScalarFieldEnum
+    having?: PasswordResetTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PasswordResetTokenCountAggregateInputType | true
+    _min?: PasswordResetTokenMinAggregateInputType
+    _max?: PasswordResetTokenMaxAggregateInputType
+  }
+
+  export type PasswordResetTokenGroupByOutputType = {
+    id: string
+    userId: string
+    token: string
+    code: string | null
+    expiresAt: Date
+    usedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PasswordResetTokenCountAggregateOutputType | null
+    _min: PasswordResetTokenMinAggregateOutputType | null
+    _max: PasswordResetTokenMaxAggregateOutputType | null
+  }
+
+  type GetPasswordResetTokenGroupByPayload<T extends PasswordResetTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PasswordResetTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PasswordResetTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PasswordResetTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], PasswordResetTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PasswordResetTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    code?: boolean
+    expiresAt?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["passwordResetToken"]>
+
+  export type PasswordResetTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    code?: boolean
+    expiresAt?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["passwordResetToken"]>
+
+  export type PasswordResetTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    code?: boolean
+    expiresAt?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["passwordResetToken"]>
+
+  export type PasswordResetTokenSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    code?: boolean
+    expiresAt?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PasswordResetTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "token" | "code" | "expiresAt" | "usedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["passwordResetToken"]>
+  export type PasswordResetTokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PasswordResetTokenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PasswordResetTokenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PasswordResetTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PasswordResetToken"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      token: string
+      code: string | null
+      expiresAt: Date
+      usedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["passwordResetToken"]>
+    composites: {}
+  }
+
+  type PasswordResetTokenGetPayload<S extends boolean | null | undefined | PasswordResetTokenDefaultArgs> = $Result.GetResult<Prisma.$PasswordResetTokenPayload, S>
+
+  type PasswordResetTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PasswordResetTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PasswordResetTokenCountAggregateInputType | true
+    }
+
+  export interface PasswordResetTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PasswordResetToken'], meta: { name: 'PasswordResetToken' } }
+    /**
+     * Find zero or one PasswordResetToken that matches the filter.
+     * @param {PasswordResetTokenFindUniqueArgs} args - Arguments to find a PasswordResetToken
+     * @example
+     * // Get one PasswordResetToken
+     * const passwordResetToken = await prisma.passwordResetToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PasswordResetTokenFindUniqueArgs>(args: SelectSubset<T, PasswordResetTokenFindUniqueArgs<ExtArgs>>): Prisma__PasswordResetTokenClient<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PasswordResetToken that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PasswordResetTokenFindUniqueOrThrowArgs} args - Arguments to find a PasswordResetToken
+     * @example
+     * // Get one PasswordResetToken
+     * const passwordResetToken = await prisma.passwordResetToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PasswordResetTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, PasswordResetTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PasswordResetTokenClient<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PasswordResetToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetTokenFindFirstArgs} args - Arguments to find a PasswordResetToken
+     * @example
+     * // Get one PasswordResetToken
+     * const passwordResetToken = await prisma.passwordResetToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PasswordResetTokenFindFirstArgs>(args?: SelectSubset<T, PasswordResetTokenFindFirstArgs<ExtArgs>>): Prisma__PasswordResetTokenClient<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PasswordResetToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetTokenFindFirstOrThrowArgs} args - Arguments to find a PasswordResetToken
+     * @example
+     * // Get one PasswordResetToken
+     * const passwordResetToken = await prisma.passwordResetToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PasswordResetTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, PasswordResetTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__PasswordResetTokenClient<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PasswordResetTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PasswordResetTokens
+     * const passwordResetTokens = await prisma.passwordResetToken.findMany()
+     * 
+     * // Get first 10 PasswordResetTokens
+     * const passwordResetTokens = await prisma.passwordResetToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const passwordResetTokenWithIdOnly = await prisma.passwordResetToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PasswordResetTokenFindManyArgs>(args?: SelectSubset<T, PasswordResetTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PasswordResetToken.
+     * @param {PasswordResetTokenCreateArgs} args - Arguments to create a PasswordResetToken.
+     * @example
+     * // Create one PasswordResetToken
+     * const PasswordResetToken = await prisma.passwordResetToken.create({
+     *   data: {
+     *     // ... data to create a PasswordResetToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends PasswordResetTokenCreateArgs>(args: SelectSubset<T, PasswordResetTokenCreateArgs<ExtArgs>>): Prisma__PasswordResetTokenClient<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PasswordResetTokens.
+     * @param {PasswordResetTokenCreateManyArgs} args - Arguments to create many PasswordResetTokens.
+     * @example
+     * // Create many PasswordResetTokens
+     * const passwordResetToken = await prisma.passwordResetToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PasswordResetTokenCreateManyArgs>(args?: SelectSubset<T, PasswordResetTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PasswordResetTokens and returns the data saved in the database.
+     * @param {PasswordResetTokenCreateManyAndReturnArgs} args - Arguments to create many PasswordResetTokens.
+     * @example
+     * // Create many PasswordResetTokens
+     * const passwordResetToken = await prisma.passwordResetToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PasswordResetTokens and only return the `id`
+     * const passwordResetTokenWithIdOnly = await prisma.passwordResetToken.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PasswordResetTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, PasswordResetTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PasswordResetToken.
+     * @param {PasswordResetTokenDeleteArgs} args - Arguments to delete one PasswordResetToken.
+     * @example
+     * // Delete one PasswordResetToken
+     * const PasswordResetToken = await prisma.passwordResetToken.delete({
+     *   where: {
+     *     // ... filter to delete one PasswordResetToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PasswordResetTokenDeleteArgs>(args: SelectSubset<T, PasswordResetTokenDeleteArgs<ExtArgs>>): Prisma__PasswordResetTokenClient<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PasswordResetToken.
+     * @param {PasswordResetTokenUpdateArgs} args - Arguments to update one PasswordResetToken.
+     * @example
+     * // Update one PasswordResetToken
+     * const passwordResetToken = await prisma.passwordResetToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PasswordResetTokenUpdateArgs>(args: SelectSubset<T, PasswordResetTokenUpdateArgs<ExtArgs>>): Prisma__PasswordResetTokenClient<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PasswordResetTokens.
+     * @param {PasswordResetTokenDeleteManyArgs} args - Arguments to filter PasswordResetTokens to delete.
+     * @example
+     * // Delete a few PasswordResetTokens
+     * const { count } = await prisma.passwordResetToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PasswordResetTokenDeleteManyArgs>(args?: SelectSubset<T, PasswordResetTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PasswordResetTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PasswordResetTokens
+     * const passwordResetToken = await prisma.passwordResetToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PasswordResetTokenUpdateManyArgs>(args: SelectSubset<T, PasswordResetTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PasswordResetTokens and returns the data updated in the database.
+     * @param {PasswordResetTokenUpdateManyAndReturnArgs} args - Arguments to update many PasswordResetTokens.
+     * @example
+     * // Update many PasswordResetTokens
+     * const passwordResetToken = await prisma.passwordResetToken.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PasswordResetTokens and only return the `id`
+     * const passwordResetTokenWithIdOnly = await prisma.passwordResetToken.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PasswordResetTokenUpdateManyAndReturnArgs>(args: SelectSubset<T, PasswordResetTokenUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PasswordResetToken.
+     * @param {PasswordResetTokenUpsertArgs} args - Arguments to update or create a PasswordResetToken.
+     * @example
+     * // Update or create a PasswordResetToken
+     * const passwordResetToken = await prisma.passwordResetToken.upsert({
+     *   create: {
+     *     // ... data to create a PasswordResetToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PasswordResetToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PasswordResetTokenUpsertArgs>(args: SelectSubset<T, PasswordResetTokenUpsertArgs<ExtArgs>>): Prisma__PasswordResetTokenClient<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PasswordResetTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetTokenCountArgs} args - Arguments to filter PasswordResetTokens to count.
+     * @example
+     * // Count the number of PasswordResetTokens
+     * const count = await prisma.passwordResetToken.count({
+     *   where: {
+     *     // ... the filter for the PasswordResetTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends PasswordResetTokenCountArgs>(
+      args?: Subset<T, PasswordResetTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PasswordResetTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PasswordResetToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PasswordResetTokenAggregateArgs>(args: Subset<T, PasswordResetTokenAggregateArgs>): Prisma.PrismaPromise<GetPasswordResetTokenAggregateType<T>>
+
+    /**
+     * Group by PasswordResetToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PasswordResetTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PasswordResetTokenGroupByArgs['orderBy'] }
+        : { orderBy?: PasswordResetTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PasswordResetTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPasswordResetTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PasswordResetToken model
+   */
+  readonly fields: PasswordResetTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PasswordResetToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PasswordResetTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PasswordResetToken model
+   */
+  interface PasswordResetTokenFieldRefs {
+    readonly id: FieldRef<"PasswordResetToken", 'String'>
+    readonly userId: FieldRef<"PasswordResetToken", 'String'>
+    readonly token: FieldRef<"PasswordResetToken", 'String'>
+    readonly code: FieldRef<"PasswordResetToken", 'String'>
+    readonly expiresAt: FieldRef<"PasswordResetToken", 'DateTime'>
+    readonly usedAt: FieldRef<"PasswordResetToken", 'DateTime'>
+    readonly createdAt: FieldRef<"PasswordResetToken", 'DateTime'>
+    readonly updatedAt: FieldRef<"PasswordResetToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PasswordResetToken findUnique
+   */
+  export type PasswordResetTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetToken to fetch.
+     */
+    where: PasswordResetTokenWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetToken findUniqueOrThrow
+   */
+  export type PasswordResetTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetToken to fetch.
+     */
+    where: PasswordResetTokenWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetToken findFirst
+   */
+  export type PasswordResetTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetToken to fetch.
+     */
+    where?: PasswordResetTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetTokens to fetch.
+     */
+    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResetTokens.
+     */
+    cursor?: PasswordResetTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResetTokens.
+     */
+    distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetToken findFirstOrThrow
+   */
+  export type PasswordResetTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetToken to fetch.
+     */
+    where?: PasswordResetTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetTokens to fetch.
+     */
+    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResetTokens.
+     */
+    cursor?: PasswordResetTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResetTokens.
+     */
+    distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetToken findMany
+   */
+  export type PasswordResetTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetTokens to fetch.
+     */
+    where?: PasswordResetTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetTokens to fetch.
+     */
+    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PasswordResetTokens.
+     */
+    cursor?: PasswordResetTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetTokens.
+     */
+    skip?: number
+    distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetToken create
+   */
+  export type PasswordResetTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PasswordResetToken.
+     */
+    data: XOR<PasswordResetTokenCreateInput, PasswordResetTokenUncheckedCreateInput>
+  }
+
+  /**
+   * PasswordResetToken createMany
+   */
+  export type PasswordResetTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PasswordResetTokens.
+     */
+    data: PasswordResetTokenCreateManyInput | PasswordResetTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PasswordResetToken createManyAndReturn
+   */
+  export type PasswordResetTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * The data used to create many PasswordResetTokens.
+     */
+    data: PasswordResetTokenCreateManyInput | PasswordResetTokenCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PasswordResetToken update
+   */
+  export type PasswordResetTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PasswordResetToken.
+     */
+    data: XOR<PasswordResetTokenUpdateInput, PasswordResetTokenUncheckedUpdateInput>
+    /**
+     * Choose, which PasswordResetToken to update.
+     */
+    where: PasswordResetTokenWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetToken updateMany
+   */
+  export type PasswordResetTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PasswordResetTokens.
+     */
+    data: XOR<PasswordResetTokenUpdateManyMutationInput, PasswordResetTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which PasswordResetTokens to update
+     */
+    where?: PasswordResetTokenWhereInput
+    /**
+     * Limit how many PasswordResetTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PasswordResetToken updateManyAndReturn
+   */
+  export type PasswordResetTokenUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * The data used to update PasswordResetTokens.
+     */
+    data: XOR<PasswordResetTokenUpdateManyMutationInput, PasswordResetTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which PasswordResetTokens to update
+     */
+    where?: PasswordResetTokenWhereInput
+    /**
+     * Limit how many PasswordResetTokens to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PasswordResetToken upsert
+   */
+  export type PasswordResetTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PasswordResetToken to update in case it exists.
+     */
+    where: PasswordResetTokenWhereUniqueInput
+    /**
+     * In case the PasswordResetToken found by the `where` argument doesn't exist, create a new PasswordResetToken with this data.
+     */
+    create: XOR<PasswordResetTokenCreateInput, PasswordResetTokenUncheckedCreateInput>
+    /**
+     * In case the PasswordResetToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PasswordResetTokenUpdateInput, PasswordResetTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * PasswordResetToken delete
+   */
+  export type PasswordResetTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    /**
+     * Filter which PasswordResetToken to delete.
+     */
+    where: PasswordResetTokenWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetToken deleteMany
+   */
+  export type PasswordResetTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordResetTokens to delete
+     */
+    where?: PasswordResetTokenWhereInput
+    /**
+     * Limit how many PasswordResetTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PasswordResetToken without action
+   */
+  export type PasswordResetTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
   }
 
 
@@ -34110,6 +36560,34 @@ export namespace Prisma {
   export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+  export const EmailVerificationCodeScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    email: 'email',
+    code: 'code',
+    expiresAt: 'expiresAt',
+    verifiedAt: 'verifiedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmailVerificationCodeScalarFieldEnum = (typeof EmailVerificationCodeScalarFieldEnum)[keyof typeof EmailVerificationCodeScalarFieldEnum]
+
+
+  export const PasswordResetTokenScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    token: 'token',
+    code: 'code',
+    expiresAt: 'expiresAt',
+    usedAt: 'usedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
+
+
   export const ProviderRequestScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -34607,6 +37085,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewListRelationFilter
     orderStatusHistory?: OrderStatusHistoryListRelationFilter
     matchScores?: MatchScoreListRelationFilter
+    emailVerificationCodes?: EmailVerificationCodeListRelationFilter
+    passwordResetTokens?: PasswordResetTokenListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -34639,6 +37119,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewOrderByRelationAggregateInput
     orderStatusHistory?: OrderStatusHistoryOrderByRelationAggregateInput
     matchScores?: MatchScoreOrderByRelationAggregateInput
+    emailVerificationCodes?: EmailVerificationCodeOrderByRelationAggregateInput
+    passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -34674,6 +37156,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewListRelationFilter
     orderStatusHistory?: OrderStatusHistoryListRelationFilter
     matchScores?: MatchScoreListRelationFilter
+    emailVerificationCodes?: EmailVerificationCodeListRelationFilter
+    passwordResetTokens?: PasswordResetTokenListRelationFilter
   }, "id" | "email" | "phoneE164" | "cpf">
 
   export type UserOrderByWithAggregationInput = {
@@ -35039,6 +37523,146 @@ export namespace Prisma {
     expiresAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Verification"> | Date | string
+  }
+
+  export type EmailVerificationCodeWhereInput = {
+    AND?: EmailVerificationCodeWhereInput | EmailVerificationCodeWhereInput[]
+    OR?: EmailVerificationCodeWhereInput[]
+    NOT?: EmailVerificationCodeWhereInput | EmailVerificationCodeWhereInput[]
+    id?: StringFilter<"EmailVerificationCode"> | string
+    userId?: StringFilter<"EmailVerificationCode"> | string
+    email?: StringFilter<"EmailVerificationCode"> | string
+    code?: StringFilter<"EmailVerificationCode"> | string
+    expiresAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"EmailVerificationCode"> | Date | string | null
+    createdAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type EmailVerificationCodeOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type EmailVerificationCodeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmailVerificationCodeWhereInput | EmailVerificationCodeWhereInput[]
+    OR?: EmailVerificationCodeWhereInput[]
+    NOT?: EmailVerificationCodeWhereInput | EmailVerificationCodeWhereInput[]
+    userId?: StringFilter<"EmailVerificationCode"> | string
+    email?: StringFilter<"EmailVerificationCode"> | string
+    code?: StringFilter<"EmailVerificationCode"> | string
+    expiresAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"EmailVerificationCode"> | Date | string | null
+    createdAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type EmailVerificationCodeOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailVerificationCodeCountOrderByAggregateInput
+    _max?: EmailVerificationCodeMaxOrderByAggregateInput
+    _min?: EmailVerificationCodeMinOrderByAggregateInput
+  }
+
+  export type EmailVerificationCodeScalarWhereWithAggregatesInput = {
+    AND?: EmailVerificationCodeScalarWhereWithAggregatesInput | EmailVerificationCodeScalarWhereWithAggregatesInput[]
+    OR?: EmailVerificationCodeScalarWhereWithAggregatesInput[]
+    NOT?: EmailVerificationCodeScalarWhereWithAggregatesInput | EmailVerificationCodeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmailVerificationCode"> | string
+    userId?: StringWithAggregatesFilter<"EmailVerificationCode"> | string
+    email?: StringWithAggregatesFilter<"EmailVerificationCode"> | string
+    code?: StringWithAggregatesFilter<"EmailVerificationCode"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"EmailVerificationCode"> | Date | string
+    verifiedAt?: DateTimeNullableWithAggregatesFilter<"EmailVerificationCode"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmailVerificationCode"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmailVerificationCode"> | Date | string
+  }
+
+  export type PasswordResetTokenWhereInput = {
+    AND?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[]
+    OR?: PasswordResetTokenWhereInput[]
+    NOT?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[]
+    id?: StringFilter<"PasswordResetToken"> | string
+    userId?: StringFilter<"PasswordResetToken"> | string
+    token?: StringFilter<"PasswordResetToken"> | string
+    code?: StringNullableFilter<"PasswordResetToken"> | string | null
+    expiresAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    usedAt?: DateTimeNullableFilter<"PasswordResetToken"> | Date | string | null
+    createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    updatedAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PasswordResetTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    code?: SortOrderInput | SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PasswordResetTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[]
+    OR?: PasswordResetTokenWhereInput[]
+    NOT?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[]
+    userId?: StringFilter<"PasswordResetToken"> | string
+    code?: StringNullableFilter<"PasswordResetToken"> | string | null
+    expiresAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    usedAt?: DateTimeNullableFilter<"PasswordResetToken"> | Date | string | null
+    createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    updatedAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "token">
+
+  export type PasswordResetTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    code?: SortOrderInput | SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PasswordResetTokenCountOrderByAggregateInput
+    _max?: PasswordResetTokenMaxOrderByAggregateInput
+    _min?: PasswordResetTokenMinOrderByAggregateInput
+  }
+
+  export type PasswordResetTokenScalarWhereWithAggregatesInput = {
+    AND?: PasswordResetTokenScalarWhereWithAggregatesInput | PasswordResetTokenScalarWhereWithAggregatesInput[]
+    OR?: PasswordResetTokenScalarWhereWithAggregatesInput[]
+    NOT?: PasswordResetTokenScalarWhereWithAggregatesInput | PasswordResetTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PasswordResetToken"> | string
+    userId?: StringWithAggregatesFilter<"PasswordResetToken"> | string
+    token?: StringWithAggregatesFilter<"PasswordResetToken"> | string
+    code?: StringNullableWithAggregatesFilter<"PasswordResetToken"> | string | null
+    expiresAt?: DateTimeWithAggregatesFilter<"PasswordResetToken"> | Date | string
+    usedAt?: DateTimeNullableWithAggregatesFilter<"PasswordResetToken"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PasswordResetToken"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PasswordResetToken"> | Date | string
   }
 
   export type ProviderRequestWhereInput = {
@@ -36644,6 +39268,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -36676,6 +39302,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -36708,6 +39336,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -36740,6 +39370,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -37137,6 +39769,158 @@ export namespace Prisma {
     identifier?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailVerificationCodeCreateInput = {
+    id?: string
+    email: string
+    code: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutEmailVerificationCodesInput
+  }
+
+  export type EmailVerificationCodeUncheckedCreateInput = {
+    id?: string
+    userId: string
+    email: string
+    code: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailVerificationCodeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEmailVerificationCodesNestedInput
+  }
+
+  export type EmailVerificationCodeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailVerificationCodeCreateManyInput = {
+    id?: string
+    userId: string
+    email: string
+    code: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailVerificationCodeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailVerificationCodeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetTokenCreateInput = {
+    id?: string
+    token: string
+    code?: string | null
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPasswordResetTokensInput
+  }
+
+  export type PasswordResetTokenUncheckedCreateInput = {
+    id?: string
+    userId: string
+    token: string
+    code?: string | null
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PasswordResetTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput
+  }
+
+  export type PasswordResetTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetTokenCreateManyInput = {
+    id?: string
+    userId: string
+    token: string
+    code?: string | null
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PasswordResetTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38918,6 +41702,18 @@ export namespace Prisma {
     none?: MatchScoreWhereInput
   }
 
+  export type EmailVerificationCodeListRelationFilter = {
+    every?: EmailVerificationCodeWhereInput
+    some?: EmailVerificationCodeWhereInput
+    none?: EmailVerificationCodeWhereInput
+  }
+
+  export type PasswordResetTokenListRelationFilter = {
+    every?: PasswordResetTokenWhereInput
+    some?: PasswordResetTokenWhereInput
+    none?: PasswordResetTokenWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -38976,6 +41772,14 @@ export namespace Prisma {
   }
 
   export type MatchScoreOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmailVerificationCodeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PasswordResetTokenOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -39285,6 +42089,72 @@ export namespace Prisma {
     identifier?: SortOrder
     value?: SortOrder
     expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailVerificationCodeCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailVerificationCodeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailVerificationCodeMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    email?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PasswordResetTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PasswordResetTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PasswordResetTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -40660,6 +43530,20 @@ export namespace Prisma {
     connect?: MatchScoreWhereUniqueInput | MatchScoreWhereUniqueInput[]
   }
 
+  export type EmailVerificationCodeCreateNestedManyWithoutUserInput = {
+    create?: XOR<EmailVerificationCodeCreateWithoutUserInput, EmailVerificationCodeUncheckedCreateWithoutUserInput> | EmailVerificationCodeCreateWithoutUserInput[] | EmailVerificationCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EmailVerificationCodeCreateOrConnectWithoutUserInput | EmailVerificationCodeCreateOrConnectWithoutUserInput[]
+    createMany?: EmailVerificationCodeCreateManyUserInputEnvelope
+    connect?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+  }
+
+  export type PasswordResetTokenCreateNestedManyWithoutUserInput = {
+    create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
+    createMany?: PasswordResetTokenCreateManyUserInputEnvelope
+    connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -40783,6 +43667,20 @@ export namespace Prisma {
     connectOrCreate?: MatchScoreCreateOrConnectWithoutProviderInput | MatchScoreCreateOrConnectWithoutProviderInput[]
     createMany?: MatchScoreCreateManyProviderInputEnvelope
     connect?: MatchScoreWhereUniqueInput | MatchScoreWhereUniqueInput[]
+  }
+
+  export type EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<EmailVerificationCodeCreateWithoutUserInput, EmailVerificationCodeUncheckedCreateWithoutUserInput> | EmailVerificationCodeCreateWithoutUserInput[] | EmailVerificationCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EmailVerificationCodeCreateOrConnectWithoutUserInput | EmailVerificationCodeCreateOrConnectWithoutUserInput[]
+    createMany?: EmailVerificationCodeCreateManyUserInputEnvelope
+    connect?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+  }
+
+  export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
+    createMany?: PasswordResetTokenCreateManyUserInputEnvelope
+    connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -41049,6 +43947,34 @@ export namespace Prisma {
     deleteMany?: MatchScoreScalarWhereInput | MatchScoreScalarWhereInput[]
   }
 
+  export type EmailVerificationCodeUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EmailVerificationCodeCreateWithoutUserInput, EmailVerificationCodeUncheckedCreateWithoutUserInput> | EmailVerificationCodeCreateWithoutUserInput[] | EmailVerificationCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EmailVerificationCodeCreateOrConnectWithoutUserInput | EmailVerificationCodeCreateOrConnectWithoutUserInput[]
+    upsert?: EmailVerificationCodeUpsertWithWhereUniqueWithoutUserInput | EmailVerificationCodeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EmailVerificationCodeCreateManyUserInputEnvelope
+    set?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+    disconnect?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+    delete?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+    connect?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+    update?: EmailVerificationCodeUpdateWithWhereUniqueWithoutUserInput | EmailVerificationCodeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EmailVerificationCodeUpdateManyWithWhereWithoutUserInput | EmailVerificationCodeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EmailVerificationCodeScalarWhereInput | EmailVerificationCodeScalarWhereInput[]
+  }
+
+  export type PasswordResetTokenUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
+    upsert?: PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput | PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PasswordResetTokenCreateManyUserInputEnvelope
+    set?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    disconnect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    delete?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -41297,6 +44223,34 @@ export namespace Prisma {
     deleteMany?: MatchScoreScalarWhereInput | MatchScoreScalarWhereInput[]
   }
 
+  export type EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EmailVerificationCodeCreateWithoutUserInput, EmailVerificationCodeUncheckedCreateWithoutUserInput> | EmailVerificationCodeCreateWithoutUserInput[] | EmailVerificationCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EmailVerificationCodeCreateOrConnectWithoutUserInput | EmailVerificationCodeCreateOrConnectWithoutUserInput[]
+    upsert?: EmailVerificationCodeUpsertWithWhereUniqueWithoutUserInput | EmailVerificationCodeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EmailVerificationCodeCreateManyUserInputEnvelope
+    set?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+    disconnect?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+    delete?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+    connect?: EmailVerificationCodeWhereUniqueInput | EmailVerificationCodeWhereUniqueInput[]
+    update?: EmailVerificationCodeUpdateWithWhereUniqueWithoutUserInput | EmailVerificationCodeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EmailVerificationCodeUpdateManyWithWhereWithoutUserInput | EmailVerificationCodeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EmailVerificationCodeScalarWhereInput | EmailVerificationCodeScalarWhereInput[]
+  }
+
+  export type PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
+    upsert?: PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput | PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PasswordResetTokenCreateManyUserInputEnvelope
+    set?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    disconnect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    delete?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+  }
+
   export type UserRoleAssignmentCreateNestedManyWithoutRoleInput = {
     create?: XOR<UserRoleAssignmentCreateWithoutRoleInput, UserRoleAssignmentUncheckedCreateWithoutRoleInput> | UserRoleAssignmentCreateWithoutRoleInput[] | UserRoleAssignmentUncheckedCreateWithoutRoleInput[]
     connectOrCreate?: UserRoleAssignmentCreateOrConnectWithoutRoleInput | UserRoleAssignmentCreateOrConnectWithoutRoleInput[]
@@ -41401,6 +44355,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAccountsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedOneWithoutEmailVerificationCodesInput = {
+    create?: XOR<UserCreateWithoutEmailVerificationCodesInput, UserUncheckedCreateWithoutEmailVerificationCodesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEmailVerificationCodesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutEmailVerificationCodesNestedInput = {
+    create?: XOR<UserCreateWithoutEmailVerificationCodesInput, UserUncheckedCreateWithoutEmailVerificationCodesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEmailVerificationCodesInput
+    upsert?: UserUpsertWithoutEmailVerificationCodesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEmailVerificationCodesInput, UserUpdateWithoutEmailVerificationCodesInput>, UserUncheckedUpdateWithoutEmailVerificationCodesInput>
+  }
+
+  export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
+    create?: XOR<UserCreateWithoutPasswordResetTokensInput, UserUncheckedCreateWithoutPasswordResetTokensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPasswordResetTokensInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+    create?: XOR<UserCreateWithoutPasswordResetTokensInput, UserUncheckedCreateWithoutPasswordResetTokensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPasswordResetTokensInput
+    upsert?: UserUpsertWithoutPasswordResetTokensInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, UserUpdateWithoutPasswordResetTokensInput>, UserUncheckedUpdateWithoutPasswordResetTokensInput>
   }
 
   export type UserCreateNestedOneWithoutProviderRequestsInput = {
@@ -43698,6 +46680,66 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EmailVerificationCodeCreateWithoutUserInput = {
+    id?: string
+    email: string
+    code: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailVerificationCodeUncheckedCreateWithoutUserInput = {
+    id?: string
+    email: string
+    code: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailVerificationCodeCreateOrConnectWithoutUserInput = {
+    where: EmailVerificationCodeWhereUniqueInput
+    create: XOR<EmailVerificationCodeCreateWithoutUserInput, EmailVerificationCodeUncheckedCreateWithoutUserInput>
+  }
+
+  export type EmailVerificationCodeCreateManyUserInputEnvelope = {
+    data: EmailVerificationCodeCreateManyUserInput | EmailVerificationCodeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PasswordResetTokenCreateWithoutUserInput = {
+    id?: string
+    token: string
+    code?: string | null
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PasswordResetTokenUncheckedCreateWithoutUserInput = {
+    id?: string
+    token: string
+    code?: string | null
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PasswordResetTokenCreateOrConnectWithoutUserInput = {
+    where: PasswordResetTokenWhereUniqueInput
+    create: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type PasswordResetTokenCreateManyUserInputEnvelope = {
+    data: PasswordResetTokenCreateManyUserInput | PasswordResetTokenCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -44225,6 +47267,66 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"MatchScore"> | Date | string
   }
 
+  export type EmailVerificationCodeUpsertWithWhereUniqueWithoutUserInput = {
+    where: EmailVerificationCodeWhereUniqueInput
+    update: XOR<EmailVerificationCodeUpdateWithoutUserInput, EmailVerificationCodeUncheckedUpdateWithoutUserInput>
+    create: XOR<EmailVerificationCodeCreateWithoutUserInput, EmailVerificationCodeUncheckedCreateWithoutUserInput>
+  }
+
+  export type EmailVerificationCodeUpdateWithWhereUniqueWithoutUserInput = {
+    where: EmailVerificationCodeWhereUniqueInput
+    data: XOR<EmailVerificationCodeUpdateWithoutUserInput, EmailVerificationCodeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EmailVerificationCodeUpdateManyWithWhereWithoutUserInput = {
+    where: EmailVerificationCodeScalarWhereInput
+    data: XOR<EmailVerificationCodeUpdateManyMutationInput, EmailVerificationCodeUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EmailVerificationCodeScalarWhereInput = {
+    AND?: EmailVerificationCodeScalarWhereInput | EmailVerificationCodeScalarWhereInput[]
+    OR?: EmailVerificationCodeScalarWhereInput[]
+    NOT?: EmailVerificationCodeScalarWhereInput | EmailVerificationCodeScalarWhereInput[]
+    id?: StringFilter<"EmailVerificationCode"> | string
+    userId?: StringFilter<"EmailVerificationCode"> | string
+    email?: StringFilter<"EmailVerificationCode"> | string
+    code?: StringFilter<"EmailVerificationCode"> | string
+    expiresAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"EmailVerificationCode"> | Date | string | null
+    createdAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailVerificationCode"> | Date | string
+  }
+
+  export type PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput = {
+    where: PasswordResetTokenWhereUniqueInput
+    update: XOR<PasswordResetTokenUpdateWithoutUserInput, PasswordResetTokenUncheckedUpdateWithoutUserInput>
+    create: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput = {
+    where: PasswordResetTokenWhereUniqueInput
+    data: XOR<PasswordResetTokenUpdateWithoutUserInput, PasswordResetTokenUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PasswordResetTokenUpdateManyWithWhereWithoutUserInput = {
+    where: PasswordResetTokenScalarWhereInput
+    data: XOR<PasswordResetTokenUpdateManyMutationInput, PasswordResetTokenUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PasswordResetTokenScalarWhereInput = {
+    AND?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+    OR?: PasswordResetTokenScalarWhereInput[]
+    NOT?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+    id?: StringFilter<"PasswordResetToken"> | string
+    userId?: StringFilter<"PasswordResetToken"> | string
+    token?: StringFilter<"PasswordResetToken"> | string
+    code?: StringNullableFilter<"PasswordResetToken"> | string | null
+    expiresAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    usedAt?: DateTimeNullableFilter<"PasswordResetToken"> | Date | string | null
+    createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    updatedAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+  }
+
   export type UserRoleAssignmentCreateWithoutRoleInput = {
     id?: string
     createdAt?: Date | string
@@ -44313,6 +47415,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserRolesInput = {
@@ -44344,6 +47448,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserRolesInput = {
@@ -44416,6 +47522,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserRolesInput = {
@@ -44447,6 +47555,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -44478,6 +47588,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -44509,6 +47621,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -44556,6 +47670,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -44587,6 +47703,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -44618,6 +47736,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -44649,6 +47769,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -44696,6 +47818,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -44727,6 +47851,304 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutEmailVerificationCodesInput = {
+    id?: string
+    name: string
+    email?: string | null
+    emailVerified?: boolean
+    image?: string | null
+    role?: string | null
+    phoneE164?: string | null
+    whatsappId?: string | null
+    cpf?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleAssignmentCreateNestedManyWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestCreateNestedManyWithoutReviewedByUserInput
+    providerProfile?: ProviderProfileCreateNestedOneWithoutUserInput
+    providerAvailability?: ProviderAvailabilityCreateNestedManyWithoutProviderInput
+    providerCategories?: ProviderCategoryCreateNestedManyWithoutProviderInput
+    providerPayouts?: ProviderPayoutCreateNestedManyWithoutProviderInput
+    clientCredits?: ClientCreditCreateNestedManyWithoutUserInput
+    ordersAsClient?: OrderCreateNestedManyWithoutClientInput
+    ordersAsProvider?: OrderCreateNestedManyWithoutProviderInput
+    orderInvitations?: OrderInvitationCreateNestedManyWithoutProviderInput
+    orderReviewsAsClient?: OrderReviewCreateNestedManyWithoutClientInput
+    orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
+    orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
+    matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutEmailVerificationCodesInput = {
+    id?: string
+    name: string
+    email?: string | null
+    emailVerified?: boolean
+    image?: string | null
+    role?: string | null
+    phoneE164?: string | null
+    whatsappId?: string | null
+    cpf?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestUncheckedCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
+    providerProfile?: ProviderProfileUncheckedCreateNestedOneWithoutUserInput
+    providerAvailability?: ProviderAvailabilityUncheckedCreateNestedManyWithoutProviderInput
+    providerCategories?: ProviderCategoryUncheckedCreateNestedManyWithoutProviderInput
+    providerPayouts?: ProviderPayoutUncheckedCreateNestedManyWithoutProviderInput
+    clientCredits?: ClientCreditUncheckedCreateNestedManyWithoutUserInput
+    ordersAsClient?: OrderUncheckedCreateNestedManyWithoutClientInput
+    ordersAsProvider?: OrderUncheckedCreateNestedManyWithoutProviderInput
+    orderInvitations?: OrderInvitationUncheckedCreateNestedManyWithoutProviderInput
+    orderReviewsAsClient?: OrderReviewUncheckedCreateNestedManyWithoutClientInput
+    orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
+    orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
+    matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutEmailVerificationCodesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEmailVerificationCodesInput, UserUncheckedCreateWithoutEmailVerificationCodesInput>
+  }
+
+  export type UserUpsertWithoutEmailVerificationCodesInput = {
+    update: XOR<UserUpdateWithoutEmailVerificationCodesInput, UserUncheckedUpdateWithoutEmailVerificationCodesInput>
+    create: XOR<UserCreateWithoutEmailVerificationCodesInput, UserUncheckedCreateWithoutEmailVerificationCodesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEmailVerificationCodesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEmailVerificationCodesInput, UserUncheckedUpdateWithoutEmailVerificationCodesInput>
+  }
+
+  export type UserUpdateWithoutEmailVerificationCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneE164?: NullableStringFieldUpdateOperationsInput | string | null
+    whatsappId?: NullableStringFieldUpdateOperationsInput | string | null
+    cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleAssignmentUpdateManyWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUpdateManyWithoutReviewedByUserNestedInput
+    providerProfile?: ProviderProfileUpdateOneWithoutUserNestedInput
+    providerAvailability?: ProviderAvailabilityUpdateManyWithoutProviderNestedInput
+    providerCategories?: ProviderCategoryUpdateManyWithoutProviderNestedInput
+    providerPayouts?: ProviderPayoutUpdateManyWithoutProviderNestedInput
+    clientCredits?: ClientCreditUpdateManyWithoutUserNestedInput
+    ordersAsClient?: OrderUpdateManyWithoutClientNestedInput
+    ordersAsProvider?: OrderUpdateManyWithoutProviderNestedInput
+    orderInvitations?: OrderInvitationUpdateManyWithoutProviderNestedInput
+    orderReviewsAsClient?: OrderReviewUpdateManyWithoutClientNestedInput
+    orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
+    orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
+    matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEmailVerificationCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneE164?: NullableStringFieldUpdateOperationsInput | string | null
+    whatsappId?: NullableStringFieldUpdateOperationsInput | string | null
+    cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUncheckedUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
+    providerProfile?: ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
+    providerAvailability?: ProviderAvailabilityUncheckedUpdateManyWithoutProviderNestedInput
+    providerCategories?: ProviderCategoryUncheckedUpdateManyWithoutProviderNestedInput
+    providerPayouts?: ProviderPayoutUncheckedUpdateManyWithoutProviderNestedInput
+    clientCredits?: ClientCreditUncheckedUpdateManyWithoutUserNestedInput
+    ordersAsClient?: OrderUncheckedUpdateManyWithoutClientNestedInput
+    ordersAsProvider?: OrderUncheckedUpdateManyWithoutProviderNestedInput
+    orderInvitations?: OrderInvitationUncheckedUpdateManyWithoutProviderNestedInput
+    orderReviewsAsClient?: OrderReviewUncheckedUpdateManyWithoutClientNestedInput
+    orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
+    orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
+    matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutPasswordResetTokensInput = {
+    id?: string
+    name: string
+    email?: string | null
+    emailVerified?: boolean
+    image?: string | null
+    role?: string | null
+    phoneE164?: string | null
+    whatsappId?: string | null
+    cpf?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleAssignmentCreateNestedManyWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestCreateNestedManyWithoutReviewedByUserInput
+    providerProfile?: ProviderProfileCreateNestedOneWithoutUserInput
+    providerAvailability?: ProviderAvailabilityCreateNestedManyWithoutProviderInput
+    providerCategories?: ProviderCategoryCreateNestedManyWithoutProviderInput
+    providerPayouts?: ProviderPayoutCreateNestedManyWithoutProviderInput
+    clientCredits?: ClientCreditCreateNestedManyWithoutUserInput
+    ordersAsClient?: OrderCreateNestedManyWithoutClientInput
+    ordersAsProvider?: OrderCreateNestedManyWithoutProviderInput
+    orderInvitations?: OrderInvitationCreateNestedManyWithoutProviderInput
+    orderReviewsAsClient?: OrderReviewCreateNestedManyWithoutClientInput
+    orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
+    orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
+    matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
+    id?: string
+    name: string
+    email?: string | null
+    emailVerified?: boolean
+    image?: string | null
+    role?: string | null
+    phoneE164?: string | null
+    whatsappId?: string | null
+    cpf?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
+    providerRequests?: ProviderRequestUncheckedCreateNestedManyWithoutUserInput
+    reviewedRequests?: ProviderRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
+    providerProfile?: ProviderProfileUncheckedCreateNestedOneWithoutUserInput
+    providerAvailability?: ProviderAvailabilityUncheckedCreateNestedManyWithoutProviderInput
+    providerCategories?: ProviderCategoryUncheckedCreateNestedManyWithoutProviderInput
+    providerPayouts?: ProviderPayoutUncheckedCreateNestedManyWithoutProviderInput
+    clientCredits?: ClientCreditUncheckedCreateNestedManyWithoutUserInput
+    ordersAsClient?: OrderUncheckedCreateNestedManyWithoutClientInput
+    ordersAsProvider?: OrderUncheckedCreateNestedManyWithoutProviderInput
+    orderInvitations?: OrderInvitationUncheckedCreateNestedManyWithoutProviderInput
+    orderReviewsAsClient?: OrderReviewUncheckedCreateNestedManyWithoutClientInput
+    orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
+    orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
+    matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPasswordResetTokensInput, UserUncheckedCreateWithoutPasswordResetTokensInput>
+  }
+
+  export type UserUpsertWithoutPasswordResetTokensInput = {
+    update: XOR<UserUpdateWithoutPasswordResetTokensInput, UserUncheckedUpdateWithoutPasswordResetTokensInput>
+    create: XOR<UserCreateWithoutPasswordResetTokensInput, UserUncheckedCreateWithoutPasswordResetTokensInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPasswordResetTokensInput, UserUncheckedUpdateWithoutPasswordResetTokensInput>
+  }
+
+  export type UserUpdateWithoutPasswordResetTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneE164?: NullableStringFieldUpdateOperationsInput | string | null
+    whatsappId?: NullableStringFieldUpdateOperationsInput | string | null
+    cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleAssignmentUpdateManyWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUpdateManyWithoutReviewedByUserNestedInput
+    providerProfile?: ProviderProfileUpdateOneWithoutUserNestedInput
+    providerAvailability?: ProviderAvailabilityUpdateManyWithoutProviderNestedInput
+    providerCategories?: ProviderCategoryUpdateManyWithoutProviderNestedInput
+    providerPayouts?: ProviderPayoutUpdateManyWithoutProviderNestedInput
+    clientCredits?: ClientCreditUpdateManyWithoutUserNestedInput
+    ordersAsClient?: OrderUpdateManyWithoutClientNestedInput
+    ordersAsProvider?: OrderUpdateManyWithoutProviderNestedInput
+    orderInvitations?: OrderInvitationUpdateManyWithoutProviderNestedInput
+    orderReviewsAsClient?: OrderReviewUpdateManyWithoutClientNestedInput
+    orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
+    orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
+    matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneE164?: NullableStringFieldUpdateOperationsInput | string | null
+    whatsappId?: NullableStringFieldUpdateOperationsInput | string | null
+    cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
+    providerRequests?: ProviderRequestUncheckedUpdateManyWithoutUserNestedInput
+    reviewedRequests?: ProviderRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
+    providerProfile?: ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
+    providerAvailability?: ProviderAvailabilityUncheckedUpdateManyWithoutProviderNestedInput
+    providerCategories?: ProviderCategoryUncheckedUpdateManyWithoutProviderNestedInput
+    providerPayouts?: ProviderPayoutUncheckedUpdateManyWithoutProviderNestedInput
+    clientCredits?: ClientCreditUncheckedUpdateManyWithoutUserNestedInput
+    ordersAsClient?: OrderUncheckedUpdateManyWithoutClientNestedInput
+    ordersAsProvider?: OrderUncheckedUpdateManyWithoutProviderNestedInput
+    orderInvitations?: OrderInvitationUncheckedUpdateManyWithoutProviderNestedInput
+    orderReviewsAsClient?: OrderReviewUncheckedUpdateManyWithoutClientNestedInput
+    orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
+    orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
+    matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutProviderRequestsInput = {
@@ -44758,6 +48180,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProviderRequestsInput = {
@@ -44789,6 +48213,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProviderRequestsInput = {
@@ -44825,6 +48251,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewedRequestsInput = {
@@ -44856,6 +48284,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewedRequestsInput = {
@@ -44903,6 +48333,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProviderRequestsInput = {
@@ -44934,6 +48366,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReviewedRequestsInput = {
@@ -44976,6 +48410,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewedRequestsInput = {
@@ -45007,6 +48443,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAddressesInput = {
@@ -45038,6 +48476,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAddressesInput = {
@@ -45069,6 +48509,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAddressesInput = {
@@ -45186,6 +48628,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAddressesInput = {
@@ -45217,6 +48661,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderUpsertWithWhereUniqueWithoutAddressInput = {
@@ -45264,6 +48710,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProviderProfileInput = {
@@ -45295,6 +48743,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProviderProfileInput = {
@@ -45342,6 +48792,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProviderProfileInput = {
@@ -45373,6 +48825,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutProviderAvailabilityInput = {
@@ -45404,6 +48858,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProviderAvailabilityInput = {
@@ -45435,6 +48891,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProviderAvailabilityInput = {
@@ -45482,6 +48940,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProviderAvailabilityInput = {
@@ -45513,6 +48973,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutProviderCategoriesInput = {
@@ -45544,6 +49006,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProviderCategoriesInput = {
@@ -45575,6 +49039,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProviderCategoriesInput = {
@@ -45645,6 +49111,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProviderCategoriesInput = {
@@ -45676,6 +49144,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CategoryUpsertWithoutProviderCategoriesInput = {
@@ -45926,6 +49396,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersAsClientInput = {
@@ -45957,6 +49429,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersAsClientInput = {
@@ -45993,6 +49467,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersAsProviderInput = {
@@ -46024,6 +49500,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersAsProviderInput = {
@@ -46472,6 +49950,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersAsClientInput = {
@@ -46503,6 +49983,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutOrdersAsProviderInput = {
@@ -46545,6 +50027,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersAsProviderInput = {
@@ -46576,6 +50060,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AddressUpsertWithoutOrdersInput = {
@@ -47359,6 +50845,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrderInvitationsInput = {
@@ -47390,6 +50878,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrderInvitationsInput = {
@@ -47533,6 +51023,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrderInvitationsInput = {
@@ -47564,6 +51056,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderSlotUpsertWithoutInvitationsInput = {
@@ -47691,6 +51185,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewCreateNestedManyWithoutClientInput
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrderStatusHistoryInput = {
@@ -47722,6 +51218,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUncheckedCreateNestedManyWithoutClientInput
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrderStatusHistoryInput = {
@@ -47840,6 +51338,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUpdateManyWithoutClientNestedInput
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrderStatusHistoryInput = {
@@ -47871,6 +51371,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUncheckedUpdateManyWithoutClientNestedInput
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderCreateWithoutOrderReviewInput = {
@@ -47967,6 +51469,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrderReviewsAsClientInput = {
@@ -47998,6 +51502,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrderReviewsAsClientInput = {
@@ -48034,6 +51540,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewCreateNestedManyWithoutClientInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrderReviewsAsProviderInput = {
@@ -48065,6 +51573,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUncheckedCreateNestedManyWithoutClientInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrderReviewsAsProviderInput = {
@@ -48183,6 +51693,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrderReviewsAsClientInput = {
@@ -48214,6 +51726,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutOrderReviewsAsProviderInput = {
@@ -48256,6 +51770,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUpdateManyWithoutClientNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrderReviewsAsProviderInput = {
@@ -48287,6 +51803,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUncheckedUpdateManyWithoutClientNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderCreateWithoutPaymentsInput = {
@@ -48832,6 +52350,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClientCreditsInput = {
@@ -48863,6 +52383,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClientCreditsInput = {
@@ -48975,6 +52497,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClientCreditsInput = {
@@ -49006,6 +52530,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderUpsertWithoutClientCreditsInput = {
@@ -49173,6 +52699,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProviderPayoutsInput = {
@@ -49204,6 +52732,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
     matchScores?: MatchScoreUncheckedCreateNestedManyWithoutProviderInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProviderPayoutsInput = {
@@ -49322,6 +52852,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProviderPayoutsInput = {
@@ -49353,6 +52885,8 @@ export namespace Prisma {
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
     matchScores?: MatchScoreUncheckedUpdateManyWithoutProviderNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderCreateWithoutMatchScoresInput = {
@@ -49449,6 +52983,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewCreateNestedManyWithoutClientInput
     orderReviewsAsProvider?: OrderReviewCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryCreateNestedManyWithoutByUserInput
+    emailVerificationCodes?: EmailVerificationCodeCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMatchScoresInput = {
@@ -49480,6 +53016,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUncheckedCreateNestedManyWithoutClientInput
     orderReviewsAsProvider?: OrderReviewUncheckedCreateNestedManyWithoutProviderInput
     orderStatusHistory?: OrderStatusHistoryUncheckedCreateNestedManyWithoutByUserInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMatchScoresInput = {
@@ -49598,6 +53136,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUpdateManyWithoutClientNestedInput
     orderReviewsAsProvider?: OrderReviewUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUpdateManyWithoutByUserNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchScoresInput = {
@@ -49629,6 +53169,8 @@ export namespace Prisma {
     orderReviewsAsClient?: OrderReviewUncheckedUpdateManyWithoutClientNestedInput
     orderReviewsAsProvider?: OrderReviewUncheckedUpdateManyWithoutProviderNestedInput
     orderStatusHistory?: OrderStatusHistoryUncheckedUpdateManyWithoutByUserNestedInput
+    emailVerificationCodes?: EmailVerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderCreateWithoutLlmClassificationsInput = {
@@ -50031,6 +53573,26 @@ export namespace Prisma {
     reliability?: Decimal | DecimalJsLike | number | string | null
     finalScore?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
+  }
+
+  export type EmailVerificationCodeCreateManyUserInput = {
+    id?: string
+    email: string
+    code: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PasswordResetTokenCreateManyUserInput = {
+    id?: string
+    token: string
+    code?: string | null
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -50723,6 +54285,66 @@ export namespace Prisma {
     reliability?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     finalScore?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailVerificationCodeUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailVerificationCodeUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailVerificationCodeUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetTokenUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetTokenUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetTokenUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserRoleAssignmentCreateManyRoleInput = {

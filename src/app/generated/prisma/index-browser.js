@@ -185,6 +185,28 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.EmailVerificationCodeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  email: 'email',
+  code: 'code',
+  expiresAt: 'expiresAt',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  code: 'code',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProviderRequestScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -462,6 +484,8 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  EmailVerificationCode: 'EmailVerificationCode',
+  PasswordResetToken: 'PasswordResetToken',
   ProviderRequest: 'ProviderRequest',
   Address: 'Address',
   ProviderProfile: 'ProviderProfile',

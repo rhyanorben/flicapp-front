@@ -192,7 +192,29 @@ export function LoginForm() {
         onRequest: () => {
           setIsLoading(true);
         },
-        onSuccess: () => {
+        onSuccess: async () => {
+          // Verificar se o email está verificado
+          try {
+            const session = await authClient.getSession();
+            if (session?.user?.id) {
+              const response = await fetch(
+                `/api/user/${session.user.id}/email-verified`
+              );
+              if (response.ok) {
+                const data = await response.json();
+                if (!data.emailVerified) {
+                  // Email não verificado, redirecionar para verificação
+                  router.replace(`/verify-email?userId=${session.user.id}`);
+                  setIsLoading(false);
+                  return;
+                }
+              }
+            }
+          } catch (error) {
+            console.error("Error checking email verification:", error);
+            // Em caso de erro, permitir login (não bloquear)
+          }
+
           router.replace("/dashboard");
           setIsLoading(false);
         },
@@ -431,6 +453,17 @@ export function LoginForm() {
               )}
             </Button>
           </motion.div>
+        </motion.div>
+
+        <motion.div data-field className="text-center">
+          <Button
+            type="button"
+            variant="link"
+            onClick={() => router.push("/forgot-password")}
+            className="text-sm text-muted-foreground hover:text-primary"
+          >
+            Esqueci minha senha
+          </Button>
         </motion.div>
 
         <motion.div data-field className="relative my-4">
