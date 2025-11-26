@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getUserRoles } from "@/lib/role-utils";
+import { Prisma, UserRole } from "@/app/generated/prisma";
 
 export async function GET(request: NextRequest) {
   try {
@@ -32,24 +33,20 @@ export async function GET(request: NextRequest) {
     const roleFilter = searchParams.get("role");
 
     // Build where clause for role filtering
-    const whereClause: {
-      userRoles?: {
-        some: {
-          role: {
-            name: string;
-          };
-        };
-      };
-    } = {};
+    const whereClause: Prisma.UserWhereInput = {};
 
     if (roleFilter && roleFilter !== "todos") {
-      whereClause.userRoles = {
-        some: {
-          role: {
-            name: roleFilter,
+      // Validate that roleFilter is a valid UserRole enum value
+      const validRoles = Object.values(UserRole);
+      if (validRoles.includes(roleFilter as UserRole)) {
+        whereClause.userRoles = {
+          some: {
+            role: {
+              name: roleFilter as UserRole,
+            },
           },
-        },
-      };
+        };
+      }
     }
 
     const users = await prisma.user.findMany({

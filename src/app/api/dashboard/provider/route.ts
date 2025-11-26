@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { Prisma } from "@/app/generated/prisma";
 
 export async function GET(req: NextRequest) {
   try {
@@ -23,7 +24,7 @@ export async function GET(req: NextRequest) {
 
     // Build date filter based on period or custom date range
     let dateFilter: { gte?: Date; lte?: Date } | undefined = undefined;
-    
+
     if (dateFromParam || dateToParam) {
       // Custom date range
       dateFilter = {};
@@ -39,7 +40,7 @@ export async function GET(req: NextRequest) {
       // Predefined period
       const now = new Date();
       let startDate: Date;
-      
+
       switch (period) {
         case "7d":
           startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -57,8 +58,8 @@ export async function GET(req: NextRequest) {
     }
 
     // Build base where clause
-    const baseWhere: any = { providerId };
-    
+    const baseWhere: Prisma.OrderWhereInput = { providerId };
+
     if (dateFilter) {
       baseWhere.createdAt = dateFilter;
     }
@@ -68,7 +69,7 @@ export async function GET(req: NextRequest) {
       approved: "accepted",
       rejected: "cancelled",
     };
-    
+
     if (status && status !== "all") {
       baseWhere.status = statusMap[status] || status;
     }
@@ -118,7 +119,9 @@ export async function GET(req: NextRequest) {
 
     if (dateFilter?.gte) {
       startDate = dateFilter.gte;
-      const monthsDiff = (currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
+      const monthsDiff =
+        (currentDate.getTime() - startDate.getTime()) /
+        (1000 * 60 * 60 * 24 * 30);
       monthsToShow = Math.min(Math.ceil(monthsDiff) + 1, 12);
     } else if (period === "7d") {
       monthsToShow = 1;
@@ -162,13 +165,19 @@ export async function GET(req: NextRequest) {
     for (let i = monthsToShow - 1; i >= 0; i--) {
       const date = new Date();
       date.setMonth(date.getMonth() - i);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear().toString().slice(-2)}`;
+      const monthKey = `${monthNames[date.getMonth()]} ${date
+        .getFullYear()
+        .toString()
+        .slice(-2)}`;
       monthlyTrend[monthKey] = 0;
     }
 
     ordersByMonth.forEach((group) => {
       const date = new Date(group.createdAt);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear().toString().slice(-2)}`;
+      const monthKey = `${monthNames[date.getMonth()]} ${date
+        .getFullYear()
+        .toString()
+        .slice(-2)}`;
       if (monthlyTrend.hasOwnProperty(monthKey)) {
         monthlyTrend[monthKey] += group._count.id;
       }

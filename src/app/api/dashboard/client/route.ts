@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/app/generated/prisma";
 
 export async function GET(request: NextRequest) {
   try {
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
 
     // Build date filter based on period or custom date range
     let dateFilter: { gte?: Date; lte?: Date } | undefined = undefined;
-    
+
     if (dateFromParam || dateToParam) {
       // Custom date range
       dateFilter = {};
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
       // Predefined period
       const now = new Date();
       let startDate: Date;
-      
+
       switch (period) {
         case "7d":
           startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Build where clause
-    const where: any = {
+    const where: Prisma.OrderWhereInput = {
       clientId: session.user.id,
     };
 
@@ -133,10 +134,12 @@ export async function GET(request: NextRequest) {
     // Determine range based on filters or default to 6 months
     let monthsToShow = 6;
     let startDate = new Date();
-    
+
     if (dateFilter?.gte) {
       startDate = dateFilter.gte;
-      const monthsDiff = (currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
+      const monthsDiff =
+        (currentDate.getTime() - startDate.getTime()) /
+        (1000 * 60 * 60 * 24 * 30);
       monthsToShow = Math.min(Math.ceil(monthsDiff) + 1, 12);
     } else if (period === "7d") {
       monthsToShow = 1;

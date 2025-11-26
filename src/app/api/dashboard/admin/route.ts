@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { Prisma, ProviderRequestStatus } from "@/app/generated/prisma";
 
 export async function GET(req: NextRequest) {
   try {
@@ -31,7 +32,7 @@ export async function GET(req: NextRequest) {
 
     // Build date filter based on period or custom date range
     let dateFilter: { gte?: Date; lte?: Date } | undefined = undefined;
-    
+
     if (dateFromParam || dateToParam) {
       // Custom date range
       dateFilter = {};
@@ -47,7 +48,7 @@ export async function GET(req: NextRequest) {
       // Predefined period
       const now = new Date();
       let startDate: Date;
-      
+
       switch (period) {
         case "7d":
           startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -65,24 +66,34 @@ export async function GET(req: NextRequest) {
     }
 
     // Build base where clause for users
-    const userDateWhere: any = {};
+    const userDateWhere: Prisma.UserWhereInput = {};
     if (dateFilter) {
       userDateWhere.createdAt = dateFilter;
     }
 
     // Build base where clause for provider requests
-    const requestWhere: any = {};
+    const requestWhere: Prisma.ProviderRequestWhereInput = {};
     if (dateFilter) {
       requestWhere.createdAt = dateFilter;
     }
 
     if (status && status !== "all") {
-      const statusMap: Record<string, string> = {
-        pending: "PENDING",
-        approved: "APPROVED",
-        rejected: "REJECTED",
+      const statusMap: Record<string, ProviderRequestStatus> = {
+        pending: ProviderRequestStatus.PENDING,
+        approved: ProviderRequestStatus.APPROVED,
+        rejected: ProviderRequestStatus.REJECTED,
       };
-      requestWhere.status = statusMap[status] || status.toUpperCase();
+      const mappedStatus = statusMap[status];
+      if (mappedStatus) {
+        requestWhere.status = mappedStatus;
+      } else {
+        // Try to match the uppercase status directly
+        const validStatuses = Object.values(ProviderRequestStatus);
+        const upperStatus = status.toUpperCase() as ProviderRequestStatus;
+        if (validStatuses.includes(upperStatus)) {
+          requestWhere.status = upperStatus;
+        }
+      }
     }
 
     // Get users statistics
@@ -92,11 +103,11 @@ export async function GET(req: NextRequest) {
     const admins = await prisma.user.count({
       where: { ...userDateWhere, role: "ADMINISTRADOR" },
     });
-    const providers = await prisma.user.count({ 
-      where: { ...userDateWhere, role: "PRESTADOR" } 
+    const providers = await prisma.user.count({
+      where: { ...userDateWhere, role: "PRESTADOR" },
     });
-    const clients = await prisma.user.count({ 
-      where: { ...userDateWhere, role: "CLIENTE" } 
+    const clients = await prisma.user.count({
+      where: { ...userDateWhere, role: "CLIENTE" },
     });
 
     // Get users by month - use filtered date range
@@ -107,7 +118,9 @@ export async function GET(req: NextRequest) {
 
     if (dateFilter?.gte) {
       startDate = dateFilter.gte;
-      const monthsDiff = (currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
+      const monthsDiff =
+        (currentDate.getTime() - startDate.getTime()) /
+        (1000 * 60 * 60 * 24 * 30);
       monthsToShow = Math.min(Math.ceil(monthsDiff) + 1, 12);
     } else if (period === "7d") {
       monthsToShow = 1;
@@ -149,13 +162,19 @@ export async function GET(req: NextRequest) {
     for (let i = monthsToShow - 1; i >= 0; i--) {
       const date = new Date();
       date.setMonth(date.getMonth() - i);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear().toString().slice(-2)}`;
+      const monthKey = `${monthNames[date.getMonth()]} ${date
+        .getFullYear()
+        .toString()
+        .slice(-2)}`;
       monthlyUsers[monthKey] = 0;
     }
 
     usersByMonth.forEach((group) => {
       const date = new Date(group.createdAt);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear().toString().slice(-2)}`;
+      const monthKey = `${monthNames[date.getMonth()]} ${date
+        .getFullYear()
+        .toString()
+        .slice(-2)}`;
       if (monthlyUsers.hasOwnProperty(monthKey)) {
         monthlyUsers[monthKey] += group._count.id;
       }
@@ -191,13 +210,19 @@ export async function GET(req: NextRequest) {
     for (let i = monthsToShow - 1; i >= 0; i--) {
       const date = new Date();
       date.setMonth(date.getMonth() - i);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear().toString().slice(-2)}`;
+      const monthKey = `${monthNames[date.getMonth()]} ${date
+        .getFullYear()
+        .toString()
+        .slice(-2)}`;
       monthlyRequests[monthKey] = 0;
     }
 
     requestsByMonth.forEach((group) => {
       const date = new Date(group.createdAt);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear().toString().slice(-2)}`;
+      const monthKey = `${monthNames[date.getMonth()]} ${date
+        .getFullYear()
+        .toString()
+        .slice(-2)}`;
       if (monthlyRequests.hasOwnProperty(monthKey)) {
         monthlyRequests[monthKey] += group._count.id;
       }
