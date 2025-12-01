@@ -73,7 +73,7 @@ const mapInvitationStatus = (request: {
 export function RequestsTable() {
   const { data: providerRequests, isLoading, error } = useProviderRequests();
   const { data: session } = authClient.useSession();
-  const currentUserId = session?.user?.id;
+  // const currentUserId = session?.user?.id;
 
   // Transform requests for display
   const transformedRequests = useMemo(() => {
