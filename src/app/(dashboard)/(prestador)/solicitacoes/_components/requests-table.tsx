@@ -23,7 +23,6 @@ import {
 import { DetailModalSection } from "@/components/ui/detail-modal";
 import { formatCurrency, formatDate } from "@/lib/utils/table-utils";
 import { useProviderRequests } from "@/hooks/use-provider-requests";
-import { authClient } from "@/lib/auth-client";
 
 // Map OrderInvitation status to display status
 const mapInvitationStatus = (request: {
@@ -72,9 +71,7 @@ const mapInvitationStatus = (request: {
 
 export function RequestsTable() {
   const { data: providerRequests, isLoading, error } = useProviderRequests();
-  const { data: session } = authClient.useSession();
-  // const currentUserId = session?.user?.id;
-
+  
   // Transform requests for display
   const transformedRequests = useMemo(() => {
     if (!providerRequests) return [];
