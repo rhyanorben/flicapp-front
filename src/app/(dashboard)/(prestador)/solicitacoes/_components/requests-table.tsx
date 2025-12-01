@@ -23,96 +23,99 @@ import {
 import { DetailModalSection } from "@/components/ui/detail-modal";
 import { formatCurrency, formatDate } from "@/lib/utils/table-utils";
 import { useProviderRequests } from "@/hooks/use-provider-requests";
+import { authClient } from "@/lib/auth-client";
 
-// Removed unused interface
+// Map OrderInvitation status to display status
+const mapInvitationStatus = (request: {
+  respondedAt: string | null;
+  response: string | null;
+  status: string | null;
+  expiresAt: string | null;
+  orderStatus: string;
+}): string => {
+  const now = new Date();
+  const hasExpired =
+    request.expiresAt && new Date(request.expiresAt) < now;
+  const isResponded = request.respondedAt !== null;
 
-// Map database status to display status
-const mapStatus = (
-  status: string,
-  providerId: string | null,
-  currentUserId: string
-): string => {
-  if (providerId === currentUserId) {
-    switch (status) {
-      case "accepted":
-      case "in_progress":
-      case "completed":
-        return "aceita";
-      case "cancelled":
-        return "recusada";
-      default:
-        return "pendente";
-    }
-  } else {
-    // Orders available for matching
-    if (status === "matching") {
-      return "pendente";
-    }
+  // Expirada: expiresAt < agora E respondedAt é null
+  if (hasExpired && !isResponded) {
     return "expirada";
   }
-};
 
-// Map database status to filter value
-const mapStatusToFilter = (
-  status: string,
-  providerId: string | null,
-  currentUserId: string
-): string => {
-  if (providerId === currentUserId) {
-    switch (status) {
-      case "accepted":
-      case "in_progress":
-      case "completed":
-        return "aceita";
-      case "cancelled":
-        return "recusada";
-      default:
-        return "pendente";
-    }
-  } else {
-    if (status === "matching") {
-      return "pendente";
-    }
-    return "expirada";
+  // Aceita: response === "accepted" OU status indica aceito OU order.status é "accepted"/"in_progress"/"completed"
+  if (
+    request.response === "accepted" ||
+    request.status === "accepted" ||
+    ["accepted", "in_progress", "completed"].includes(request.orderStatus)
+  ) {
+    return "aceita";
   }
+
+  // Recusada: response === "rejected" OU status indica rejeitado OU order.status é "cancelled"
+  if (
+    request.response === "rejected" ||
+    request.status === "rejected" ||
+    request.orderStatus === "cancelled"
+  ) {
+    return "recusada";
+  }
+
+  // Pendente: respondedAt é null E (expiresAt é null OU expiresAt > agora)
+  if (!isResponded && (!request.expiresAt || !hasExpired)) {
+    return "pendente";
+  }
+
+  // Default to pendente
+  return "pendente";
 };
 
 export function RequestsTable() {
   const { data: providerRequests, isLoading, error } = useProviderRequests();
+  const { data: session } = authClient.useSession();
+  const currentUserId = session?.user?.id;
 
   // Transform requests for display
   const transformedRequests = useMemo(() => {
     if (!providerRequests) return [];
 
-    return providerRequests.map((request, index) => ({
-      id: request.id || `request-${index}-${Date.now()}`, // Generate unique ID if missing
-      cliente: request.client?.name || "Não informado",
-      tipoServico: request.category?.name || "Não especificado",
-      descricao: request.description,
-      status: mapStatus(request.status, request.providerId, "current-user-id"), // This should be the actual user ID
-      statusFilter: mapStatusToFilter(
-        request.status,
-        request.providerId,
-        "current-user-id"
-      ),
-      dataSolicitacao: formatDate(request.createdAt),
-      dataPreferencial: formatDate(request.slotStart) || "Não agendado",
-      localizacao: request.address
-        ? `${request.address.street}, ${request.address.number}, ${request.address.neighborhood}, ${request.address.city} - ${request.address.state}`
-        : "Não informado",
-      valor: request.finalPriceCents
-        ? request.finalPriceCents / 100
-        : request.depositCents / 100,
-      prazoResposta: request.createdAt
-        ? formatDate(
-            new Date(
-              new Date(request.createdAt).getTime() + 24 * 60 * 60 * 1000
+    return providerRequests.map((request, index) => {
+      const displayStatus = mapInvitationStatus({
+        respondedAt: request.respondedAt,
+        response: request.response,
+        status: request.status,
+        expiresAt: request.expiresAt,
+        orderStatus: request.orderStatus,
+      });
+
+      return {
+        id: request.invitationId || request.id || `request-${index}-${Date.now()}`,
+        cliente: request.client?.name || "Não informado",
+        tipoServico: request.category?.name || "Não especificado",
+        descricao: request.description,
+        status: displayStatus,
+        statusFilter: displayStatus,
+        dataSolicitacao: formatDate(request.sentAt || request.createdAt),
+        dataPreferencial: formatDate(request.slotStart) || "Não agendado",
+        localizacao: request.address
+          ? `${request.address.street}, ${request.address.number}, ${request.address.neighborhood}, ${request.address.city} - ${request.address.state}`
+          : "Não informado",
+        valor: request.finalPriceCents
+          ? request.finalPriceCents / 100
+          : request.depositCents / 100,
+        prazoResposta: request.expiresAt
+          ? formatDate(request.expiresAt)
+          : request.sentAt
+          ? formatDate(
+              new Date(
+                new Date(request.sentAt).getTime() + 24 * 60 * 60 * 1000
+              )
             )
-          )
-        : "Não informado", // 24h after creation
-      // Keep original request for actions
-      originalRequest: request,
-    }));
+          : "Não informado",
+        // Keep original request for actions
+        originalRequest: request,
+      };
+    });
   }, [providerRequests]);
 
   // Column definitions

@@ -10,6 +10,53 @@ const calculateDelta = (previous: number, current: number): number => {
   return ((current - previous) / previous) * 100;
 };
 
+// Map OrderInvitation status to display category
+const mapInvitationStatusToCategory = (
+  invitation: {
+    respondedAt: Date | null;
+    response: string | null;
+    status: string | null;
+    expiresAt: Date | null;
+    order: { status: string };
+  }
+): string => {
+  const now = new Date();
+  const hasExpired =
+    invitation.expiresAt && new Date(invitation.expiresAt) < now;
+  const isResponded = invitation.respondedAt !== null;
+
+  // Expirada: expiresAt < agora E respondedAt é null
+  if (hasExpired && !isResponded) {
+    return "expiradas";
+  }
+
+  // Aceita: response === "accepted" OU status indica aceito OU order.status é "accepted"/"in_progress"/"completed"
+  if (
+    invitation.response === "accepted" ||
+    invitation.status === "accepted" ||
+    ["accepted", "in_progress", "completed"].includes(invitation.order.status)
+  ) {
+    return "aceitas";
+  }
+
+  // Recusada: response === "rejected" OU status indica rejeitado OU order.status é "cancelled"
+  if (
+    invitation.response === "rejected" ||
+    invitation.status === "rejected" ||
+    invitation.order.status === "cancelled"
+  ) {
+    return "recusadas";
+  }
+
+  // Pendente: respondedAt é null E (expiresAt é null OU expiresAt > agora)
+  if (!isResponded && (!invitation.expiresAt || !hasExpired)) {
+    return "pendentes";
+  }
+
+  // Default to pendente
+  return "pendentes";
+};
+
 export async function GET(request: NextRequest) {
   try {
     // Get authenticated user
@@ -26,61 +73,43 @@ export async function GET(request: NextRequest) {
     currentMonthStart.setDate(1);
     currentMonthStart.setHours(0, 0, 0, 0);
 
-    // Get orders for this provider (assigned or available for matching)
-    const currentMonthOrders = await prisma.order.findMany({
+    // Get order invitations for this provider
+    const currentMonthInvitations = await prisma.orderInvitation.findMany({
       where: {
-        OR: [
-          { providerId: session.user.id },
-          {
-            AND: [{ status: "matching" }, { providerId: null }],
+        providerId: session.user.id,
+        sentAt: { gte: currentMonthStart },
+      },
+      include: {
+        order: {
+          select: {
+            status: true,
+            finalPriceCents: true,
           },
-        ],
-        createdAt: { gte: currentMonthStart },
+        },
       },
     });
 
     // Get previous month's stats
     const previousMonthStart = new Date(currentMonthStart);
     previousMonthStart.setMonth(previousMonthStart.getMonth() - 1);
-    const previousMonthEnd = new Date(currentMonthStart);
-    previousMonthEnd.setDate(0); // Last day of previous month
 
-    const previousMonthOrders = await prisma.order.findMany({
+    const previousMonthInvitations = await prisma.orderInvitation.findMany({
       where: {
-        OR: [
-          { providerId: session.user.id },
-          {
-            AND: [{ status: "matching" }, { providerId: null }],
+        providerId: session.user.id,
+        sentAt: {
+          gte: previousMonthStart,
+          lt: currentMonthStart,
+        },
+      },
+      include: {
+        order: {
+          select: {
+            status: true,
+            finalPriceCents: true,
           },
-        ],
-        createdAt: { gte: previousMonthStart, lt: currentMonthStart },
+        },
       },
     });
-
-    // Map status to display categories
-    const mapStatusToCategory = (
-      status: string,
-      providerId: string | null
-    ): string => {
-      if (providerId === session.user.id) {
-        switch (status) {
-          case "accepted":
-          case "in_progress":
-          case "completed":
-            return "aceitas";
-          case "cancelled":
-            return "recusadas";
-          default:
-            return "pendentes";
-        }
-      } else {
-        // Orders available for matching
-        if (status === "matching") {
-          return "pendentes";
-        }
-        return "expiradas";
-      }
-    };
 
     // Calculate current stats
     const currentStats = {
@@ -91,12 +120,12 @@ export async function GET(request: NextRequest) {
       totalGanhos: 0,
     };
 
-    currentMonthOrders.forEach((order) => {
-      const category = mapStatusToCategory(order.status, order.providerId);
+    currentMonthInvitations.forEach((invitation) => {
+      const category = mapInvitationStatusToCategory(invitation);
       currentStats[category as keyof typeof currentStats]++;
 
-      if (category === "aceitas" && order.finalPriceCents) {
-        currentStats.totalGanhos += order.finalPriceCents / 100;
+      if (category === "aceitas" && invitation.order.finalPriceCents) {
+        currentStats.totalGanhos += invitation.order.finalPriceCents / 100;
       }
     });
 
@@ -109,12 +138,12 @@ export async function GET(request: NextRequest) {
       totalGanhos: 0,
     };
 
-    previousMonthOrders.forEach((order) => {
-      const category = mapStatusToCategory(order.status, order.providerId);
+    previousMonthInvitations.forEach((invitation) => {
+      const category = mapInvitationStatusToCategory(invitation);
       previousStats[category as keyof typeof previousStats]++;
 
-      if (category === "aceitas" && order.finalPriceCents) {
-        previousStats.totalGanhos += order.finalPriceCents / 100;
+      if (category === "aceitas" && invitation.order.finalPriceCents) {
+        previousStats.totalGanhos += invitation.order.finalPriceCents / 100;
       }
     });
 

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getUserRoles } from "@/lib/role-utils";
-import { convertPhoneToE164 } from "@/lib/utils/phone-mask";
+import { convertPhoneToE164, convertE164ToWhatsAppId, normalizeE164 } from "@/lib/utils/phone-mask";
 
 export async function POST(request: NextRequest) {
   try {
@@ -71,11 +71,17 @@ export async function POST(request: NextRequest) {
     let phoneE164: string | undefined;
     try {
       phoneE164 = convertPhoneToE164(phone);
-      // Update user's phone if provided
+      // Normalize to ensure no duplicate 9s
       if (phoneE164) {
+        phoneE164 = normalizeE164(phoneE164);
+        const whatsappId = convertE164ToWhatsAppId(phoneE164);
+        
         await prisma.user.update({
           where: { id: userId },
-          data: { phoneE164 },
+          data: { 
+            phoneE164,
+            whatsappId,
+          },
         });
       }
     } catch (error) {

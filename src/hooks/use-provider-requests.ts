@@ -3,13 +3,20 @@
 import { useQuery } from "@tanstack/react-query";
 
 interface ProviderRequest {
+  // OrderInvitation fields
+  invitationId: string;
+  respondedAt: string | null;
+  response: string | null;
+  expiresAt: string | null;
+  sentAt: string;
+  status: string | null; // OrderInvitation status
+  // Order fields (for compatibility)
   id: string;
   clientId: string;
   providerId: string | null;
   addressId: string | null;
   categoryId: string | null;
   description: string;
-  status: string;
   depositMethod: string;
   depositBaseAvgCents: number | null;
   depositCents: number;
@@ -17,6 +24,7 @@ interface ProviderRequest {
   slotEnd: string | null;
   finalPriceCents: number | null;
   reviewStatus: string | null;
+  orderStatus: string; // Order status for mapping
   createdAt: string;
   updatedAt: string;
   // Relations

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getUserRoles, assignRoleToUser } from "@/lib/role-utils";
-import { convertPhoneToE164 } from "@/lib/utils/phone-mask";
+import { convertPhoneToE164, convertE164ToWhatsAppId, normalizeE164 } from "@/lib/utils/phone-mask";
 import { fetchAddressByCEP } from "@/lib/utils/viacep";
 
 export async function GET(
@@ -167,10 +167,17 @@ export async function PATCH(
         // Ensure phone is set on user
         if (providerRequest.phone && !providerRequest.user.phoneE164) {
           try {
-            const phoneE164 = convertPhoneToE164(providerRequest.phone);
+            let phoneE164 = convertPhoneToE164(providerRequest.phone);
+            // Normalize to ensure no duplicate 9s
+            phoneE164 = normalizeE164(phoneE164);
+            const whatsappId = convertE164ToWhatsAppId(phoneE164);
+            
             await prisma.user.update({
               where: { id: targetUserId },
-              data: { phoneE164 },
+              data: { 
+                phoneE164,
+                whatsappId,
+              },
             });
           } catch (error) {
             console.error("Error updating user phone:", error);

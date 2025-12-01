@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { mergeUsers } from "@/lib/utils/user-merge";
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,19 +57,79 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Atualizar emailVerified do usuário
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
+    // Obter o email do código de verificação
+    const emailToVerify = verificationCode.email.toLowerCase().trim();
+
+    // Verificar se esse email já existe em outro usuário
+    const existingUserWithEmail = await prisma.user.findUnique({
+      where: { email: emailToVerify },
+      select: {
+        id: true,
+        email: true,
         emailVerified: true,
+        createdAt: true,
+        phoneE164: true,
+        cpf: true,
       },
     });
 
+    let finalUserId = userId;
+    let merged = false;
+
+    // Se o email já existe em outro usuário, fazer merge
+    if (existingUserWithEmail && existingUserWithEmail.id !== userId) {
+      console.log(
+        `Email ${emailToVerify} já existe no usuário ${existingUserWithEmail.id}. Iniciando merge com usuário ${userId}`
+      );
+
+      try {
+        // Fazer merge: manter o usuário que já tinha o email e migrar dados do usuário atual
+        finalUserId = await mergeUsers(existingUserWithEmail.id, userId);
+        merged = true;
+        console.log(`Merge concluído. Usuário final: ${finalUserId}`);
+      } catch (mergeError) {
+        console.error("Erro ao fazer merge de usuários:", mergeError);
+        throw new Error(
+          `Erro ao unificar contas: ${mergeError instanceof Error ? mergeError.message : "Erro desconhecido"}`
+        );
+      }
+    } else {
+      // Se não existe outro usuário, atualizar o email do usuário atual
+      const currentUser = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { email: true },
+      });
+
+      // Atualizar email e marcar como verificado
+      const updateData: {
+        email?: string;
+        emailVerified: boolean;
+      } = {
+        emailVerified: true,
+      };
+
+      // Só atualizar o email se ainda não estiver cadastrado ou for diferente
+      if (!currentUser?.email || currentUser.email.toLowerCase() !== emailToVerify) {
+        updateData.email = emailToVerify;
+      }
+
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: updateData,
+      });
+
+      console.log(`Email ${emailToVerify} atualizado e verificado para usuário ${userId}`);
+    }
+
     return NextResponse.json({
       success: true,
-      message: "Código verificado com sucesso",
+      message: merged
+        ? "Código verificado com sucesso. Sua conta foi unificada com uma conta existente."
+        : "Código verificado com sucesso",
+      userId: finalUserId,
+      merged,
     });
   } catch (error) {
     console.error("Error validating verification code:", error);

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getUserRoles } from "@/lib/role-utils";
-import { convertPhoneToE164 } from "@/lib/utils/phone-mask";
+import { convertPhoneToE164, convertE164ToWhatsAppId, normalizeE164 } from "@/lib/utils/phone-mask";
 import { z } from "zod";
 
 // Validation schemas
@@ -321,10 +321,17 @@ export async function PATCH(request: NextRequest) {
     // Update phone if provided
     if (validatedData.phone) {
       try {
-        const phoneE164 = convertPhoneToE164(validatedData.phone);
+        let phoneE164 = convertPhoneToE164(validatedData.phone);
+        // Normalize to ensure no duplicate 9s
+        phoneE164 = normalizeE164(phoneE164);
+        const whatsappId = convertE164ToWhatsAppId(phoneE164);
+        
         await prisma.user.update({
           where: { id: userId },
-          data: { phoneE164 },
+          data: { 
+            phoneE164,
+            whatsappId,
+          },
         });
       } catch {
         return NextResponse.json(

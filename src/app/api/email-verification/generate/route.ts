@@ -8,10 +8,10 @@ function generateVerificationCode(): string {
 }
 
 // Função para validar formato de email
-// function isValidEmail(email: string): boolean {
-//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//   return emailRegex.test(email);
-// }
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,10 +26,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { userId } = body;
+    const { userId, email } = body;
 
     // Validação de userId
     if (!userId) {
+      console.error("Error: userId é obrigatório. Body recebido:", body);
       return NextResponse.json(
         { error: "userId é obrigatório", received: body },
         { status: 400 }
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (typeof userId !== "string") {
+      console.error("Error: userId deve ser string. Tipo recebido:", typeof userId, "Valor:", userId);
       return NextResponse.json(
         { error: "userId deve ser uma string", received: typeof userId },
         { status: 400 }
@@ -44,34 +46,51 @@ export async function POST(request: NextRequest) {
     }
 
     if (userId.trim().length === 0) {
+      console.error("Error: userId está vazio");
       return NextResponse.json(
         { error: "userId não pode estar vazio" },
         { status: 400 }
       );
     }
 
-    // Buscar usuário para obter o email
+    // Buscar usuário
     const user = await prisma.user.findUnique({
       where: { id: userId.trim() },
       select: { id: true, email: true },
     });
 
     if (!user) {
+      console.error("Error: Usuário não encontrado. userId:", userId);
       return NextResponse.json(
         { error: "Usuário não encontrado", userId: userId },
         { status: 404 }
       );
     }
 
-    if (!user.email) {
+    // Determinar qual email usar: do body ou do usuário
+    let emailToUse: string;
+    if (email) {
+      // Validar formato do email recebido
+      if (typeof email !== "string" || !isValidEmail(email)) {
+        return NextResponse.json(
+          { error: "Email inválido" },
+          { status: 400 }
+        );
+      }
+      emailToUse = email.toLowerCase().trim();
+    } else if (user.email) {
+      // Usar email do usuário se não foi fornecido no body
+      emailToUse = user.email.toLowerCase().trim();
+    } else {
+      // Se não tem email nem no body nem no usuário, retornar erro
       return NextResponse.json(
-        { error: "Usuário não possui email cadastrado", userId: userId },
+        { error: "Email é obrigatório. Forneça um email no body da requisição ou cadastre um email no usuário." },
         { status: 400 }
       );
     }
 
-    // Normalizar email (lowercase)
-    const normalizedEmail = user.email.toLowerCase().trim();
+    // Normalizar
+    const normalizedEmail = emailToUse;
     const normalizedUserId = userId.trim();
 
     // Invalidar códigos anteriores não verificados para este userId
@@ -105,9 +124,21 @@ export async function POST(request: NextRequest) {
 
     // Enviar email
     try {
+      console.log("Enviando email de verificação para:", normalizedEmail);
       await sendVerificationEmail(normalizedEmail, code);
+      console.log("Email de verificação enviado com sucesso");
     } catch (emailError) {
       console.error("Error sending verification email:", emailError);
+      // Retornar erro 400 se houver problema na configuração SMTP
+      if (emailError instanceof Error && emailError.message.includes("SMTP")) {
+        return NextResponse.json(
+          { 
+            error: "Erro na configuração de email. Entre em contato com o suporte.",
+            details: process.env.NODE_ENV === "development" ? emailError.message : undefined
+          },
+          { status: 400 }
+        );
+      }
       // Não falha a requisição se o email não for enviado, mas loga o erro
       // Em produção, você pode querer tratar isso de forma diferente
     }
