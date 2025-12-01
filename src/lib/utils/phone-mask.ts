@@ -76,7 +76,7 @@ export function normalizeE164(phoneE164: string): string {
  * IMPORTANT: Sempre normaliza no final para garantir que não há 9 duplicado.
  */
 export function convertPhoneToE164(phone: string): string {
-  let numbers = phone.replace(/\D/g, "");
+  const numbers = phone.replace(/\D/g, "");
 
   let e164: string;
 
