@@ -90,7 +90,7 @@ export async function sendPasswordResetEmail(
   const transporter = createTransporter();
   const fromEmail = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER;
   const fromName = process.env.SMTP_FROM_NAME || "FlicApp";
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
   const resetUrl = `${baseUrl}/reset-password?token=${token}`;
 
   const mailOptions = {
